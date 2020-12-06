@@ -35,8 +35,8 @@ function draw_crossword_grid(doc,puzdata,options)
         var number_offset = cell_size/18;
         var number_size = cell_size/3.2;
         var letter_length = letter.length;
-        var letter_size = cell_size/(1.5 + 0.5 * (letter_length - 1));
-        var letter_pct_down = .9;
+        var letter_size = cell_size/(1.6 + 0.5 * (letter_length - 1));
+        var letter_pct_down = .88;
         doc.setFillColor(options.gray.toString());
         doc.setDrawColor(options.gray.toString());
         // Create an unfilled square first
@@ -95,8 +95,8 @@ function puzdata_to_nyt(puzdata,options)
     ,   header_pt : 12
     ,   grid_padding: 36
     ,   footer_pt: 12
-    ,   clue_width : 300
-    ,   entry_left_padding: 50
+    ,   clue_width : 270
+    ,   entry_left_padding: 90
     ,   clue_entry_pt : 12
     ,   outfile: 'test.pdf'
     ,   gray: 0.6
@@ -191,25 +191,26 @@ function puzdata_to_nyt(puzdata,options)
     
    
     /** Remaining pages: clues and entries **/
-    // Set up two arrays: one of clues and one of entries
+    // Set up three arrays: one of clue numbers, one of clues, and one of entries
+    var clueNums = [];
     var clues = [];
     var entries = [];
     
     // Across
-    clues.push('ACROSS'); entries.push('');
+    clues.push('ACROSS'); entries.push(''); clueNums.push('');
     for (var i=0; i<puzdata.acrossSqNbrs.length; i++) {
         var num = puzdata.acrossSqNbrs[i].toString();
         var clue = puzdata.across_clues[num];
         var entry = puzdata.across_entries[num];
-        clues.push(num + ' ' + clue); entries.push(entry);
+        clues.push(clue); entries.push(entry); clueNums.push(num);
     }
     // Down
-    clues.push('DOWN'); entries.push('');
+    clues.push('DOWN'); entries.push(''); clueNums.push('');
     for (var i=0; i<puzdata.downSqNbrs.length; i++) {
         var num = puzdata.downSqNbrs[i].toString();
         var clue = puzdata.down_clues[num];
         var entry = puzdata.down_entries[num];
-        clues.push(num + ' ' + clue); entries.push(entry);
+        clues.push(clue); entries.push(entry); clueNums.push(num);
     }
     
     var page_num = 2;
@@ -223,13 +224,15 @@ function puzdata_to_nyt(puzdata,options)
     }
     var clue_ypos = print_headers(doc,headers,options.header_pt,margin);
     clue_ypos += options.clue_entry_pt;
-    var clue_xpos = margin;
+    var num_xpos = margin + 21;
+    var clue_xpos = margin + 30;
     var entry_xpos = margin + options.clue_width + options.entry_left_padding;
     var entry_ypos = clue_ypos;
     
     for (var i=0;i<clues.length;i++) {
         var clue = clues[i];
         var entry = entries[i];
+        var clueNum = clueNums[i];
         var lines = doc.splitTextToSize(clue,options.clue_width);
         // check that the clue fits; if not, make a new page
         if (clue_ypos + lines.length * options.clue_entry_pt + options.footer_pt + margin > DOC_HEIGHT) {
@@ -250,18 +253,21 @@ function puzdata_to_nyt(puzdata,options)
                 }
 
                 doc.setFont(font,"bold");
-                doc.setFontSize(options.clue_entry_pt).text(clue_xpos,clue_ypos,lines[j]);
+                doc.setFontSize(options.clue_entry_pt).text(margin,clue_ypos,lines[j]);
                 doc.setFont(font,"normal");
             } else{
-            doc.setFontSize(options.clue_entry_pt).text(clue_xpos,clue_ypos,lines[j]);
+                doc.setFontSize(options.clue_entry_pt).text(clue_xpos,clue_ypos,lines[j]);
             }
             clue_ypos += options.clue_entry_pt;
         }
         // print the entry
+        doc.setFont(font,"bold");
+        doc.setFontSize(options.clue_entry_pt).text(num_xpos,entry_ypos,clueNum, null, null, "right");
+        doc.setFont(font,"normal");
         doc.setFontSize(options.clue_entry_pt).text(entry_xpos,entry_ypos,entry);
         
         // adjust the coordinates (double-spacing)
-        clue_ypos += options.clue_entry_pt;
+        clue_ypos += options.clue_entry_pt*1.2;
         entry_ypos = clue_ypos;
     }
     

@@ -35,7 +35,6 @@
 
       .pdfobject-container { 
           height: 40rem; 
-          border: 0.5rem solid rgba(0,0,0,.1); 
           }
 
     </style>
@@ -46,9 +45,9 @@
   <body>
     <div class="container pt-5">
       <h1>NYT Crossword Submission Editor</h1>
-      <h3 class="pt-3">This tool builds on Alex Boisvert's <a href="https://crosswordnexus.com/apps/puz-to-nyt/">PUZ to NYT Converter</a> to conform to current submission guidelines and to provide more customization options.</h3>
+      <h3 class="pt-3">This tool builds on Alex Boisvert's <a href="https://crosswordnexus.com/apps/puz-to-nyt/">PUZ to NYT Converter</a> to conform to current <a href="https://www.nytimes.com/puzzles/submissions/crossword">NYT submission guidelines</a> and to provide more customization options.</h3>
       <div class="row pt-5 pb-3">
-          <div class = "col-4">
+          <div class = "col-12 col-lg-4">
             <form>
                 <div class="form-group">   
                 <label for="files">Select your .puz file to export as a PDF:</label><br>
@@ -81,13 +80,13 @@
                     <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="headerText" rows="4" placeholder="Your Name&#13;&#10;Address Line 1&#13;&#10;Address Line 2&#13;&#10;Email Address"></textarea>
                 </div>
                 <br>
-                <button class="btn btn-outline-primary" type="button" onclick="handleFileSelect();return false;">Submit</button>
+                <button class="btn btn-outline-primary" id="previewButton" type="button" onclick="handleFileSelect();return false;">Preview PDF</button>
 
                 </div>
 
             </form>
         </div>
-        <div class = "col-8" id="example1">
+        <div class = "col-12 col-lg-8" id="example1">
         </div>
     </div>
 
@@ -141,6 +140,8 @@
                     alert("Failed to load file");
                 }
             }
+
+            document.querySelector('#previewButton').textContent = 'Refresh Preview';
         }
 
         </script>
