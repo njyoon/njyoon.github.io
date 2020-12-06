@@ -32,10 +32,8 @@ function draw_crossword_grid(doc,puzdata,options)
     
     /** Function to draw a square **/
     function draw_square(doc,x1,y1,cell_size,number,letter,filled,circle) {
-        var filled_string = (filled ? 'F' : '');
-        var number_offset = cell_size/20;
-        var number_size = cell_size/3.5;
-        //var letter_size = cell_size/1.5;
+        var number_offset = cell_size/18;
+        var number_size = cell_size/3.2;
         var letter_length = letter.length;
         var letter_size = cell_size/(1.5 + 0.5 * (letter_length - 1));
         var letter_pct_down = .9;
@@ -91,21 +89,24 @@ function draw_crossword_grid(doc,puzdata,options)
 function puzdata_to_nyt(puzdata,options)
 {
     var DEFAULT_OPTIONS = {
-        margin: 20
+        margin: 72
     ,   grid_size : 360
-    ,   email : ''
     ,   address : ''
-    ,   header_pt : 10
-    ,   grid_padding: 20
-    ,   footer_pt: 8
-    ,   clue_width : 250
-    ,   entry_left_padding: 150
-    ,   clue_entry_pt : 10
+    ,   header_pt : 12
+    ,   grid_padding: 36
+    ,   footer_pt: 12
+    ,   clue_width : 300
+    ,   entry_left_padding: 50
+    ,   clue_entry_pt : 12
     ,   outfile: 'test.pdf'
     ,   gray: 0.6
     ,   font: 'NunitoSans-Regular'
+    ,   wc: 0
+    ,   pages: 0
     };
-    
+
+
+
     for (var key in DEFAULT_OPTIONS) {
         if (!DEFAULT_OPTIONS.hasOwnProperty(key)) continue;
         if (!options.hasOwnProperty(key))
@@ -114,6 +115,7 @@ function puzdata_to_nyt(puzdata,options)
         }
     }
     
+
     var PTS_PER_IN = 72;
     var DOC_WIDTH = 8.5 * PTS_PER_IN;
     var DOC_HEIGHT = 11 * PTS_PER_IN;
@@ -123,7 +125,7 @@ function puzdata_to_nyt(puzdata,options)
     var font = options.font;
 
     var doc = new jsPDF('portrait','pt','letter');
-    doc.setFont(font);
+    doc.setFont(font,"normal");
     
     function print_headers(doc,headers,pt,margin) {
         // print headers; return where the next line would be
@@ -153,12 +155,15 @@ function puzdata_to_nyt(puzdata,options)
     {
         headers.push(puzdata.title);
     }
-    headers.push(puzdata.author);
     var address_arr = options.address.split('\n');
     headers = headers.concat(address_arr);
-    headers.push(options.email);
     headers.push('');
-    headers.push('Word count: ' + puzdata.nbrClues.toString());
+
+    if (options.wc==1) {
+    
+        headers.push('Word count: ' + puzdata.nbrClues.toString());
+    }
+
     var y0 = print_headers(doc,headers,options.header_pt,margin);
     
     // Print the filled grid
@@ -180,7 +185,9 @@ function puzdata_to_nyt(puzdata,options)
     ,   gray : options['gray']
     };
     draw_crossword_grid(doc,puzdata,first_page_options);
-    print_page_num(doc,options.footer_pt,margin,DOC_HEIGHT,1);
+    if (options.pages==1) {
+        print_page_num(doc,options.footer_pt,margin,DOC_HEIGHT,1);
+    }
     
    
     /** Remaining pages: clues and entries **/
@@ -211,7 +218,9 @@ function puzdata_to_nyt(puzdata,options)
     
     // new page
     doc.addPage();
-    print_page_num(doc,options.footer_pt,margin,DOC_HEIGHT,page_num);
+    if (options.pages==1) {
+        print_page_num(doc,options.footer_pt,margin,DOC_HEIGHT,page_num);
+    }
     var clue_ypos = print_headers(doc,headers,options.header_pt,margin);
     clue_ypos += options.clue_entry_pt;
     var clue_xpos = margin;
@@ -226,23 +235,36 @@ function puzdata_to_nyt(puzdata,options)
         if (clue_ypos + lines.length * options.clue_entry_pt + options.footer_pt + margin > DOC_HEIGHT) {
             doc.addPage();
             page_num += 1;
-            print_page_num(doc,options.footer_pt,margin,DOC_HEIGHT,page_num);
+            if (options.pages==1) {
+                print_page_num(doc,options.footer_pt,margin,DOC_HEIGHT,page_num);
+            }
             clue_ypos = print_headers(doc,headers,options.header_pt,margin);
             clue_ypos += options.clue_entry_pt;
             entry_ypos = clue_ypos;
         }
         // print the clue
         for (var j=0; j<lines.length;j++) {
+            if (lines[j]=='ACROSS' || lines[j]=='DOWN') {
+                if (lines[j]=='DOWN') {
+                    clue_ypos += options.clue_entry_pt; 
+                }
+
+                doc.setFont(font,"bold");
+                doc.setFontSize(options.clue_entry_pt).text(clue_xpos,clue_ypos,lines[j]);
+                doc.setFont(font,"normal");
+            } else{
             doc.setFontSize(options.clue_entry_pt).text(clue_xpos,clue_ypos,lines[j]);
+            }
             clue_ypos += options.clue_entry_pt;
         }
         // print the entry
         doc.setFontSize(options.clue_entry_pt).text(entry_xpos,entry_ypos,entry);
         
-        // adjust the coordinates (double-spacing
+        // adjust the coordinates (double-spacing)
         clue_ypos += options.clue_entry_pt;
         entry_ypos = clue_ypos;
     }
     
-    doc.save(options.outfile); 
+    PDFObject.embed(doc.output("bloburl"), "#example1");
+    // doc.save(options.outfile); 
 }
