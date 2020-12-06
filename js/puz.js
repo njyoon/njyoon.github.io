@@ -11,7 +11,6 @@
 
 //
 /*jslint browser: true, bitwise: true, plusplus: true */
-
 var ActiveXObject, parsedPuz, filecontents, PUZAPP = {};
 (function () {
     "use strict";
