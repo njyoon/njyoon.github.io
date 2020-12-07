@@ -276,7 +276,7 @@ function puzdata_to_nyt(puzdata,options)
             } else{
                 doc.setFontSize(options.clue_entry_pt).text(clue_xpos,clue_ypos,lines[j]);
             }
-            clue_ypos += options.clue_entry_pt;
+            clue_ypos += options.clue_entry_pt*1.2;
         }
         // print the entry
         doc.setFont(font,"bold");
