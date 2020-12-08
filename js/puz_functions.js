@@ -131,7 +131,9 @@ function puzdata_to_nyt(puzdata,options)
     var font = options.font;
 
     var doc = new jsPDF('portrait','pt','letter');
+
     doc.setFont(font,"normal");
+
     
     function print_headers(doc,headers,pt,xMargin,yMargin) {
         // print headers; return where the next line would be
@@ -178,7 +180,7 @@ function puzdata_to_nyt(puzdata,options)
         var coconstructor_arr = options.coconstructor.split('\n');
         headers2 = headers2.concat(coconstructor_arr);
         headers2.push('');
-        print_headers(doc,headers2,options.header_pt,72+DOC_WIDTH/2,margin);
+        print_headers(doc,headers2,options.header_pt,margin/2 + DOC_WIDTH/2,margin);
     }
 
     

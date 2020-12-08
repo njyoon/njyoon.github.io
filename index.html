@@ -106,22 +106,14 @@
                         <div class="card">
                             <div id="headingTwo" class="card-header bg-white shadow-sm border-0">
                                 <h2 class="mb-0">
-                                    <button type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Add Content</button>
+                                    <button type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Constructor Info</button>
                                 </h2>
                             </div>
                             <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordionExample" class="collapse">
                                 <div class="card-body px-4 py-3">
                                     <div class="form-group">
-                                        <label for="headerText">Input Header (Contact Information)</label><br>
+                                        <label for="headerText">Add Header Content (Contact Info)</label><br>
                                         <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="headerText" rows="4" placeholder="Your Name&#13;&#10;Address Line 1&#13;&#10;Address Line 2&#13;&#10;Email Address"></textarea>
-                                    </div>
-                                    <div class="custom-control custom-switch pt-2">
-                                        <input type="checkbox" class="custom-control-input" id="wordCount">
-                                        <label class="custom-control-label" for="wordCount">Include Word Count</label>
-                                    </div>
-                                    <div class="custom-control custom-switch pt-2">
-                                        <input type="checkbox" class="custom-control-input" id="pages">
-                                        <label class="custom-control-label" for="pages">Include Page Numbers</label>
                                     </div>
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" data-toggle="collapse" href="#additional-header" class="custom-control-input" id="coco">
@@ -137,7 +129,7 @@
                         <div class="card">
                             <div id="headingThree" class="card-header bg-white shadow-sm border-0">
                                 <h2 class="mb-0">
-                                    <button type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Format Puzzle</button>
+                                    <button type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Basic Options</button>
                                 </h2>
                             </div>
                             <div id="collapseThree" aria-labelledby="headingTwo" data-parent="#accordionExample" class="collapse">
@@ -152,7 +144,33 @@
                                         <option value="times">Times New Roman</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="wordCount">
+                                        <label class="custom-control-label" for="wordCount">Include Word Count</label>
+                                    </div>
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="pages">
+                                        <label class="custom-control-label" for="pages">Include Page Numbers</label>
+                                    </div>
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="gray">
+                                        <label class="custom-control-label" for="gray">Inksaver Mode</label>
+                                    </div>
+                                    
+                                </div>  
+                            </div>
+                        </div>
+
+
+                        <div class="card">
+                            <div id="headingFour" class="card-header bg-white shadow-sm border-0">
+                                <h2 class="mb-0">
+                                    <button type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Advanced Options</button>
+                                </h2>
+                            </div>
+                            <div id="collapseFour" aria-labelledby="headingTwo" data-parent="#accordionExample" class="collapse">
+                                <div class="card-body px-4 py-3">
+                                    <div class="form-group pt-2">
                                         <label for="gridSize">Grid Size (pts)</label>
                                         <input type="number" class="form-control" id="gridSize" value="360">
                                     </div>
@@ -164,21 +182,19 @@
                                         <label for="numberSize">Number Size (% of square height)</label>
                                         <input type="number" class="form-control" id="numberSize" value="30">
                                     </div>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="gray">
-                                        <label class="custom-control-label" for="gray">Inksaver Mode</label>
-                                    </div>
+
                                 </div>  
                             </div>
+                        </div>
 
-                            <div class="card">
-                                <div class="btn-group p-2" role="group" aria-label="preview button">
-                                    <button class="btn btn-outline-primary col-6 mr-2" id="previewButton" type="button" onclick="handleFileSelect('preview');return false;">Preview PDF</button>
+                        <div class="card">
+                            <div class="btn-group p-2" role="group" aria-label="preview button">
+                                <button class="btn btn-outline-primary col-6 mr-2" id="previewButton" type="button" onclick="handleFileSelect('preview');return false;">Preview PDF</button>
 
-                                    <button class="btn btn-outline-primary col-6" id="downloadButton" type="button" onclick="handleFileSelect('download');return false;">Download PDF</button>
-                                </div>
+                                <button class="btn btn-outline-primary col-6" id="downloadButton" type="button" onclick="handleFileSelect('download');return false;">Download PDF</button>
                             </div>
                         </div>
+                        
 
 
 
@@ -231,6 +247,7 @@
                 coconstructor = document.getElementById('headerText2').value;
             }
 
+
             var files = document.getElementById('files').files; // FileList object
 
             // files is a FileList of File objects.
@@ -247,7 +264,7 @@
                     var outname = filename + '.pdf';
                     r.onload = (function(theFile) {
                         return function(e) { 
-                            var contents = e.target.result;
+                            var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
                             var options = {outfile: outname, address: address, gray: gray, font: generalFont, wc: wc, pages: pages, coconstructor: coconstructor, output: evt, grid_size: grid, letter_pct: letter, number_pct: number};
                             puzdata_to_nyt(puzdata,options);
