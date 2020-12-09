@@ -16,6 +16,7 @@ function draw_crossword_grid(doc,puzdata,options)
     ,   x0: 20
     ,   y0: 20
     ,   cell_size: 24
+    ,   grid_size: 360
     ,   gray : 0.4
     ,   letter_pct : 62
     ,   number_pct: 30
@@ -31,6 +32,7 @@ function draw_crossword_grid(doc,puzdata,options)
     
     var PTS_TO_IN = 72;
     var cell_size = options.cell_size;
+
     
     /** Function to draw a square **/
     function draw_square(doc,x1,y1,cell_size,number,letter,filled,circle) {
@@ -41,6 +43,7 @@ function draw_crossword_grid(doc,puzdata,options)
         var letter_pct_down = .88;
         doc.setFillColor(options.gray.toString());
         doc.setDrawColor(options.gray.toString());
+
         // Create an unfilled square first
         doc.rect(x1,y1,cell_size,cell_size);
         if (filled) {
@@ -95,13 +98,13 @@ function puzdata_to_nyt(puzdata,options)
     ,   grid_size : 360
     ,   address : ''
     ,   header_pt : 12
-    ,   grid_padding: 36
+    ,   grid_padding: 72
     ,   footer_pt: 12
-    ,   clue_width : 270
-    ,   entry_left_padding: 90
+    ,   clue_width : 252
+    ,   entry_left_padding: 108
     ,   clue_entry_pt : 12
     ,   outfile: 'test.pdf'
-    ,   gray: 0.6
+    ,   gray: 1
     ,   font: 'NunitoSans-Regular'
     ,   wc: 0
     ,   pages: 0
@@ -109,6 +112,11 @@ function puzdata_to_nyt(puzdata,options)
     ,   output: 'preview'
     ,   letter_pct: 62
     ,   number_pct: 30
+    ,   line_width: 0.4
+    ,   border_width: 0.4
+    ,   clue_spacing: 1.2
+    ,   heading_style: 'bold'
+    ,   number_style: 'bold'
     };
 
 
@@ -133,18 +141,22 @@ function puzdata_to_nyt(puzdata,options)
     var doc = new jsPDF('portrait','pt','letter');
 
     doc.setFont(font,"normal");
+    doc.setLineWidth(options.line_width);
 
     
     function print_headers(doc,headers,pt,xMargin,yMargin) {
         // print headers; return where the next line would be
         var x0 = xMargin;
-        var y0 = yMargin;
-        var header_padding = pt/3;
+        var y0 = yMargin+pt;
+        var header_padding = pt*0.2;
         doc.setFontSize(pt);
         for (var i=0;i<headers.length;i++) {
             doc.text(x0,y0,headers[i]);
             y0 += pt + header_padding;
         }
+
+        y0 -= (pt + header_padding);
+
         return y0;
     }
     
@@ -207,6 +219,13 @@ function puzdata_to_nyt(puzdata,options)
     draw_crossword_grid(doc,puzdata,first_page_options);
     if (options.pages==1) {
         print_page_num(doc,options.footer_pt,margin,DOC_HEIGHT,1);
+    }
+
+
+    // Draw border
+    if (options.border_width > options.line_width) {
+        doc.setLineWidth(options.border_width);
+        doc.rect(grid_xpos-options.border_width/2,grid_ypos-options.border_width/2,grid_size+options.border_width,(grid_size*puzdata.height/puzdata.width)+options.border_width);
     }
     
    
@@ -272,7 +291,7 @@ function puzdata_to_nyt(puzdata,options)
                     clue_ypos += options.clue_entry_pt; 
                 }
 
-                doc.setFont(font,"bold");
+                doc.setFont(font,options.heading_style);
                 doc.setFontSize(options.clue_entry_pt).text(margin,clue_ypos,lines[j]);
                 doc.setFont(font,"normal");
             } else{
@@ -281,13 +300,13 @@ function puzdata_to_nyt(puzdata,options)
             clue_ypos += options.clue_entry_pt*1.2;
         }
         // print the entry
-        doc.setFont(font,"bold");
+        doc.setFont(font,options.number_style);
         doc.setFontSize(options.clue_entry_pt).text(num_xpos,entry_ypos,clueNum, null, null, "right");
         doc.setFont(font,"normal");
         doc.setFontSize(options.clue_entry_pt).text(entry_xpos,entry_ypos,entry);
         
         // adjust the coordinates (double-spacing)
-        clue_ypos += options.clue_entry_pt*1.2;
+        clue_ypos += options.clue_entry_pt*options.clue_spacing;
         entry_ypos = clue_ypos;
     }
     

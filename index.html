@@ -56,6 +56,25 @@
     content: '\e5ce';
     }
 
+    .plus-link {
+    width: 100%;
+    position: relative;
+    }
+
+    .plus-link::before {
+    content: '\e145';
+    position: absolute;
+    font-family: 'Material Icons';
+    font-size: 1rem;
+    top: 38%;
+    left: -0.3rem;
+    transform: translateY(-50%);
+    }
+
+    .plus-link[aria-expanded='true']::before {
+    content: '\e15b';
+    }
+
     ::placeholder {
         color:lightgrey;
     }
@@ -79,21 +98,21 @@
 
           <div class="col-12 col-lg-4">
 
-              <div class="accordion shadow" id="accordionExample" >
+              <div class="accordion shadow" id="accordionMain" >
 
 
 
                     <form>
                         <div class="card">
                             <div class="card-header bg-white shadow-sm border-0" id="headingOne">
-                                <h2 class="mb-0">
-                                    <button type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="btn btn-link text-dark font-weight-bold text-uppercase collapsible-link">
+                                
+                                    <a type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="btn btn-link text-dark font-weight-bold text-uppercase collapsible-link">
                                         Choose File 
-                                    </button> 
-                                </h2>
+                                    </a> 
+                             
                             </div>
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                <div class="card-body px-4 pt-3 pb-2">
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionMain">
+                                <div class="card-body mx-2 px-4 pt-3 pb-2">
                                     <div class="form-group">   
                                         <label for="files">Select your .puz file to export as a PDF:</label>
                                         <input type="file" accept='.puz' class="form-control-file" id="files" name="files">
@@ -105,19 +124,19 @@
 
                         <div class="card">
                             <div id="headingTwo" class="card-header bg-white shadow-sm border-0">
-                                <h2 class="mb-0">
-                                    <button type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Constructor Info</button>
-                                </h2>
+                         
+                                    <a type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Constructor Info</a>
+                             
                             </div>
-                            <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordionExample" class="collapse">
-                                <div class="card-body px-4 py-3">
+                            <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordionMain" class="collapse">
+                                <div class="card-body mx-2 px-4 py-3">
                                     <div class="form-group">
                                         <label for="headerText">Add Header Content (Contact Info)</label><br>
                                         <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="headerText" rows="4" placeholder="Your Name&#13;&#10;Address Line 1&#13;&#10;Address Line 2&#13;&#10;Email Address"></textarea>
                                     </div>
-                                    <div class="custom-control custom-switch pt-2">
+                                    <div class="custom-control custom-switch">
                                         <input type="checkbox" data-toggle="collapse" href="#additional-header" class="custom-control-input" id="coco">
-                                        <label class="custom-control-label" for="coco">Add Co-constructor Information <span class="material-icons md-24">face</span></label>
+                                        <label class="custom-control-label" for="coco">Add Co-constructor Info <span class="material-icons md-24">face</span></label>
                                     </div>
                                     <div class="form-group collapse pt-2" id="additional-header">
                                         <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="headerText2" rows="4" placeholder="Co-constructor's Name&#13;&#10;Address Line 1&#13;&#10;Address Line 2&#13;&#10;Email Address"></textarea>
@@ -128,12 +147,12 @@
 
                         <div class="card">
                             <div id="headingThree" class="card-header bg-white shadow-sm border-0">
-                                <h2 class="mb-0">
-                                    <button type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Basic Options</button>
-                                </h2>
+               
+                                    <a type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Basic Options</a>
+                     
                             </div>
-                            <div id="collapseThree" aria-labelledby="headingTwo" data-parent="#accordionExample" class="collapse">
-                                <div class="card-body px-4 py-3">
+                            <div id="collapseThree" aria-labelledby="headingThree" data-parent="#accordionMain" class="collapse">
+                                <div class="card-body mx-2 px-4 py-3">
                                     <div class="form-group">
                                         <label for="generalFont">Font</label>
                                         <br>
@@ -144,7 +163,15 @@
                                         <option value="times">Times New Roman</option>
                                         </select>
                                     </div>
-                                    <div class="custom-control custom-switch pt-2">
+                                    <div class="form-group">
+                                        <label for="hFontSize">Header Font Size (pt)</label>
+                                        <input type="number" class="form-control col-3" id="hFontSize" value="12">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cFontSize">Clue Font Size (pt)</label>
+                                        <input type="number" class="form-control col-3" id="cFontSize" value="12">
+                                    </div>
+                                    <div class="custom-control custom-switch">
                                         <input type="checkbox" class="custom-control-input" id="wordCount">
                                         <label class="custom-control-label" for="wordCount">Include Word Count</label>
                                     </div>
@@ -164,24 +191,87 @@
 
                         <div class="card">
                             <div id="headingFour" class="card-header bg-white shadow-sm border-0">
-                                <h2 class="mb-0">
-                                    <button type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Advanced Options</button>
-                                </h2>
+                 
+                                    <a type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Advanced Options</a>
+                            
                             </div>
-                            <div id="collapseFour" aria-labelledby="headingTwo" data-parent="#accordionExample" class="collapse">
-                                <div class="card-body px-4 py-3">
-                                    <div class="form-group pt-2">
-                                        <label for="gridSize">Grid Size (pts)</label>
-                                        <input type="number" class="form-control" id="gridSize" value="360">
+                            <div id="collapseFour" aria-labelledby="headingFour" data-parent="#accordionMain" class="collapse">
+
+                                <div class="card-body mx-2 px-4 pt-3 pb-1">
+                                    
+
+                                    <div class="accordion" id="accordionAdvanced">
+
+                                        <div id="headingMargins" class="card-header bg-white m-0 p-0 border-0">
+                                            <a type="button" data-toggle="collapse" data-target="#collapseMargins" aria-expanded="false" aria-controls="collapseGrid" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Margins</h6></a>
+                                         </div>
+                                         <div id="collapseMargins" aria-labelledby="headingMargins" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
+                                             <div class="form-group">
+                                                 <label for="marginSize">Page Margins (in.) </label><br>
+                                                 <input type="number" class="form-control-sm col-3" id="marginSize" value="1.0" step=".1">
+                                             </div>
+                                             <div class="form-group">
+                                                <label for="gridPadding">Grid Top Padding (in.)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="gridPadding" value="1.0" step=".1">
+                                            </div>
+                                         </div>
+ 
+                                        <div id="headingGrid" class="card-header bg-white m-0 p-0 border-0">
+                                           <a type="button" data-toggle="collapse" data-target="#collapseGrid" aria-expanded="false" aria-controls="collapseGrid" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Format Grid Page</h6></a>
+                                        </div>
+                                        <div id="collapseGrid" aria-labelledby="headingGrid" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
+                                            <div class="form-group">
+                                                <label for="gridSize">Grid Size (in.) </label><br>
+                                                <input type="number" class="form-control-sm col-3" id="gridSize" value="5.0" step=".1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="letterSize">Letter Size (% of sq. height)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="letterSize" value="62">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="numberSize">Number Size (% of sq. height)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="numberSize" value="30">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lineWidth">Line Width (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="lineWidth" value="0.4" step=".1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="borderWidth">Border Width (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="borderWidth" value="0.4" step=".1">
+                                            </div>
+                                        </div>
+
+                                        <div id="headingClue" class="card-header bg-white m-0 p-0 border-0">
+                                            <a type="button" data-toggle="collapse" data-target="#collapseClue" aria-expanded="false" aria-controls="collapseClue" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Format Clue Page</h6></a>
+                                         </div>
+                                         <div id="collapseClue" aria-labelledby="headingClue" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 pb-2 border-left">
+                                            <div class="form-group">
+                                                <label for="clueSize">Clue Column Width (in.)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="clueSize" value="3.5" step=".1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="columnGap">Clue-Entry Column Gap (in.)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="columnGap" value="1.5" step=".1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="interSpacing">Line Spacing Between Clues</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="interSpacing" value="2.2" step=".1">
+                                            </div>
+                                            <div class="custom-control custom-switch pt-2">
+                                                <input type="checkbox" class="custom-control-input" id="boldHeadings" checked>
+                                                <label class="custom-control-label" for="boldHeadings">Bold Headings</label>
+                                            </div>
+                                            <div class="custom-control custom-switch pt-2">
+                                                <input type="checkbox" class="custom-control-input" id="boldNumbers" checked>
+                                                <label class="custom-control-label" for="boldNumbers">Bold Numbers</label>
+                                            </div>
+                                         </div>
+
+
                                     </div>
-                                    <div class="form-group">
-                                        <label for="letterSize">Letter Size (% of square height)</label>
-                                        <input type="number" class="form-control" id="letterSize" value="62">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="numberSize">Number Size (% of square height)</label>
-                                        <input type="number" class="form-control" id="numberSize" value="30">
-                                    </div>
+
+
 
                                 </div>  
                             </div>
@@ -194,15 +284,6 @@
                                 <button class="btn btn-outline-primary col-6" id="downloadButton" type="button" onclick="handleFileSelect('download');return false;">Download PDF</button>
                             </div>
                         </div>
-                        
-
-
-
-
-
-
-
-                              
                         
 
                         </div>
@@ -227,9 +308,28 @@
             var generalFont = document.getElementById('generalFont').value;
             var wc = 0;
             var pages = 0;
-            var grid = document.getElementById('gridSize').value;
+            var grid = document.getElementById('gridSize').value*72;
             var letter = document.getElementById('letterSize').value;
             var number = document.getElementById('numberSize').value;
+            var clue_entry_pt = document.getElementById('cFontSize').value*1;
+            var header_pt = document.getElementById('hFontSize').value*1;
+            var margin = document.getElementById('marginSize').value*72;
+            var grid_padding = document.getElementById('gridPadding').value*72;
+            var line_width = document.getElementById('lineWidth').value*1;
+            var border_width = document.getElementById('borderWidth').value*1;
+            var entry_left_padding = document.getElementById('columnGap').value*72;
+            var clue_width = document.getElementById('clueSize').value*72;
+            var clue_spacing = document.getElementById('interSpacing').value-1;
+            var heading_style = 'bold';
+            var number_style = 'bold';
+
+            if (!document.getElementById('boldHeadings').checked) {
+                heading_style = 'normal';
+            }
+
+            if (!document.getElementById('boldNumbers').checked) {
+                number_style = 'normal';
+            }
 
             if (document.getElementById('gray').checked) {
                 gray = 0.6;
@@ -247,8 +347,13 @@
                 coconstructor = document.getElementById('headerText2').value;
             }
 
-
+        
             var files = document.getElementById('files').files; // FileList object
+            
+            if (!files[0]) {
+                alert('Please choose a .puz file to preview.');
+                return;    
+            }
 
             // files is a FileList of File objects.
             for (var i = 0, f; f = files[i]; i++) {
@@ -266,7 +371,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, address: address, gray: gray, font: generalFont, wc: wc, pages: pages, coconstructor: coconstructor, output: evt, grid_size: grid, letter_pct: letter, number_pct: number};
+                            var options = {outfile: outname, address: address, gray: gray, font: generalFont, wc: wc, pages: pages, coconstructor: coconstructor, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, clue_entry_pt: clue_entry_pt, header_pt: header_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style};
                             puzdata_to_nyt(puzdata,options);
                         };
                     })(f);
@@ -281,11 +386,6 @@
         }
 
         </script>
-
-    
-
-
-
 
       <p>
           <hr/>
