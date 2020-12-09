@@ -254,7 +254,6 @@ function puzdata_to_nyt(puzdata,options)
     
     var page_num = 2;
     doc.setFontSize(options.clue_entry_pt);
-    headers = [puzdata.author];
     
     // new page
     doc.addPage();
