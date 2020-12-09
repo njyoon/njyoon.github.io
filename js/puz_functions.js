@@ -234,6 +234,7 @@ function puzdata_to_nyt(puzdata,options)
     var clueNums = [];
     var clues = [];
     var entries = [];
+    headers = [];
     
     // Across
     clues.push('ACROSS'); entries.push(''); clueNums.push('');
@@ -273,7 +274,7 @@ function puzdata_to_nyt(puzdata,options)
         var clueNum = clueNums[i];
         var lines = doc.splitTextToSize(clue,options.clue_width);
         // check that the clue fits; if not, make a new page
-        if (clue_ypos + lines.length * options.clue_entry_pt + options.footer_pt + margin > DOC_HEIGHT) {
+        if ((clue_ypos + lines.length * options.clue_entry_pt + options.footer_pt + margin > DOC_HEIGHT) || ((clue == 'ACROSS' || clue == 'DOWN') && (clue_ypos + 6 * lines.length * options.clue_entry_pt + options.footer_pt + margin > DOC_HEIGHT) )) {
             doc.addPage();
             page_num += 1;
             if (options.pages==1) {
