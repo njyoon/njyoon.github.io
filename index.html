@@ -366,6 +366,7 @@
                 if (f) {
                     var r = new FileReader();
                     var filename = f.name;
+                    filename = filename.substring(0,filename.length - 4);
                     var outname = filename + '.pdf';
                     r.onload = (function(theFile) {
                         return function(e) { 
