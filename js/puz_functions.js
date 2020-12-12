@@ -17,9 +17,11 @@ function draw_crossword_grid(doc,puzdata,options)
     ,   y0: 20
     ,   cell_size: 24
     ,   grid_size: 360
-    ,   gray : 0.4
+    ,   gray : 1
     ,   letter_pct : 62
     ,   number_pct: 30
+    ,   shade: false
+    ,   rebus : []
     };
     
     for (var key in DEFAULT_OPTIONS) {
@@ -38,27 +40,48 @@ function draw_crossword_grid(doc,puzdata,options)
     function draw_square(doc,x1,y1,cell_size,number,letter,filled,circle) {
         var number_offset = cell_size/18;
         var number_size = cell_size*options.number_pct/100;
-        var letter_length = letter.length;
-        var letter_size = cell_size/(100/options.letter_pct + 0.5 * (letter_length - 1));
+        var letter_size = cell_size/(100/options.letter_pct);
         var letter_pct_down = .88;
+
         doc.setFillColor(options.gray.toString());
         doc.setDrawColor(options.gray.toString());
 
         // Create an unfilled square first
-        doc.rect(x1,y1,cell_size,cell_size);
+
         if (filled) {
             doc.rect(x1,y1,cell_size,cell_size,'F');
+        } else if (circle && options.shade) {
+            doc.setFillColor('0.9');
+            doc.rect(x1,y1,cell_size,cell_size,'F');
+            doc.setFillColor(options.gray.toString());
         }
+
+        doc.rect(x1,y1,cell_size,cell_size);
+            
+        
         //numbers
         doc.setFontSize(number_size);
         doc.text(x1+number_offset,y1+number_size,number);
         
-        // letters
-        doc.setFontSize(letter_size);
-        doc.text(x1+cell_size/2,y1+cell_size * letter_pct_down,letter,null,null,'center');
+        //letters 
+
+        /* rebus option
+        if (options.rebus.length > 0) {
+            if (row==options.rebus[0] && column==options.rebus[1]) {
+                letter = options.rebus[2];
+                if (letter.length > 1) {
+                    letter_size = cell_size/(1.2 + 0.75 * (letter.length - 1));              
+                    letter_pct_down -= .03 * letter.length
+                }
+            } 
+        }
+        */
+
+            doc.setFontSize(letter_size);
+            doc.text(x1+cell_size/2,y1+cell_size * letter_pct_down,letter,{align:'center'});
         
         // circles
-        if (circle) {
+        if (circle && !options.shade) {
             doc.circle(x1+cell_size/2,y1+cell_size/2,cell_size/2);
         }
     }
@@ -117,6 +140,7 @@ function puzdata_to_nyt(puzdata,options)
     ,   clue_spacing: 1.2
     ,   heading_style: 'bold'
     ,   number_style: 'bold'
+    ,   shade: false
     };
 
 
@@ -156,7 +180,6 @@ function puzdata_to_nyt(puzdata,options)
         }
 
         y0 -= (pt + header_padding);
-
         return y0;
     }
     
@@ -171,7 +194,7 @@ function puzdata_to_nyt(puzdata,options)
     // Print the headers
     var headers = [];
     // only include the title if it's a Sunday
-    if (puzdata.width >= 17)
+    if (puzdata.width >= 20)
     {
         headers.push(puzdata.title);
     }
@@ -215,6 +238,7 @@ function puzdata_to_nyt(puzdata,options)
     ,   gray : options['gray']
     ,   letter_pct : options['letter_pct']
     ,   number_pct : options['number_pct']
+    ,   shade : options.shade
     };
     draw_crossword_grid(doc,puzdata,first_page_options);
     if (options.pages==1) {
