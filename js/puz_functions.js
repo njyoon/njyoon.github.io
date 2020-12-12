@@ -51,7 +51,7 @@ function draw_crossword_grid(doc,puzdata,options)
         if (filled) {
             doc.rect(x1,y1,cell_size,cell_size,'F');
         } else if (circle && options.shade) {
-            doc.setFillColor('0.9');
+            doc.setFillColor('0.85');
             doc.rect(x1,y1,cell_size,cell_size,'F');
             doc.setFillColor(options.gray.toString());
         }
@@ -141,6 +141,7 @@ function puzdata_to_nyt(puzdata,options)
     ,   heading_style: 'bold'
     ,   number_style: 'bold'
     ,   shade: false
+    ,   my_font: ''
     };
 
 
@@ -165,6 +166,12 @@ function puzdata_to_nyt(puzdata,options)
     var doc = new jsPDF('portrait','pt','letter');
 
     doc.setFont(font,"normal");
+    if (options.my_font.length > 0) {
+        doc.addFileToVFS("MyFont.ttf", options.my_font);
+        doc.addFont("MyFont.ttf", "MyFont","normal");
+        doc.setFont("MyFont","normal");
+        console.log("Font Added");
+    }
     doc.setLineWidth(options.line_width);
 
     
