@@ -128,7 +128,9 @@ function puzdata_to_nyt(puzdata,options)
     ,   clue_entry_pt : 12
     ,   outfile: 'test.pdf'
     ,   gray: 1
-    ,   font: 'NunitoSans-Regular'
+    ,   header_font: 'NunitoSans-Regular'
+    ,   grid_font: 'NunitoSans-Regular'
+    ,   clue_font: 'NunitoSans-Regular'
     ,   wc: 0
     ,   pages: 0
     ,   coconstructor: ''
@@ -160,18 +162,22 @@ function puzdata_to_nyt(puzdata,options)
     var DOC_HEIGHT = 11 * PTS_PER_IN;
     
     var margin = options.margin;
-    var usable_height = DOC_HEIGHT - 2 * margin - options.footer_pt;
-    var font = options.font;
 
     var doc = new jsPDF('portrait','pt','letter');
 
-    doc.setFont(font,"normal");
+
     if (options.my_font.length > 0) {
         doc.addFileToVFS("MyFont.ttf", options.my_font);
-        doc.addFont("MyFont.ttf", "MyFont","normal");
-        doc.setFont("MyFont","normal");
+        doc.addFont("MyFont.ttf", "myFont","normal");
         console.log("Font Added");
     }
+    if (options.bold_font.length > 0) {
+        doc.addFileToVFS("MyFont-Bold.ttf", options.bold_font);
+        doc.addFont("MyFont-Bold.ttf", "myFont","bold");
+        console.log("Bold Font Added");
+    }
+
+    doc.setFont(options.header_font,"normal");
     doc.setLineWidth(options.line_width);
 
     
@@ -247,7 +253,11 @@ function puzdata_to_nyt(puzdata,options)
     ,   number_pct : options['number_pct']
     ,   shade : options.shade
     };
+
+    doc.setFont(options.grid_font,"normal");
     draw_crossword_grid(doc,puzdata,first_page_options);
+    doc.setFont(options.header_font,"normal");
+
     if (options.pages==1) {
         print_page_num(doc,options.footer_pt,margin,DOC_HEIGHT,1);
     }
@@ -307,6 +317,7 @@ function puzdata_to_nyt(puzdata,options)
         // check that the clue fits; if not, make a new page
         if ((clue_ypos + lines.length * options.clue_entry_pt + options.footer_pt + margin > DOC_HEIGHT) || ((clue == 'ACROSS' || clue == 'DOWN') && (clue_ypos + 6 * lines.length * options.clue_entry_pt + options.footer_pt + margin > DOC_HEIGHT) )) {
             doc.addPage();
+            doc.setFont(options.header_font,"normal");
             page_num += 1;
             if (options.pages==1) {
                 print_page_num(doc,options.footer_pt,margin,DOC_HEIGHT,page_num);
@@ -322,18 +333,18 @@ function puzdata_to_nyt(puzdata,options)
                     clue_ypos += options.clue_entry_pt; 
                 }
 
-                doc.setFont(font,options.heading_style);
+                doc.setFont(options.clue_font,options.heading_style);
                 doc.setFontSize(options.clue_entry_pt).text(margin,clue_ypos,lines[j]);
-                doc.setFont(font,"normal");
+                doc.setFont(options.clue_font,"normal");
             } else{
                 doc.setFontSize(options.clue_entry_pt).text(clue_xpos,clue_ypos,lines[j]);
             }
             clue_ypos += options.clue_entry_pt*1.2;
         }
         // print the entry
-        doc.setFont(font,options.number_style);
+        doc.setFont(options.clue_font,options.number_style);
         doc.setFontSize(options.clue_entry_pt).text(num_xpos,entry_ypos,clueNum, null, null, "right");
-        doc.setFont(font,"normal");
+        doc.setFont(options.clue_font,"normal");
         doc.setFontSize(options.clue_entry_pt).text(entry_xpos,entry_ypos,entry);
         
         // adjust the coordinates (double-spacing)

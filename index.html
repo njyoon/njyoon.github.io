@@ -13,6 +13,7 @@
     />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
     <style>
     html {margin-left: calc(100vw - 100%);}
@@ -22,11 +23,12 @@
     }
     h1 {
         color:#f55d4b;
-        font-size:3rem;
+        font-size:2rem;
         font-weight:bold;
     }
 
-    h3 {
+    h4 {
+        font-size:1.3rem;
         color:#686868;
     }
 
@@ -87,6 +89,14 @@
         box-shadow: none;
         outline: none;
     }
+
+    
+    input[type=file] {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 250px;
+    }
     
     </style>
 
@@ -94,13 +104,13 @@
   </head>
 
   <body>
-    <div class="container pt-4">
+    <div class="container pt-3">
       <h1>NYT Crossword Submission Editor</h1>
-      <h4 class="pt-2 pb-2">This tool adds a few additional editing options to Crossword Nexus's <a href="https://crosswordnexus.com/apps/puz-to-nyt/">PUZ to NYT Converter</a>.  The submission format is based on the <a href="https://www.nytimes.com/puzzles/submissions/crossword">NYT submission construction guidelines</a>.</h4>
+      <h4 class="pt-1 pb-1">This tool adds some additional editing options to Crossword Nexus's <a href="https://crosswordnexus.com/apps/puz-to-nyt/">PUZ to NYT Converter</a>.  The submission format is based on the <a href="https://www.nytimes.com/puzzles/submissions/crossword">New York Times's construction guidelines</a>.</h4>
       <hr>
-      <div class="row pt-2 pb-5">
+      <div class="row pt-1 pb-5">
 
-          <div class="col-12 col-lg-4">
+          <div class="col-12 col-xl-4">
 
               <div class="accordion shadow" id="accordionMain" >
 
@@ -211,21 +221,72 @@
                                     <div class="accordion" id="accordionAdvanced">
 
                                         <div id="headingMargins" class="card-header bg-white m-0 p-0 border-0">
-                                            <a type="button" data-toggle="collapse" data-target="#collapseMargins" aria-expanded="false" aria-controls="collapseGrid" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Margins</h6></a>
-                                         </div>
-                                         <div id="collapseMargins" aria-labelledby="headingMargins" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
-                                             <div class="form-group">
+                                            <a type="button" data-toggle="collapse" data-target="#collapseMargins" aria-expanded="false" aria-controls="collapseMargins" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Margins</h6></a>
+                                        </div>
+                                        <div id="collapseMargins" aria-labelledby="headingMargins" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
+                                            <div class="form-group">
                                                  <label for="marginSize">Page Margins (in.) </label><br>
                                                  <input type="number" class="form-control-sm col-3" id="marginSize" value="1.0" step=".1">
-                                             </div>
-                                             <div class="form-group">
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="gridPadding">Grid Top Padding (in.)</label><br>
                                                 <input type="number" class="form-control-sm col-3" id="gridPadding" value="1.0" step=".1">
                                             </div>
-                                         </div>
+                                        </div>
+
+                                        <div id="headingFonts" class="card-header bg-white m-0 p-0 border-0">
+                                            <a type="button" data-toggle="collapse" data-target="#collapseFonts" aria-expanded="false" aria-controls="collapseFonts" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Fonts</h6></a>
+                                        </div>
+                                        <div id="collapseFonts" aria-labelledby="headingFonts" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
+                                            <div class="custom-control custom-switch pb-2">
+                                                <input type="checkbox" data-toggle="collapse" href="#add-custom-font" class="custom-control-input" id="useCustom">
+                                                <label class="custom-control-label" for="useCustom">Add Custom Font</label>
+                                            </div>
+                                            <div class="form-group collapse" id="add-custom-font">   
+                                                <label for="customFont">Select a .ttf file to import:</label><br>
+                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont" name="customFont"> 
+                                            </div>  
+                                            <div class="form-group">
+                                                <label for="headerFont">Header Font</label>
+                                                <br>
+                                                <select class="form-control" id="headerFont">
+                                                <option value="NunitoSans-Regular" selected>Nunito Sans</option>
+                                                <option value="helvetica">Helvetica</option>
+                                                <option value="courier">Courier</option>
+                                                <option value="times">Times New Roman</option>
+                                                <option value="myFont" class="c">Custom Font</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gridFont">Grid Font</label>
+                                                <br>
+                                                <select class="form-control" id="gridFont">
+                                                <option value="NunitoSans-Regular" selected>Nunito Sans</option>
+                                                <option value="helvetica">Helvetica</option>
+                                                <option value="courier">Courier</option>
+                                                <option value="times">Times New Roman</option>
+                                                <option value="myFont" class="c">Custom Font</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="clueFont">Clue Font</label>
+                                                <br>
+                                                <select class="form-control" id="clueFont">
+                                                <option value="NunitoSans-Regular" selected>Nunito Sans</option>
+                                                <option value="helvetica">Helvetica</option>
+                                                <option value="courier">Courier</option>
+                                                <option value="times">Times New Roman</option>
+                                                <option value="myFont" class="c">Custom Font</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group" id="add-bold-font">   
+                                                <label for="boldFont">These settings require a <b>bold</b> style of your custom font.  Select the .ttf file to import:</label><br>
+                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont" name="boldFont"> 
+                                            </div> 
+                                        </div>
  
                                         <div id="headingGrid" class="card-header bg-white m-0 p-0 border-0">
-                                           <a type="button" data-toggle="collapse" data-target="#collapseGrid" aria-expanded="false" aria-controls="collapseGrid" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Format Grid Page</h6></a>
+                                           <a type="button" data-toggle="collapse" data-target="#collapseGrid" aria-expanded="false" aria-controls="collapseGrid" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Grid Page</h6></a>
                                         </div>
                                         <div id="collapseGrid" aria-labelledby="headingGrid" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
                                             <div class="form-group">
@@ -251,7 +312,7 @@
                                         </div>
 
                                         <div id="headingClue" class="card-header bg-white m-0 p-0 border-0">
-                                            <a type="button" data-toggle="collapse" data-target="#collapseClue" aria-expanded="false" aria-controls="collapseClue" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Format Clue Pages</h6></a>
+                                            <a type="button" data-toggle="collapse" data-target="#collapseClue" aria-expanded="false" aria-controls="collapseClue" class="btn-link mx-1 mb-2 px-3 col-12 plus-link"><h6>Clue Pages</h6></a>
                                          </div>
                                          <div id="collapseClue" aria-labelledby="headingClue" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 pb-2 border-left">
                                             <div class="form-group">
@@ -300,20 +361,86 @@
                 
             </div>
 
-        <div class = "col-12 col-lg-8" id="example1">
+        <div class = "col-12 col-xl-8" id="example1">
 
         </div>
     </div>
 
 
         <script>
+        var myFont = '';
+        var boldFont = '';
+
+        $('.c').hide();
+        $('#add-bold-font').hide();
+        
+        function handleCustomFont(evt) {
+
+            var fonts = evt.target.files; // FileList object
+            
+            // fonts is a FileList of File objects.
+            for (var i = 0, f; f = fonts[i]; i++) {
+
+                // Only process files under 500kb.
+                if (f.size >= 2000000) {
+                    alert('This file is too big.');
+                    continue;
+                }
+                if (f) {
+                    var reader = new FileReader();
+                  
+                    reader.onload = function (readerEvt) {
+                        var binaryString = readerEvt.target.result;
+                        console.log(evt.target.id);
+                        if (evt.target.id == 'customFont') {
+                            myFont = btoa(binaryString);
+                        } else if (evt.target.id == 'boldFont') {
+                            boldFont = btoa(binaryString);
+                        }
+                    }
+                } else { 
+                    alert("Failed to load file");
+                }
+
+                reader.readAsBinaryString(f);
+            }
+
+        }
+
+
+        document.getElementById('customFont').addEventListener('change', handleCustomFont);
+        document.getElementById('boldFont').addEventListener('change', handleCustomFont);
+
+        $('#generalFont').change( function() {
+            $('#headerFont option[value='+this.value+']').attr('selected','selected');
+            $('#gridFont option[value='+this.value+']').attr('selected','selected');
+            $('#clueFont option[value='+this.value+']').attr('selected','selected');
+
+        });
+
+        $('#useCustom').change( function() {
+            if ($('#useCustom').is(':checked')) {
+                $('.c').show();
+            } else {
+                $('.c').hide();
+            }
+        });
+
+        $('#clueFont').change( function() {
+            if (this.value=="myFont" && (document.getElementById('boldHeadings').checked || document.getElementById('boldNumbers').checked)) {
+                $('#add-bold-font').show();
+            } else {
+                $('#add-bold-font').hide();
+            }
+        });
+
+
         function handleFileSelect(evt) {
 
             // get the address and e-mail
             var address = document.getElementById('headerText').value;
             var coconstructor = '';
             var gray = 0;
-            var generalFont = document.getElementById('generalFont').value;
             var wc = 0;
             var pages = 0;
             var grid = document.getElementById('gridSize').value*72;
@@ -331,6 +458,10 @@
             var heading_style = 'bold';
             var number_style = 'bold';
             var shade = false;
+            var header_font = document.getElementById('headerFont').value;
+            var grid_font = document.getElementById('gridFont').value;
+            var clue_font = document.getElementById('clueFont').value;
+
 
             if (!document.getElementById('boldHeadings').checked) {
                 heading_style = 'normal';
@@ -339,6 +470,10 @@
             if (!document.getElementById('boldNumbers').checked) {
                 number_style = 'normal';
             }
+
+            if (!document.getElementById('useCustom').checked) {
+                document.getElementById('customFont').value = "";
+            } 
 
             if (document.getElementById('gray').checked) {
                 gray = 0.6;
@@ -385,7 +520,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, address: address, gray: gray, font: generalFont, wc: wc, pages: pages, coconstructor: coconstructor, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, clue_entry_pt: clue_entry_pt, header_pt: header_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade};
+                            var options = {outfile: outname, address: address, gray: gray, wc: wc, pages: pages, coconstructor: coconstructor, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, clue_entry_pt: clue_entry_pt, header_pt: header_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font};
                             puzdata_to_nyt(puzdata,options);
                         };
                     })(f);
@@ -418,7 +553,6 @@
     <script src="../nyt/js/puz.js" type="text/javascript"></script>
     <script src="../nyt/js/puz_functions.js" type="text/javascript"></script>
     <script src="../nyt/js/pdfobject.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
