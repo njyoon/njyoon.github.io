@@ -409,9 +409,9 @@
         document.getElementById('boldFont').addEventListener('change', handleCustomFont);
 
         $('#generalFont').change( function() {
-            $('#headerFont option[value='+this.value+']').attr('selected','selected');
-            $('#gridFont option[value='+this.value+']').attr('selected','selected');
-            $('#clueFont option[value='+this.value+']').attr('selected','selected');
+            $('#headerFont option[value='+this.value+']').prop('selected',true);
+            $('#gridFont option[value='+this.value+']').prop('selected',true);
+            $('#clueFont option[value='+this.value+']').prop('selected',true);
 
         });
 
