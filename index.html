@@ -9,8 +9,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="../nyt/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../nyt/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../nyt/favicon-16x16.png">
-    <link rel="manifest" href="../nyt/site.webmanifest">
-    
+
     <link
       rel="stylesheet"
       href="../nyt/css/bootstrap.min.css"
@@ -249,6 +248,14 @@
                                                 <label for="customFont">Select a .ttf file to import:</label><br>
                                                 <input type="file" accept='.ttf' class="form-control-file" id="customFont" name="customFont"> 
                                             </div>  
+                                            <div class="custom-control custom-switch pb-2">
+                                                <input type="checkbox" data-toggle="collapse" href="#add-custom-font2" class="custom-control-input" id="useCustom2">
+                                                <label class="custom-control-label" for="useCustom2">Add Another Custom Font</label>
+                                            </div>
+                                            <div class="form-group collapse" id="add-custom-font2">   
+                                                <label for="customFont2">Select another .ttf file to import:</label><br>
+                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont2" name="customFont2"> 
+                                            </div>  
                                             <div class="form-group">
                                                 <label for="headerFont">Header Font</label>
                                                 <br>
@@ -258,6 +265,7 @@
                                                 <option value="courier">Courier</option>
                                                 <option value="times">Times New Roman</option>
                                                 <option value="myFont" class="c">Custom Font</option>
+                                                <option value="myFont2" class="c2">Custom Font 2</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -269,6 +277,7 @@
                                                 <option value="courier">Courier</option>
                                                 <option value="times">Times New Roman</option>
                                                 <option value="myFont" class="c">Custom Font</option>
+                                                <option value="myFont2" class="c2">Custom Font 2</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
@@ -280,12 +289,17 @@
                                                 <option value="courier">Courier</option>
                                                 <option value="times">Times New Roman</option>
                                                 <option value="myFont" class="c">Custom Font</option>
+                                                <option value="myFont2" class="c2">Custom Font 2</option>
                                                 </select>
                                             </div>
                                             <div class="form-group" id="add-bold-font">   
                                                 <label for="boldFont">These settings require a <b>bold</b> style of your custom font.  Select the .ttf file to import:</label><br>
                                                 <input type="file" accept='.ttf' class="form-control-file" id="boldFont" name="boldFont"> 
                                             </div> 
+                                            <div class="form-group" id="add-bold-font2">   
+                                                <label for="boldFont2">These settings require a <b>bold</b> style of your custom font.  Select the .ttf file to import:</label><br>
+                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont2" name="boldFont2"> 
+                                            </div>
                                         </div>
  
                                         <div id="headingGrid" class="card-header bg-white m-0 p-0 border-0">
@@ -372,10 +386,14 @@
         <script src="../nyt/js/jquery-3.3.1.slim.min.js"></script>
         <script>
         var myFont = '';
+        var myFont2 = '';
         var boldFont = '';
+        var boldFont2 = '';
 
         $('.c').hide();
+        $('.c2').hide();
         $('#add-bold-font').hide();
+        $('#add-bold-font2').hide();
         
         function handleCustomFont(evt) {
 
@@ -397,8 +415,12 @@
                         console.log(evt.target.id);
                         if (evt.target.id == 'customFont') {
                             myFont = btoa(binaryString);
+                        } else if (evt.target.id == 'customFont2') {
+                            myFont2 = btoa(binaryString);
                         } else if (evt.target.id == 'boldFont') {
                             boldFont = btoa(binaryString);
+                        } else if (evt.target.id == 'boldFont2') {
+                            boldFont2 = btoa(binaryString);
                         }
                     }
                 } else { 
@@ -410,9 +432,10 @@
 
         }
 
-
+        document.getElementById('customFont2').addEventListener('change', handleCustomFont);
         document.getElementById('customFont').addEventListener('change', handleCustomFont);
         document.getElementById('boldFont').addEventListener('change', handleCustomFont);
+        document.getElementById('boldFont2').addEventListener('change', handleCustomFont);
 
         $('#generalFont').change( function() {
             $('#headerFont option[value='+this.value+']').prop('selected',true);
@@ -429,11 +452,25 @@
             }
         });
 
+        
+        $('#useCustom2').change( function() {
+            if ($('#useCustom2').is(':checked')) {
+                $('.c2').show();
+            } else {
+                $('.c2').hide();
+            }
+        });
+
         $('#clueFont').change( function() {
-            if (this.value=="myFont" && (document.getElementById('boldHeadings').checked || document.getElementById('boldNumbers').checked)) {
-                $('#add-bold-font').show();
+            if (document.getElementById('boldHeadings').checked || document.getElementById('boldNumbers').checked) {
+                if (this.value=="myFont") {
+                    $('#add-bold-font').show();
+                } else if (this.value=="myFont2") {
+                    $('#add-bold-font2').show();
+                }
             } else {
                 $('#add-bold-font').hide();
+                $('#add-bold-font2').hide();
             }
         });
 
@@ -476,6 +513,10 @@
 
             if (!document.getElementById('useCustom').checked) {
                 document.getElementById('customFont').value = "";
+            } 
+            
+            if (!document.getElementById('useCustom2').checked) {
+                document.getElementById('customFont2').value = "";
             } 
 
             if (document.getElementById('gray').checked) {
@@ -523,7 +564,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, address: address, gray: gray, wc: wc, pages: pages, coconstructor: coconstructor, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, clue_entry_pt: clue_entry_pt, header_pt: header_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font};
+                            var options = {outfile: outname, address: address, gray: gray, wc: wc, pages: pages, coconstructor: coconstructor, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, clue_entry_pt: clue_entry_pt, header_pt: header_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, my_font2: myFont2, bold_font: boldFont, bold_font2: boldFont2, header_font: header_font, grid_font: grid_font, clue_font: clue_font};
                             puzdata_to_nyt(puzdata,options);
                         };
                     })(f);
