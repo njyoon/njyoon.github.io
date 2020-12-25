@@ -211,6 +211,19 @@
                                         <label class="custom-control-label" for="useSubheader">Add Subheader Content</label>
                                     </div>
                                     <div class="form-group pt-2 collapse" id="subheader" aria-labelledby="useSubheader">
+                                        <div class="btn-group btn-group-toggle pb-2" data-toggle="buttons">
+
+                                            <label class="btn btn-outline-primary active p-0">
+                                                <input type="radio" id="subheader-left" name="subheader-align" checked><span class="material-icons" aria-hidden="true">format_align_left</span>
+                                            </label>
+                                            <label class="btn btn-outline-primary p-0" id="subheader-center-button">
+                                                <input type="radio" id="subheader-center" name="subheader-align"><span class="material-icons" aria-hidden="true">format_align_center</span>
+                                            </label>        
+                                            <label class="btn btn-outline-primary p-0">
+                                                <input type="radio" id="subheader-right" name="subheader-align"><span class="material-icons" aria-hidden="true" aria-checked="">format_align_right</span>
+                                            </label>    
+
+                                        </div>
                                         <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="subheaderText" rows="2" placeholder='Add any subheader text here'></textarea>
                                     </div>
 
@@ -231,15 +244,19 @@
                                 <div class="card-body mx-2 px-4 py-3">
                                     <div class="form-group">
                                         <label for="hFontSize">Main Header Font Size (pt)</label><br>
-                                        <input type="number" class="form-control col-3" id="hFontSize" value="20">
+                                        <input type="number" class="form-control col-4" id="hFontSize" value="20">
                                     </div>
                                     <div class="form-group">
                                         <label for="h2FontSize">Right Header Font Size (pt)</label><br>
-                                        <input type="number" class="form-control col-3" id="h2FontSize" value="16">
+                                        <input type="number" class="form-control col-4" id="h2FontSize" value="16">
+                                    </div>
+                                    <div class="form-group" id="subheader-font-size">
+                                        <label for="sFontSize">Subheader Font Size (pt)</label><br>
+                                        <input type="number" class="form-control col-4" id="sFontSize" value="14">
                                     </div>
                                     <div class="form-group">
-                                        <label for="cFontSize">Clue Font Size (pt)</label><br>
-                                        <input type="number" class="form-control col-3" id="cFontSize" value="14">
+                                        <label for="cFontSize">Starting Clue Font Size (pt)</label><br>
+                                        <input type="number" class="form-control col-4" id="cFontSize" value="14">
                                     </div>
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="gray">
@@ -270,11 +287,11 @@
                                         <div id="collapseMargins" aria-labelledby="headingMargins" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
                                             <div class="form-group">
                                                  <label for="marginSize">Page Margins (in.) </label><br>
-                                                 <input type="number" class="form-control-sm col-3" id="marginSize" value="0.5" step=".1">
+                                                 <input type="number" class="form-control-sm col-4" id="marginSize" value="0.5" step=".1">
                                             </div>
                                             <div class="form-group">
                                                 <label for="gridPadding">Grid Top Padding (in.)</label><br>
-                                                <input type="number" class="form-control-sm col-3" id="gridPadding" value="0.3" step=".1">
+                                                <input type="number" class="form-control-sm col-4" id="gridPadding" value="0.3" step=".1">
                                             </div>
                                         </div>
 
@@ -336,23 +353,23 @@
                                         <div id="collapseGrid" aria-labelledby="headingGrid" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
                                             <div class="form-group">
                                                 <label for="gridSize">Grid Size (in.) </label><br>
-                                                <input type="number" class="form-control-sm col-3" id="gridSize" value="5.0" step=".1">
+                                                <input type="number" class="form-control-sm col-4" id="gridSize" value="5.0" step=".1">
                                             </div>
                                             <div class="form-group">
                                                 <label for="letterSize">Letter Size (% of sq. height)</label><br>
-                                                <input type="number" class="form-control-sm col-3" id="letterSize" value="62">
+                                                <input type="number" class="form-control-sm col-4" id="letterSize" value="62">
                                             </div>
                                             <div class="form-group">
                                                 <label for="numberSize">Number Size (% of sq. height)</label><br>
-                                                <input type="number" class="form-control-sm col-3" id="numberSize" value="30">
+                                                <input type="number" class="form-control-sm col-4" id="numberSize" value="30">
                                             </div>
                                             <div class="form-group">
                                                 <label for="lineWidth">Line Width (pt)</label><br>
-                                                <input type="number" class="form-control-sm col-3" id="lineWidth" value="0.4" step=".1">
+                                                <input type="number" class="form-control-sm col-4" id="lineWidth" value="0.4" step=".1">
                                             </div>
                                             <div class="form-group">
                                                 <label for="borderWidth">Border Width (pt)</label><br>
-                                                <input type="number" class="form-control-sm col-3" id="borderWidth" value="0.4" step=".1">
+                                                <input type="number" class="form-control-sm col-4" id="borderWidth" value="0.4" step=".1">
                                             </div>
                                         </div>
 
@@ -362,15 +379,15 @@
                                          <div id="collapseClue" aria-labelledby="headingClue" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 pb-2 border-left">
                                             <div class="form-group">
                                                 <label for="clueSize">Clue Column Width (in.)</label><br>
-                                                <input type="number" class="form-control-sm col-3" id="clueSize" value="3.5" step=".1">
+                                                <input type="number" class="form-control-sm col-4" id="clueSize" value="3.5" step=".1">
                                             </div>
                                             <div class="form-group">
                                                 <label for="columnGap">Clue-Entry Column Gap (in.)</label><br>
-                                                <input type="number" class="form-control-sm col-3" id="columnGap" value="1.5" step=".1">
+                                                <input type="number" class="form-control-sm col-4" id="columnGap" value="1.5" step=".1">
                                             </div>
                                             <div class="form-group">
                                                 <label for="interSpacing">Line Spacing Between Clues</label><br>
-                                                <input type="number" class="form-control-sm col-3" id="interSpacing" value="2.2" step=".1">
+                                                <input type="number" class="form-control-sm col-4" id="interSpacing" value="2.2" step=".1">
                                             </div>
                                             <div class="custom-control custom-switch">
                                                 <input type="checkbox" class="custom-control-input" id="boldHeadings" checked>
@@ -420,6 +437,7 @@
         $('.c').hide();
         $('#add-bold-font').hide();
         $("#header-center-button").hide();
+        $("#subheader-font-size").hide();
         
         function handleCustomFont(evt) {
 
@@ -484,12 +502,22 @@
             }
         });
 
+        $('#useSubheader').change( function() {
+            if ($('#useSubheader').is(':checked')) {
+                $("#subheader-font-size").show();
+            } else {
+                $("#subheader-font-size").show();
+
+            }
+        });
+
 
         function handleFileSelect(evt) {
 
             // get the address and e-mail
             var header_text = document.getElementById('headerText').value;
             var header2_text = document.getElementById('headerText2').value;
+            var subheader_text = document.getElementById('subheaderText').value;
             var header_align = 'left';
             var header2_align = 'right';
             var y_align = 'alphabetic';
@@ -500,6 +528,7 @@
             var clue_entry_pt = document.getElementById('cFontSize').value*1;
             var header_pt = document.getElementById('hFontSize').value*1;
             var header2_pt = document.getElementById('h2FontSize').value*1;
+            var subheader_pt = document.getElementById('sFontSize').value*1;
             var margin = document.getElementById('marginSize').value*72;
             var grid_padding = document.getElementById('gridPadding').value*72;
             var line_width = document.getElementById('lineWidth').value*1;
@@ -513,14 +542,19 @@
             var header_font = document.getElementById('headerFont').value;
             var grid_font = document.getElementById('gridFont').value;
             var clue_font = document.getElementById('clueFont').value;
-            var right_header = false;
+            var right_header = true;
+            var subheader = false;
             
             if (document.getElementById('header-center').checked) {
                 header_align = 'center';
             }
 
-            if (document.getElementById('useHeader2').checked) {
-                right_header = true;
+            if (!document.getElementById('useHeader2').checked) {
+                right_header = false;
+            }
+
+            if (document.getElementById('useSubheader').checked) {
+                subheader = true;
             }
 
             if (document.getElementById('header2-top').checked) {
@@ -558,6 +592,9 @@
                 return;    
             }
 
+            console.log(subheader);
+            console.log(subheader_text);
+
             // files is a FileList of File objects.
             for (var i = 0, f; f = files[i]; i++) {
 
@@ -575,7 +612,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header};
+                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt};
                             puzdata_to_pdf(puzdata,options);
                         };
                     })(f);

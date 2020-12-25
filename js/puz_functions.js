@@ -391,15 +391,18 @@ function puzdata_to_pdf(puzdata,options) {
     ,   grid_padding : 12
     ,   outfile : null
     ,   header_text : null
-    ,   header2_text: null
+    ,   header2_text : null
+    ,   subheader_text : null
     ,   header_align : 'left'
     ,   header2_align: 'right'
     ,   header_font : 'RobotoCondensed'
     ,   grid_font : 'NunitoSans-Regular'
-    ,   header_pt : '22'
-    ,   header2_pt : '14'
+    ,   header_pt : 20
+    ,   header2_pt : 16
+    ,   subheader_pt : 14
     ,   y_align : 'bottom'
     ,   right_header : false
+    ,   subheader : false
     ,   line_width: 0.4
     ,   border_width: 0.4
     };
@@ -519,6 +522,23 @@ function puzdata_to_pdf(puzdata,options) {
         }     
 
     }
+
+    //subheader
+
+    var subheader_xpos = title_xpos;
+    var subheader_ypos = title_ypos + options.subheader_pt + 6;
+    var subheader_text = options.subheader_text;
+
+    if (options.subheader && subheader_text) {
+
+        subheader_text = doc.splitTextToSize(subheader_text, DOC_WIDTH-2*margin);
+        doc.setFontSize(options.subheader_pt);
+        header_height += (subheader_text.length)*(options.subheader_pt);
+        console.log("testing subheader_text")
+
+    }
+
+
     
     // create the clue strings and clue arrays
     var across_nums = [];
@@ -860,14 +880,25 @@ function puzdata_to_pdf(puzdata,options) {
     doc.setFont(options.header_font,'bold');
     doc.text(title_xpos,title_ypos,title,{align: xalign, baseline: baseline});
 
-    // Right-header
+    /* Render right-header */
 
     if (options.right_header) {
         doc.setFontSize(options.header2_pt);
         doc.text(author_xpos,author_ypos,author,{align: author_align, baseline: baseline});
+    }
+
+    /* Render subheader */
+
+    if (options.subheader && subheader_text) {
+        console.log(subheader_text);
+        console.log(author);
+        console.log(subheader_xpos);
+        console.log(subheader_ypos);
+        doc.setFontSize(options.subheader_pt);
+        doc.text(subheader_xpos,subheader_ypos,subheader_text,{align: xalign, baseline: baseline});
         doc.setFont(options.header_font,'normal');
     }
-    
+
     /* Render copyright */
     var copyright_xpos = grid_xpos + grid_width;   
     var copyright_ypos = (margin + header_height + grid_height + options.border_width + options.copyright_pt + 3);  //DOC_HEIGHT - margin;
