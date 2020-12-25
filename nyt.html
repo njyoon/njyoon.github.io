@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>NYT Submission Editor</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../nyt/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../nyt/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../nyt/favicon-16x16.png">
+
+    <link
+      rel="stylesheet"
+      href="../nyt/css/bootstrap.min.css"
+    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+
+    <style>
+    html {margin-left: calc(100vw - 100%);}
+    head{height:100%}
+    body{
+        background-color:#fcfcfc;
+    }
+    h1 {
+        color:#f55d4b;
+        font-size:2rem;
+        font-weight:bold;
+    }
+
+    h4 {
+        font-size:1.3rem;
+        color:#686868;
+    }
+
+    .material-icons.md-24 { 
+        font-size: 24px; 
+        vertical-align: bottom;
+    }
+
+    .collapsible-link {
+    width: 100%;
+    position: relative;
+    text-align: left;
+    }
+
+    .collapsible-link::before {
+    content: '\e5cf';
+    position: absolute;
+    top: 50%;
+    right: 0.8rem;
+    transform: translateY(-50%);
+    display: block;
+    font-family: 'Material Icons';
+    font-size: 1.1rem;
+    }
+
+    .collapsible-link[aria-expanded='true']::before {
+    content: '\e5ce';
+    }
+
+    .plus-link {
+    width: 100%;
+    position: relative;
+    }
+
+    .plus-link::before {
+    content: '\e145';
+    position: absolute;
+    font-family: 'Material Icons';
+    font-size: 1rem;
+    left: -0.3rem;
+    transform: translateY(-5%);
+    }
+
+    .plus-link[aria-expanded='true']::before {
+    content: '\e15b';
+    }
+
+    ::placeholder {
+        color:lightgrey;
+    }
+
+    .pdfobject-container { 
+        height: 40rem; 
+    }
+
+
+    .btn.focus,.btn:active.focus,.btn.active {
+        box-shadow: none;
+        outline: none;
+    }
+
+    .pdf {
+        color:#06AED5;
+        border-color:#06AED5;
+    }
+
+    .pdf:hover {
+        background-color:#06AED5;
+        border-color:#06AED5;
+        color:white;
+    }
+
+    
+    input[type=file] {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 250px;
+    }
+    
+    </style>
+
+
+  </head>
+
+  <body>
+    <div class="container pt-3">
+        <div class="row">
+            <div class="col-12 col-lg-9"><h1>NYT Submission Editor</h1></div>
+            <div class="d-none d-lg-block col-lg-3"><a type="button" href="pdf.html" class="btn btn-info-danger rounded-pill shadow-none pdf float-right"><b>Crossword PDF Editor</b></a></div>
+        </div>
+      <h4 class="pt-1 pb-1">This tool adds some additional editing options to Crossword Nexus's <a href="https://crosswordnexus.com/apps/puz-to-nyt/">PUZ to NYT Converter</a>.  The submission format is based on the <a href="https://www.nytimes.com/puzzles/submissions/crossword">New York Times's construction guidelines</a>.</h4>
+      <hr>
+      <div class="row pt-1 pb-5">
+
+          <div class="col-12 col-lg-4">
+
+              <div class="accordion shadow" id="accordionMain" >
+
+
+
+                    <form>
+                        <div class="card">
+                            <div class="card-header bg-white shadow-sm border-0" id="headingOne">
+                                
+                                    <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="btn btn-link text-dark font-weight-bold text-uppercase collapsible-link">
+                                        Choose File 
+                                    </a> 
+                             
+                            </div>
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionMain">
+                                <div class="card-body mx-2 px-4 pt-3 pb-2">
+                                    <div class="form-group">   
+                                        <label for="files">Select your .puz file to export as a PDF:</label>
+                                        <input type="file" accept='.puz' class="form-control-file" id="files" name="files">
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card">
+                            <div id="headingTwo" class="card-header bg-white shadow-sm border-0">
+                         
+                                    <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Constructor Info</a>
+                             
+                            </div>
+                            <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordionMain" class="collapse">
+                                <div class="card-body mx-2 px-4 py-3">
+                                    <div class="form-group">
+                                        <label for="headerText">Add Header Content (Contact Info)</label><br>
+                                        <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="headerText" rows="4" placeholder="Enter your name, address, and email here."></textarea>
+                                    </div>
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" data-toggle="collapse" href="#additional-header" class="custom-control-input" id="coco">
+                                        <label class="custom-control-label" for="coco">Add Co-constructor Info <span class="material-icons md-24">face</span></label>
+                                    </div>
+                                    <div class="form-group collapse pt-2" id="additional-header">
+                                        <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="headerText2" rows="4" placeholder="Enter your co-constructor's name, address, and email here."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div id="headingThree" class="card-header bg-white shadow-sm border-0">
+               
+                                    <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Basic Options</a>
+                     
+                            </div>
+                            <div id="collapseThree" aria-labelledby="headingThree" data-parent="#accordionMain" class="collapse">
+                                <div class="card-body mx-2 px-4 py-3">
+                                    <div class="form-group">
+                                        <label for="generalFont">Font</label>
+                                        <br>
+                                        <select class="form-control col-8" id="generalFont">
+                                        <option value="NunitoSans-Regular" selected>Nunito Sans</option>
+                                        <option value="helvetica">Helvetica</option>
+                                        <option value="courier">Courier</option>
+                                        <option value="times">Times New Roman</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hFontSize">Header Font Size (pt)</label><br>
+                                        <input type="number" class="form-control col-3" id="hFontSize" value="12">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cFontSize">Clue Font Size (pt)</label><br>
+                                        <input type="number" class="form-control col-3" id="cFontSize" value="12">
+                                    </div>
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="wordCount">
+                                        <label class="custom-control-label" for="wordCount">Include Word Count</label>
+                                    </div>
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="pages">
+                                        <label class="custom-control-label" for="pages">Include Page Numbers</label>
+                                    </div>
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="gray">
+                                        <label class="custom-control-label" for="gray">Inksaver Mode</label>
+                                    </div>
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="shade">
+                                        <label class="custom-control-label" for="shade">Replace Circles With Shade</label>
+                                    </div>  
+                                 
+                                </div>  
+                            </div>
+                        </div>
+
+
+                        <div class="card">
+                            <div id="headingFour" class="card-header bg-white shadow-sm border-0">
+                 
+                                    <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Advanced Options</a>
+                            
+                            </div>
+                            <div id="collapseFour" aria-labelledby="headingFour" data-parent="#accordionMain" class="collapse">
+
+                                <div class="card-body mx-2 px-4 pt-3 pb-1">
+                                    
+
+                                    <div class="accordion" id="accordionAdvanced">
+
+                                        <div id="headingMargins" class="card-header bg-white m-0 p-0 border-0">
+                                            <a data-toggle="collapse" data-target="#collapseMargins" aria-expanded="false" aria-controls="collapseMargins" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Margins</h6></a>
+                                        </div>
+                                        <div id="collapseMargins" aria-labelledby="headingMargins" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
+                                            <div class="form-group">
+                                                 <label for="marginSize">Page Margins (in.) </label><br>
+                                                 <input type="number" class="form-control-sm col-3" id="marginSize" value="1.0" step=".1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gridPadding">Grid Top Padding (in.)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="gridPadding" value="1.0" step=".1">
+                                            </div>
+                                        </div>
+
+                                        <div id="headingFonts" class="card-header bg-white m-0 p-0 border-0">
+                                            <a data-toggle="collapse" data-target="#collapseFonts" aria-expanded="false" aria-controls="collapseFonts" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Fonts</h6></a>
+                                        </div>
+                                        <div id="collapseFonts" aria-labelledby="headingFonts" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
+                                            <div class="custom-control custom-switch pb-2">
+                                                <input type="checkbox" data-toggle="collapse" href="#add-custom-font" class="custom-control-input" id="useCustom">
+                                                <label class="custom-control-label" for="useCustom">Add Custom Font</label>
+                                            </div>
+                                            <div class="form-group collapse" id="add-custom-font">   
+                                                <label for="customFont">Select a .ttf file to import:</label><br>
+                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont" name="customFont"> 
+                                            </div>  
+                                            <div class="custom-control custom-switch pb-2">
+                                                <input type="checkbox" data-toggle="collapse" href="#add-custom-font2" class="custom-control-input" id="useCustom2">
+                                                <label class="custom-control-label" for="useCustom2">Add Another Custom Font</label>
+                                            </div>
+                                            <div class="form-group collapse" id="add-custom-font2">   
+                                                <label for="customFont2">Select another .ttf file to import:</label><br>
+                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont2" name="customFont2"> 
+                                            </div>  
+                                            <div class="form-group">
+                                                <label for="headerFont">Header Font</label>
+                                                <br>
+                                                <select class="form-control" id="headerFont">
+                                                <option value="NunitoSans-Regular" selected>Nunito Sans</option>
+                                                <option value="helvetica">Helvetica</option>
+                                                <option value="courier">Courier</option>
+                                                <option value="times">Times New Roman</option>
+                                                <option value="myFont" class="c">Custom Font</option>
+                                                <option value="myFont2" class="c2">Custom Font 2</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gridFont">Grid Font</label>
+                                                <br>
+                                                <select class="form-control" id="gridFont">
+                                                <option value="NunitoSans-Regular" selected>Nunito Sans</option>
+                                                <option value="helvetica">Helvetica</option>
+                                                <option value="courier">Courier</option>
+                                                <option value="times">Times New Roman</option>
+                                                <option value="myFont" class="c">Custom Font</option>
+                                                <option value="myFont2" class="c2">Custom Font 2</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="clueFont">Clue Font</label>
+                                                <br>
+                                                <select class="form-control" id="clueFont">
+                                                <option value="NunitoSans-Regular" selected>Nunito Sans</option>
+                                                <option value="helvetica">Helvetica</option>
+                                                <option value="courier">Courier</option>
+                                                <option value="times">Times New Roman</option>
+                                                <option value="myFont" class="c">Custom Font</option>
+                                                <option value="myFont2" class="c2">Custom Font 2</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group" id="add-bold-font">   
+                                                <label for="boldFont">These settings require a <b>bold</b> style of your custom font.  Select the .ttf file to import:</label><br>
+                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont" name="boldFont"> 
+                                            </div> 
+                                            <div class="form-group" id="add-bold-font2">   
+                                                <label for="boldFont2">These settings require a <b>bold</b> style of your custom font.  Select the .ttf file to import:</label><br>
+                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont2" name="boldFont2"> 
+                                            </div>
+                                        </div>
+ 
+                                        <div id="headingGrid" class="card-header bg-white m-0 p-0 border-0">
+                                           <a data-toggle="collapse" data-target="#collapseGrid" aria-expanded="false" aria-controls="collapseGrid" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Grid Page</h6></a>
+                                        </div>
+                                        <div id="collapseGrid" aria-labelledby="headingGrid" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
+                                            <div class="form-group">
+                                                <label for="gridSize">Grid Size (in.) </label><br>
+                                                <input type="number" class="form-control-sm col-3" id="gridSize" value="5.0" step=".1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="letterSize">Letter Size (% of sq. height)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="letterSize" value="62">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="numberSize">Number Size (% of sq. height)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="numberSize" value="30">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lineWidth">Line Width (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="lineWidth" value="0.4" step=".1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="borderWidth">Border Width (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="borderWidth" value="0.4" step=".1">
+                                            </div>
+                                        </div>
+
+                                        <div id="headingClue" class="card-header bg-white m-0 p-0 border-0">
+                                            <a data-toggle="collapse" data-target="#collapseClue" aria-expanded="false" aria-controls="collapseClue" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Clue Pages</h6></a>
+                                         </div>
+                                         <div id="collapseClue" aria-labelledby="headingClue" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 pb-2 border-left">
+                                            <div class="form-group">
+                                                <label for="clueSize">Clue Column Width (in.)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="clueSize" value="3.5" step=".1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="columnGap">Clue-Entry Column Gap (in.)</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="columnGap" value="1.5" step=".1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="interSpacing">Line Spacing Between Clues</label><br>
+                                                <input type="number" class="form-control-sm col-3" id="interSpacing" value="2.2" step=".1">
+                                            </div>
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="boldHeadings" checked>
+                                                <label class="custom-control-label" for="boldHeadings">Bold Headings</label>
+                                            </div>
+                                            <div class="custom-control custom-switch pt-2">
+                                                <input type="checkbox" class="custom-control-input" id="boldNumbers" checked>
+                                                <label class="custom-control-label" for="boldNumbers">Bold Numbers</label>
+                                            </div>
+                                         </div>
+
+
+                                    </div>
+
+
+
+                                </div>  
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="btn-group p-2" role="group" aria-label="preview button">
+                                <button class="btn btn-outline-primary col-6 mr-2" id="previewButton" type="button" onclick="handleFileSelect('preview');return false;">Preview PDF</button>
+
+                                <button class="btn btn-outline-primary col-6" id="downloadButton" type="button" onclick="handleFileSelect('download');return false;">Download PDF</button>
+                            </div>
+                        </div>
+                        
+
+                        </div>
+
+                    </form>
+                
+            </div>
+
+        <div class = "col-12 col-lg-8" id="example1">
+
+        </div>
+    </div>
+
+        <script src="../nyt/js/jquery-3.3.1.slim.min.js"></script>
+        <script>
+        var myFont = '';
+        var myFont2 = '';
+        var boldFont = '';
+        var boldFont2 = '';
+
+        $('.c').hide();
+        $('.c2').hide();
+        $('#add-bold-font').hide();
+        $('#add-bold-font2').hide();
+        
+        function handleCustomFont(evt) {
+
+            var fonts = evt.target.files; // FileList object
+            
+            // fonts is a FileList of File objects.
+            for (var i = 0, f; f = fonts[i]; i++) {
+
+                // Only process files under 500kb.
+                if (f.size >= 2000000) {
+                    alert('This file is too big.');
+                    continue;
+                }
+                if (f) {
+                    var reader = new FileReader();
+                  
+                    reader.onload = function (readerEvt) {
+                        var binaryString = readerEvt.target.result;
+                        //console.log(evt.target.id);
+                        if (evt.target.id == 'customFont') {
+                            myFont = btoa(binaryString);
+                        } else if (evt.target.id == 'customFont2') {
+                            myFont2 = btoa(binaryString);
+                        } else if (evt.target.id == 'boldFont') {
+                            boldFont = btoa(binaryString);
+                        } else if (evt.target.id == 'boldFont2') {
+                            boldFont2 = btoa(binaryString);
+                        }
+                    }
+                } else { 
+                    alert("Failed to load file");
+                }
+
+                reader.readAsBinaryString(f);
+            }
+
+        }
+
+        document.getElementById('customFont2').addEventListener('change', handleCustomFont);
+        document.getElementById('customFont').addEventListener('change', handleCustomFont);
+        document.getElementById('boldFont').addEventListener('change', handleCustomFont);
+        document.getElementById('boldFont2').addEventListener('change', handleCustomFont);
+
+        $('#generalFont').change( function() {
+            $('#headerFont option[value='+this.value+']').prop('selected',true);
+            $('#gridFont option[value='+this.value+']').prop('selected',true);
+            $('#clueFont option[value='+this.value+']').prop('selected',true);
+
+        });
+
+        $('#useCustom').change( function() {
+            if ($('#useCustom').is(':checked')) {
+                $('.c').show();
+            } else {
+                $('.c').hide();
+            }
+        });
+
+        
+        $('#useCustom2').change( function() {
+            if ($('#useCustom2').is(':checked')) {
+                $('.c2').show();
+            } else {
+                $('.c2').hide();
+            }
+        });
+
+        $('#clueFont').change( function() {
+            if (document.getElementById('boldHeadings').checked || document.getElementById('boldNumbers').checked) {
+                if (this.value=="myFont") {
+                    $('#add-bold-font').show();
+                } else if (this.value=="myFont2") {
+                    $('#add-bold-font2').show();
+                }
+            } else {
+                $('#add-bold-font').hide();
+                $('#add-bold-font2').hide();
+            }
+        });
+
+
+        function handleFileSelect(evt) {
+
+            // get the address and e-mail
+            var address = document.getElementById('headerText').value;
+            var coconstructor = '';
+            var gray = 0;
+            var wc = 0;
+            var pages = 0;
+            var grid = document.getElementById('gridSize').value*72;
+            var letter = document.getElementById('letterSize').value;
+            var number = document.getElementById('numberSize').value;
+            var clue_entry_pt = document.getElementById('cFontSize').value*1;
+            var header_pt = document.getElementById('hFontSize').value*1;
+            var margin = document.getElementById('marginSize').value*72;
+            var grid_padding = document.getElementById('gridPadding').value*72;
+            var line_width = document.getElementById('lineWidth').value*1;
+            var border_width = document.getElementById('borderWidth').value*1;
+            var entry_left_padding = document.getElementById('columnGap').value*72;
+            var clue_width = document.getElementById('clueSize').value*72;
+            var clue_spacing = document.getElementById('interSpacing').value-1;
+            var heading_style = 'bold';
+            var number_style = 'bold';
+            var shade = false;
+            var header_font = document.getElementById('headerFont').value;
+            var grid_font = document.getElementById('gridFont').value;
+            var clue_font = document.getElementById('clueFont').value;
+
+
+            if (!document.getElementById('boldHeadings').checked) {
+                heading_style = 'normal';
+            }
+
+            if (!document.getElementById('boldNumbers').checked) {
+                number_style = 'normal';
+            }
+
+            if (!document.getElementById('useCustom').checked) {
+                document.getElementById('customFont').value = "";
+            } 
+            
+            if (!document.getElementById('useCustom2').checked) {
+                document.getElementById('customFont2').value = "";
+            } 
+
+            if (document.getElementById('gray').checked) {
+                gray = 0.6;
+            }
+
+            if (document.getElementById('shade').checked) {
+                shade = true;
+            }
+
+            if (document.getElementById('wordCount').checked) {
+                wc = 1;
+            }
+
+            if (document.getElementById('pages').checked) {
+                pages = 1;
+            }
+
+            if (document.getElementById('coco').checked) {
+                coconstructor = document.getElementById('headerText2').value;
+            }
+
+        
+            var files = document.getElementById('files').files; // FileList object
+            
+            if (!files[0]) {
+                alert('Please choose a .puz file.');
+                return;    
+            }
+
+            // files is a FileList of File objects.
+            for (var i = 0, f; f = files[i]; i++) {
+
+                // Only process small files.
+                if (f.size >= 7500) {
+                    alert('This file is too big.');
+                    continue;
+                }
+                if (f) {
+                    var r = new FileReader();
+                    var filename = f.name;
+                    filename = filename.substring(0,filename.length - 4);
+                    var outname = filename + '.pdf';
+                    r.onload = (function(theFile) {
+                        return function(e) { 
+                            var contents = e.target.result;     
+                            var puzdata = PUZAPP.parsepuz(contents);
+                            var options = {outfile: outname, address: address, gray: gray, wc: wc, pages: pages, coconstructor: coconstructor, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, clue_entry_pt: clue_entry_pt, header_pt: header_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, my_font2: myFont2, bold_font: boldFont, bold_font2: boldFont2, header_font: header_font, grid_font: grid_font, clue_font: clue_font};
+                            puzdata_to_nyt(puzdata,options);
+                        };
+                    })(f);
+                    r.readAsBinaryString(f);
+                    document.querySelector('#previewButton').textContent = 'Update Preview';
+                } else { 
+                    alert("Failed to load file");
+                }
+            }
+
+
+        }
+
+        </script>
+
+      <p>
+          <hr/>
+        Original code from
+        <a
+          href="https://crosswordnexus.com/apps/puz-to-nyt/"
+          >Crossword Nexus</a>, licensed under MIT License.
+        <br>
+        
+      </p>
+    </div>
+
+    <script src="../nyt/js/jspdf.umd.min.js"></script>
+    <script src="../nyt/js/NunitoSans-Regular-normal.js"></script>
+    <script src="../nyt/js/NunitoSans-Regular-bold.js"></script>
+    <script src="../nyt/js/puz.js" type="text/javascript"></script>
+    <script src="../nyt/js/puz_functions.js" type="text/javascript"></script>
+    <script src="../nyt/js/pdfobject.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  </body>
+</html>
