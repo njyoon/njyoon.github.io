@@ -875,6 +875,7 @@ function puzdata_to_pdf(puzdata,options) {
     doc.setFontSize(options.copyright_pt);
     doc.setTextColor(80);
     doc.text(copyright_xpos,copyright_ypos,puzdata.copyright,null,null,'right');
+    doc.setTextColor(0);
     
     /* Draw grid */
     
