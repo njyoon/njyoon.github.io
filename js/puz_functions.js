@@ -1,4 +1,9 @@
+// Parts of this code from Crossword Nexus
 // (c) 2016 Alex Boisvert
+// licensed under MIT license
+// https://opensource.org/licenses/MIT
+
+// Remainder of this code (c) Nam Jin Yoon
 // licensed under MIT license
 // https://opensource.org/licenses/MIT
 
@@ -431,7 +436,6 @@ function puzdata_to_pdf(puzdata,options) {
     // If columns are not manually selected, choose number
     if (options.columns=="auto")
     {
-        console.log("going auto");
         if (puzdata.height >= 17) {
             options.num_columns = 6;
             options.num_full_columns = 2;
