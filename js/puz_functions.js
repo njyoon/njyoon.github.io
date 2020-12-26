@@ -380,6 +380,7 @@ function puzdata_to_pdf(puzdata,options) {
     ,   side_margin: 20
     ,   bottom_margin: 140
     ,   copyright_pt: 8
+    ,   columns: "auto"
     ,   num_columns : null
     ,   num_full_columns: null
     ,   column_padding: 10
@@ -427,9 +428,10 @@ function puzdata_to_pdf(puzdata,options) {
     // If there's no filename, just call it puz.pdf
     if (!options.outfile) options.outfile = 'puz.pdf';
     
-    // If options.num_columns is null, we determine it ourselves
-    if (!options.num_columns || !options.num_full_columns)
+    // If columns are not manually selected, choose number
+    if (options.columns=="auto")
     {
+        console.log("going auto");
         if (puzdata.height >= 17) {
             options.num_columns = 6;
             options.num_full_columns = 2;
@@ -443,6 +445,23 @@ function puzdata_to_pdf(puzdata,options) {
             options.num_columns = 5;
             options.num_full_columns = 2;
         }
+    } else {
+        if (options.columns == "2") {
+            options.num_columns = 2;
+            options.num_full_columns = 0; 
+        } else if (options.columns == "3") {
+            options.num_columns = 3;
+            options.num_full_columns = 1; 
+        } else if (options.columns == "4") {
+            options.num_columns = 4;
+            options.num_full_columns = 1; 
+        } else if (options.columns == "6") {
+            options.num_columns = 6;
+            options.num_full_columns = 2; 
+        } else {
+            options.num_columns = 5;
+            options.num_full_columns = 2; 
+        } 
     }
     
     // The maximum font size of title and author
@@ -470,6 +489,13 @@ function puzdata_to_pdf(puzdata,options) {
 
     //title
     doc = new jsPDF('portrait','pt','letter');
+
+    if (options.my_font.length > 0) {
+        doc.addFileToVFS("MyFont.ttf", options.my_font);
+        doc.addFont("MyFont.ttf", "myFont","bold");
+        //console.log("Font Added");
+    }
+
     doc.setFontSize(options.header_pt);
     doc.setFont(options.header_font,'bold');
 
@@ -920,6 +946,11 @@ function puzdata_to_pdf(puzdata,options) {
     }
 
     /* Render header */
+    if (options.my_font.length > 0) {
+        doc.addFileToVFS("MyFont.ttf", options.my_font);
+        doc.addFont("MyFont.ttf", "myFont","bold");
+        //console.log("Font Added");
+    }
     doc.setFontSize(options.header_pt);
     doc.setFont(options.header_font,'bold');
     doc.text(title_xpos,title_ypos,title,{align: xalign, baseline: baseline});

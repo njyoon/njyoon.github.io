@@ -258,7 +258,18 @@
                                         <label for="cFontSize">Starting Clue Font Size (pt)</label><br>
                                         <input type="number" class="form-control col-4" id="cFontSize" value="14">
                                     </div>
-
+                                    <div class="form-group">
+                                        <label for="columns">Number of Columns</label>
+                                        <br>
+                                        <select class="form-control col-6" id="columns">
+                                        <option value="auto" selected>Auto</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        </select>
+                                    </div>
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox" data-toggle="collapse" href="#copyright" class="custom-control-input" id="useCopyright" aria-expanded="true" aria-controls="subheader" checked>
                                         <label class="custom-control-label" for="useCopyright">Include Copyright</label>
@@ -346,7 +357,7 @@
                                         <div id="collapseFonts" aria-labelledby="headingFonts" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
                                             <div class="custom-control custom-switch pb-2">
                                                 <input type="checkbox" data-toggle="collapse" href="#add-custom-font" class="custom-control-input" id="useCustom">
-                                                <label class="custom-control-label" for="useCustom">Add Custom Font</label>
+                                                <label class="custom-control-label" for="useCustom">Add Custom Header Font</label>
                                             </div>
                                             <div class="form-group collapse" id="add-custom-font">   
                                                 <label for="customFont">Select a .ttf file to import:</label><br>
@@ -582,6 +593,8 @@
             var subheader = false;
             var copyright = true;
             var copyright_text = document.getElementById('copyright').value;
+            var columns = document.getElementById('columns').value;
+            console.log(columns);
             
             if (document.getElementById('header-center').checked) {
                 header_align = 'center';
@@ -663,7 +676,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width};
+                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns};
                             puzdata_to_pdf(puzdata,options);
                         };
                     })(f);
