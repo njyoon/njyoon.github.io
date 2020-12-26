@@ -258,11 +258,25 @@
                                         <label for="cFontSize">Starting Clue Font Size (pt)</label><br>
                                         <input type="number" class="form-control col-4" id="cFontSize" value="14">
                                     </div>
+
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" data-toggle="collapse" href="#copyright" class="custom-control-input" id="useCopyright" aria-expanded="true" aria-controls="subheader" checked>
+                                        <label class="custom-control-label" for="useCopyright">Include Copyright</label>
+                                    </div>
+
+                                    <textarea class="form-control mt-2 pv-2 pl-3 pr-2 col-10 collapse show" id="copyright" rows="2" aria-labelledby="useCopyright" placeholder='Empty field will default to copyright from puz file'></textarea>
+
+
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="gray">
                                         <label class="custom-control-label" for="gray">Inksaver Mode</label>
                                     </div>
-                                 
+
+
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="shade">
+                                        <label class="custom-control-label" for="shade">Replace Circles With Shade</label>
+                                    </div>                                   
                                 </div>  
                             </div>
                         </div>
@@ -286,12 +300,43 @@
                                         </div>
                                         <div id="collapseMargins" aria-labelledby="headingMargins" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
                                             <div class="form-group">
-                                                 <label for="marginSize">Page Margins (in.) </label><br>
+                                                 <label for="marginSize">Top Margin (in.) </label><br>
                                                  <input type="number" class="form-control-sm col-4" id="marginSize" value="0.5" step=".1">
                                             </div>
                                             <div class="form-group">
-                                                <label for="gridPadding">Grid Top Padding (in.)</label><br>
-                                                <input type="number" class="form-control-sm col-4" id="gridPadding" value="0.3" step=".1">
+                                                <label for="bottommarginSize">Bottom Margin (in.) </label><br>
+                                                <input type="number" class="form-control-sm col-4" id="bottommarginSize" value="0.5" step=".1">
+                                           </div>
+                                            <div class="form-group">
+                                                <label for="sidemarginSize">Side Margins (in.) </label><br>
+                                                <input type="number" class="form-control-sm col-4" id="sidemarginSize" value="0.5" step=".1">
+                                           </div>
+                                           <div class="form-group" id="useHeaderWidth">
+                                                <label for="headerWidth">Main Header Text Width (%) </label><br>
+                                                <input type="number" class="form-control-sm col-4" id="headerWidth" value="67" step="1">
+                                            </div>   
+
+                                        </div>
+
+                                        <div id="headingPadding" class="card-header bg-white m-0 p-0 border-0">
+                                            <a data-toggle="collapse" data-target="#collapsePadding" aria-expanded="false" aria-controls="collapsePadding" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Padding</h6></a>
+                                        </div>
+                                        <div id="collapsePadding" aria-labelledby="headingPadding" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
+                                            <div class="form-group">
+                                                <label for="hsPadding">Header-Subheader Padding (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-4" id="hsPadding" value="4" step="1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="hbPadding">Header-Body Padding (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-4" id="hbPadding" value="12" step="1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gridPadding">Grid Bottom Padding (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-4" id="gridPadding" value="20" step="1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="columnPadding">Gutter / Column Padding (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-4" id="columnPadding" value="10" step="1">
                                             </div>
                                         </div>
 
@@ -323,6 +368,7 @@
                                                 <label for="gridFont">Grid Font</label>
                                                 <br>
                                                 <select class="form-control" id="gridFont">
+                                                <option value="RobotoCondensed">Roboto Condensed</option>
                                                 <option value="NunitoSans-Regular" selected>Nunito Sans</option>
                                                 <option value="helvetica">Helvetica</option>
                                                 <option value="courier">Courier</option>
@@ -334,7 +380,8 @@
                                                 <label for="clueFont">Clue Font</label>
                                                 <br>
                                                 <select class="form-control" id="clueFont">
-                                                <option value="NunitoSans-Regular" selected>Nunito Sans</option>
+                                                <option value="RobotoCondensed" selected>Roboto Condensed</option>
+                                                <option value="NunitoSans-Regular">Nunito Sans</option>
                                                 <option value="helvetica">Helvetica</option>
                                                 <option value="courier">Courier</option>
                                                 <option value="times">Times New Roman</option>
@@ -348,17 +395,9 @@
                                         </div>
  
                                         <div id="headingGrid" class="card-header bg-white m-0 p-0 border-0">
-                                           <a data-toggle="collapse" data-target="#collapseGrid" aria-expanded="false" aria-controls="collapseGrid" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Grid Page</h6></a>
+                                           <a data-toggle="collapse" data-target="#collapseGrid" aria-expanded="false" aria-controls="collapseGrid" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Grid</h6></a>
                                         </div>
                                         <div id="collapseGrid" aria-labelledby="headingGrid" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
-                                            <div class="form-group">
-                                                <label for="gridSize">Grid Size (in.) </label><br>
-                                                <input type="number" class="form-control-sm col-4" id="gridSize" value="5.0" step=".1">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="letterSize">Letter Size (% of sq. height)</label><br>
-                                                <input type="number" class="form-control-sm col-4" id="letterSize" value="62">
-                                            </div>
                                             <div class="form-group">
                                                 <label for="numberSize">Number Size (% of sq. height)</label><br>
                                                 <input type="number" class="form-control-sm col-4" id="numberSize" value="30">
@@ -374,20 +413,12 @@
                                         </div>
 
                                         <div id="headingClue" class="card-header bg-white m-0 p-0 border-0">
-                                            <a data-toggle="collapse" data-target="#collapseClue" aria-expanded="false" aria-controls="collapseClue" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Clue Pages</h6></a>
+                                            <a data-toggle="collapse" data-target="#collapseClue" aria-expanded="false" aria-controls="collapseClue" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Clues</h6></a>
                                          </div>
                                          <div id="collapseClue" aria-labelledby="headingClue" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 pb-2 border-left">
                                             <div class="form-group">
-                                                <label for="clueSize">Clue Column Width (in.)</label><br>
-                                                <input type="number" class="form-control-sm col-4" id="clueSize" value="3.5" step=".1">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="columnGap">Clue-Entry Column Gap (in.)</label><br>
-                                                <input type="number" class="form-control-sm col-4" id="columnGap" value="1.5" step=".1">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="interSpacing">Line Spacing Between Clues</label><br>
-                                                <input type="number" class="form-control-sm col-4" id="interSpacing" value="2.2" step=".1">
+                                                <label for="interSpacing">Min. Line Spacing Between Clues</label><br>
+                                                <input type="number" class="form-control-sm col-4" id="interSpacing" value="1.3" step=".1" min="1.0">
                                             </div>
                                             <div class="custom-control custom-switch">
                                                 <input type="checkbox" class="custom-control-input" id="boldHeadings" checked>
@@ -438,7 +469,7 @@
         $('#add-bold-font').hide();
         $("#header-center-button").hide();
         $("#subheader-font-size").hide();
-        
+                
         function handleCustomFont(evt) {
 
             var fonts = evt.target.files; // FileList object
@@ -496,8 +527,10 @@
             if ($('#useHeader2').is(':checked')) {
                 $("#header-left").prop("checked",true).trigger("click");
                 $("#header-center-button").hide();
+                $("#useHeaderWidth").show();
             } else {
                 $("#header-center-button").show();
+                $("#useHeaderWidth").hide();
 
             }
         });
@@ -506,7 +539,7 @@
             if ($('#useSubheader').is(':checked')) {
                 $("#subheader-font-size").show();
             } else {
-                $("#subheader-font-size").show();
+                $("#subheader-font-size").hide();
 
             }
         });
@@ -520,21 +553,24 @@
             var subheader_text = document.getElementById('subheaderText').value;
             var header_align = 'left';
             var header2_align = 'right';
+            var subheader_align = 'left';
             var y_align = 'alphabetic';
             var gray = 0;
-            var grid = document.getElementById('gridSize').value*72;
-            var letter = document.getElementById('letterSize').value;
             var number = document.getElementById('numberSize').value;
             var clue_entry_pt = document.getElementById('cFontSize').value*1;
             var header_pt = document.getElementById('hFontSize').value*1;
             var header2_pt = document.getElementById('h2FontSize').value*1;
             var subheader_pt = document.getElementById('sFontSize').value*1;
             var margin = document.getElementById('marginSize').value*72;
-            var grid_padding = document.getElementById('gridPadding').value*72;
+            var side_margin = document.getElementById('sidemarginSize').value*72;
+            var bottom_margin = document.getElementById('bottommarginSize').value*72;
+            var header_width = document.getElementById('headerWidth').value*.01;
+            var grid_padding = document.getElementById('gridPadding').value*1;
+            var subheader_mt = document.getElementById('hsPadding').value*1;
+            var under_title_padding = document.getElementById('hbPadding').value*1;
             var line_width = document.getElementById('lineWidth').value*1;
             var border_width = document.getElementById('borderWidth').value*1;
-            var entry_left_padding = document.getElementById('columnGap').value*72;
-            var clue_width = document.getElementById('clueSize').value*72;
+            var column_padding = document.getElementById('columnPadding').value*1;
             var clue_spacing = document.getElementById('interSpacing').value-1;
             var heading_style = 'bold';
             var number_style = 'bold';
@@ -544,9 +580,19 @@
             var clue_font = document.getElementById('clueFont').value;
             var right_header = true;
             var subheader = false;
+            var copyright = true;
+            var copyright_text = document.getElementById('copyright').value;
             
             if (document.getElementById('header-center').checked) {
                 header_align = 'center';
+            }
+
+            if (document.getElementById('subheader-center').checked) {
+                subheader_align = 'center';
+            }
+
+            if (document.getElementById('subheader-right').checked) {
+                subheader_align = 'right';
             }
 
             if (!document.getElementById('useHeader2').checked) {
@@ -569,6 +615,10 @@
                 header2_align = 'left';
             }
 
+            if (!document.getElementById('useCopyright').checked) {
+                copyright = false;
+            }
+
             if (!document.getElementById('boldHeadings').checked) {
                 heading_style = 'normal';
             }
@@ -584,6 +634,10 @@
             if (document.getElementById('gray').checked) {
                 gray = 0.6;
             }
+            
+            if (document.getElementById('shade').checked) {
+                shade = true;
+            }
 
             var files = document.getElementById('files').files; // FileList object
             
@@ -591,9 +645,6 @@
                 alert('Please choose a .puz file.');
                 return;    
             }
-
-            console.log(subheader);
-            console.log(subheader_text);
 
             // files is a FileList of File objects.
             for (var i = 0, f; f = files[i]; i++) {
@@ -612,7 +663,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt};
+                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width};
                             puzdata_to_pdf(puzdata,options);
                         };
                     })(f);

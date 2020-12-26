@@ -259,7 +259,6 @@ function puzdata_to_nyt(puzdata,options)
     ,   grid_numbers : true
     ,   x0: grid_xpos
     ,   y0: grid_ypos
-    //,   grid_size: grid_size
     ,   cell_size: grid_size / puzdata.width
     ,   gray : options['gray']
     ,   letter_pct : options['letter_pct']
@@ -378,8 +377,8 @@ function puzdata_to_nyt(puzdata,options)
 function puzdata_to_pdf(puzdata,options) {
     var DEFAULT_OPTIONS = {
         margin: 20
-    ,   title_pt: null
-    ,   author_pt: null
+    ,   side_margin: 20
+    ,   bottom_margin: 140
     ,   copyright_pt: 8
     ,   num_columns : null
     ,   num_full_columns: null
@@ -395,16 +394,26 @@ function puzdata_to_pdf(puzdata,options) {
     ,   subheader_text : null
     ,   header_align : 'left'
     ,   header2_align: 'right'
+    ,   subheader_align: 'left'
     ,   header_font : 'RobotoCondensed'
+    ,   clue_font : 'RobotoCondensed'
     ,   grid_font : 'NunitoSans-Regular'
     ,   header_pt : 20
     ,   header2_pt : 16
     ,   subheader_pt : 14
-    ,   y_align : 'bottom'
+    ,   y_align : 'top'
     ,   right_header : false
     ,   subheader : false
-    ,   line_width: 0.4
-    ,   border_width: 0.4
+    ,   line_width : 0.4
+    ,   border_width : 0.4
+    ,   subheader_mt : 4
+    ,   shade: true
+    ,   letter_pct: 62
+    ,   number_pct: 30
+    ,   copyright: true
+    ,   copyright_text: null
+    ,   header_width: 67
+    ,   clue_spacing: 0.3
     };
     
     for (var key in DEFAULT_OPTIONS) {
@@ -443,6 +452,8 @@ function puzdata_to_pdf(puzdata,options) {
     var DOC_HEIGHT = 11 * PTS_PER_IN;
     
     var margin = options.margin;
+    var side_margin = options.side_margin;
+    var bottom_margin = options.bottom_margin;
     var header_height = options.under_title_spacing;
     
     var doc;
@@ -451,7 +462,7 @@ function puzdata_to_pdf(puzdata,options) {
     
     /* Calculate header */
     
-    var title_xpos = margin;
+    var title_xpos = side_margin;
     var title_ypos = margin;
     var xalign = options.header_align;
     var baseline = options.y_align;
@@ -476,27 +487,33 @@ function puzdata_to_pdf(puzdata,options) {
         title = puzdata.title;
     }
 
+    if (!options.copyright) {
+        options.copyright_pt = 0;
+    }
+
     var title_width = doc.getTextWidth(title);
     var title_right_margin = doc.getTextWidth('  ');
-    var max_width = DOC_WIDTH - 2*margin;
+    var max_width = DOC_WIDTH - 2*side_margin;
 
     if (options.right_header) {
-        max_width = .67*max_width;
+        max_width = options.header_width*max_width;
     }
 
     title = doc.splitTextToSize(title, max_width);
-    header_height += (title.length)*(options.header_pt);    
+    if (title) {
+        header_height += 1.15*(title.length)*(options.header_pt);    
+    }
     
     //right-header
     
-    var author_xpos = DOC_WIDTH - margin;
+    var author_xpos = DOC_WIDTH - side_margin;
     var author_ypos = margin;
     var author = options.header2_text;
     var author_align = options.header2_align;
 
     if (options.right_header) {
 
-        max_width = DOC_WIDTH - (2*margin + doc.getTextWidth(title[0]) + title_right_margin);
+        max_width = DOC_WIDTH - (2*side_margin + doc.getTextWidth(title[0]) + title_right_margin);
 
         if (!options.header2_text) {
             author = puzdata.author.trim();
@@ -518,26 +535,53 @@ function puzdata_to_pdf(puzdata,options) {
         }     
 
         if (author_align == 'left') {
-            author_xpos = title_width + margin + title_right_margin;
+            author_xpos = title_width + side_margin + title_right_margin;
         }     
 
     }
 
     //subheader
 
-    var subheader_xpos = title_xpos;
-    var subheader_ypos = title_ypos + options.subheader_pt + 6;
+    var subheader_xpos = side_margin;
+    var subheader_ypos = title_ypos + 1.15*options.header_pt*(title.length-1) + options.subheader_pt + options.subheader_mt;
     var subheader_text = options.subheader_text;
+    var subheader_align = options.subheader_align;
 
     if (options.subheader && subheader_text) {
 
-        subheader_text = doc.splitTextToSize(subheader_text, DOC_WIDTH-2*margin);
+        header_height += options.subheader_mt
+
+        max_width = DOC_WIDTH - 2*side_margin;
+
         doc.setFontSize(options.subheader_pt);
-        header_height += (subheader_text.length)*(options.subheader_pt);
-        console.log("testing subheader_text")
+        subheader_text = doc.splitTextToSize(subheader_text, max_width);
+        
+        if (subheader_align == 'left') {
+            header_height += (subheader_text.length)*(options.subheader_pt);
+            if (baseline=='top') {
+                subheader_ypos = title_ypos + options.header_pt*title.length + options.subheader_mt;  
+            }
+        } else if (subheader_align == 'center') {
+            header_height += (subheader_text.length)*(options.subheader_pt);
+            subheader_xpos = DOC_WIDTH/2;
+            if (baseline=='top') {
+                subheader_ypos = title_ypos + options.header_pt*title.length + options.subheader_mt;  
+            }
+        } else if (subheader_align == 'right') {
+            subheader_xpos = DOC_WIDTH - side_margin;
+            subheader_ypos = author_ypos + 1.15*options.header2_pt*(author.length-1) + options.subheader_pt + options.subheader_mt;    
+            if (baseline=='top') {
+                subheader_ypos = author_ypos + 1.15*options.header2_pt*(author.length-1) + options.header2_pt + options.subheader_mt;  
+                if ((author.length)*(options.header2_pt) < (title.length)*(options.header_pt)) {
+                    header_height += (subheader_text.length)*(options.subheader_pt) - ((title.length)*(options.header_pt)-(author.length)*(options.header2_pt))
+                }
+            } else {
+                header_height += (subheader_text.length)*(options.subheader_pt);
+            }
+        }
+
 
     }
-
 
     
     // create the clue strings and clue arrays
@@ -576,10 +620,10 @@ function puzdata_to_pdf(puzdata,options) {
     }
     
     // size of columns
-    var col_width = (DOC_WIDTH - 2 * margin - (options.num_columns -1 ) * options.column_padding) / options.num_columns;
+    var col_width = (DOC_WIDTH - 2 * side_margin - (options.num_columns -1 ) * options.column_padding) / options.num_columns;
     
     // The grid is under all but the first few columns
-    var grid_width = DOC_WIDTH - 2 * margin - options.num_full_columns * (col_width + options.column_padding);
+    var grid_width = DOC_WIDTH - 2 * side_margin - options.num_full_columns * (col_width + options.column_padding);
 
     // If only two columns, grid size is limited
     if (options.num_columns == 2) {
@@ -588,21 +632,21 @@ function puzdata_to_pdf(puzdata,options) {
 
     var grid_height = (grid_width / puzdata.width) * puzdata.height;
     // x and y position of grid
-    var grid_xpos = DOC_WIDTH - margin - grid_width;
+    var grid_xpos = DOC_WIDTH - side_margin - grid_width;
 
     // If only two columns, grid size is limited
     if (options.num_columns == 2) {
         grid_xpos = (DOC_WIDTH-grid_width)/2;
     }
-    var grid_ypos = DOC_HEIGHT - margin - grid_height - options.copyright_pt;
+    var grid_ypos = DOC_HEIGHT - bottom_margin - grid_height - options.copyright_pt;
     
     // Loop through and write to PDF if we find a good fit
     // Find an appropriate font size
     var clue_pt = options.max_clue_pt;
     var finding_font = true;
     var column_clue_padding = [];
-    var line_padding = clue_pt*0.02;
-    var clue_padding = clue_pt * 0.3;    
+    var line_padding = clue_pt*0;
+    var clue_padding = clue_pt * options.clue_spacing;    
 
     var manual_spacing = false;
     var skip_column = false;    
@@ -617,11 +661,11 @@ function puzdata_to_pdf(puzdata,options) {
     while (finding_font && !manual_spacing)
     {
         doc = new jsPDF('portrait','pt','letter');
-        doc.setFont(options.header_font,"normal");
+        doc.setFont(options.clue_font,"normal");
         doc.setFontSize(clue_pt);
 
         var num_margin = doc.getTextWidth('99');
-        var num_xpos = margin + num_margin;
+        var num_xpos = side_margin + num_margin;
         var line_margin = 1.5*doc.getTextWidth(' ');
         var line_xpos = num_xpos + line_margin;     
         var line_ypos = margin + header_height + clue_pt;
@@ -640,7 +684,7 @@ function puzdata_to_pdf(puzdata,options) {
                 // check to see if we need to wrap
                 var max_line_ypos;
                 if (my_column < options.num_full_columns) {
-                    max_line_ypos = DOC_HEIGHT - margin - options.copyright_pt;
+                    max_line_ypos = DOC_HEIGHT - bottom_margin - options.copyright_pt;
                 } else {
                     max_line_ypos = grid_ypos - options.grid_padding;
                 } 
@@ -653,7 +697,7 @@ function puzdata_to_pdf(puzdata,options) {
                     // move to new column
                     column_clue_padding[my_column] = ((max_line_ypos - (margin + header_height + heading_pt)) - ((lines_in_column) * (clue_pt + line_padding)))/(clues_in_column-1);
                     my_column += 1;
-                    num_xpos = margin + num_margin + my_column * (col_width + options.column_padding);
+                    num_xpos = side_margin + num_margin + my_column * (col_width + options.column_padding);
                     line_xpos = num_xpos + line_margin;
                     line_ypos = margin + header_height + clue_pt;
                     clues_in_column = 0;
@@ -663,7 +707,7 @@ function puzdata_to_pdf(puzdata,options) {
                     skip_column=true;
                     column_clue_padding[my_column] = ((max_line_ypos - (margin + header_height + heading_pt)) - ((lines_in_column) * (clue_pt + line_padding)))/(clues_in_column-1);
                     my_column += 1;
-                    num_xpos = margin + num_margin + my_column * (col_width + options.column_padding);
+                    num_xpos = side_margin + num_margin + my_column * (col_width + options.column_padding);
                     line_xpos = num_xpos + line_margin;
                     line_ypos = margin + header_height + clue_pt;
                     clues_in_column = 0;
@@ -721,14 +765,14 @@ function puzdata_to_pdf(puzdata,options) {
             } else {
                 clue_pt -= clue_pt/50;
             }
-            clue_padding = clue_pt * 0.3;        
+            clue_padding = clue_pt * options.clue_spacing;        
         }   
 
         // if clues don't take up all columns, increase clue size
         else if (my_column < options.num_columns -1) {
             //console.log("increasing font size");
             clue_pt += clue_pt/10;
-            clue_padding = clue_pt * 0.3;
+            clue_padding = clue_pt * options.clue_spacing;
         }          
 
         //if the last column's clues are too spaced out, increase padding
@@ -740,7 +784,7 @@ function puzdata_to_pdf(puzdata,options) {
                 //console.log("struggle bussing");
                 //console.log("last column padding:" + column_clue_padding[my_column] + " // second-to-last column padding:" + column_clue_padding[my_column-1]);
                 clue_pt = options.max_clue_pt;
-                clue_spacing = clue_pt * 0.3;
+                clue_padding = clue_pt * options.clue_spacing;
                 spacing_strictness += 0.1;
                 emergency_button = 0;
             }
@@ -757,11 +801,11 @@ function puzdata_to_pdf(puzdata,options) {
     // write found grid
 
     doc = new jsPDF('portrait','pt','letter');
-    doc.setFont(options.header_font,"normal");
+    doc.setFont(options.clue_font,"normal");
     doc.setFontSize(clue_pt);
 
     var num_margin = doc.getTextWidth('99');
-    var num_xpos = margin + num_margin;
+    var num_xpos = side_margin + num_margin;
     var line_margin = 1.5*doc.getTextWidth(' ');
     var line_xpos = num_xpos + line_margin;  
     var line_ypos = margin + header_height + clue_pt;
@@ -774,7 +818,7 @@ function puzdata_to_pdf(puzdata,options) {
     var heading_pt = 0;
         
     if (manual_spacing) {
-        clue_padding = clue_pt * 0.3;
+        clue_padding = clue_pt * options.clue_spacing;
         clue_pt = options.max_clue_pt;
     }
 
@@ -788,7 +832,7 @@ function puzdata_to_pdf(puzdata,options) {
             // check to see if we need to wrap
             var max_line_ypos;
             if (my_column < options.num_full_columns) {
-                max_line_ypos = DOC_HEIGHT - margin - options.copyright_pt;
+                max_line_ypos = DOC_HEIGHT - bottom_margin - options.copyright_pt;
             } else {
                 max_line_ypos = grid_ypos - options.grid_padding;
             } 
@@ -801,7 +845,7 @@ function puzdata_to_pdf(puzdata,options) {
                 //console.log(line_ypos);
                 //console.log(max_line_ypos);
                 my_column += 1;
-                num_xpos = margin + num_margin + my_column * (col_width + options.column_padding);
+                num_xpos = side_margin + num_margin + my_column * (col_width + options.column_padding);
                 line_xpos = num_xpos + line_margin;
                 line_ypos = margin + header_height + clue_pt;
                 clue_padding = column_clue_padding[my_column]; 
@@ -830,11 +874,11 @@ function puzdata_to_pdf(puzdata,options) {
                 }
 
 
-                // Set the font to bold for the title
+                // Set the font to heading_style for the title
                 if (i==0 && j==0) {
                     if (manual_spacing && k==1) {
                         my_column += 1;
-                        num_xpos = margin + num_margin + my_column * (col_width + options.column_padding);
+                        num_xpos = side_margin + num_margin + my_column * (col_width + options.column_padding);
                         line_xpos = num_xpos + line_margin;
                         line_ypos = margin + header_height + clue_pt;
 
@@ -846,20 +890,20 @@ function puzdata_to_pdf(puzdata,options) {
                     heading_pt = 2;
                     line_ypos += heading_pt;
                     doc.setFontSize(clue_pt+heading_pt);
-                    doc.setFont(options.header_font,'bold');
+                    doc.setFont(options.clue_font,options.heading_style);
                     doc.text(line_xpos-(num_margin + line_margin)+(col_width/2),line_ypos,line,{align: 'center'});
                     line_ypos += clue_pt + line_padding + clue_padding;
                     doc.setFontSize(clue_pt);
-                    doc.setFont(options.header_font,'bold');
+                    doc.setFont(options.clue_font,options.number_style);
                     doc.text(num_xpos,line_ypos,num, null, null, "right");
                 } else {
                     
                     if (j==0) {                             
-                        doc.setFont(options.header_font,'bold');
+                        doc.setFont(options.clue_font,options.number_style);
                         doc.text(num_xpos,line_ypos,num, null, null, "right");
                     }
 
-                    doc.setFont(options.header_font,'normal'); 
+                    doc.setFont(options.clue_font,'normal'); 
                     doc.text(line_xpos,line_ypos,line);
                     line_ypos += clue_pt + line_padding;
                 }
@@ -890,23 +934,30 @@ function puzdata_to_pdf(puzdata,options) {
     /* Render subheader */
 
     if (options.subheader && subheader_text) {
-        console.log(subheader_text);
-        console.log(author);
-        console.log(subheader_xpos);
-        console.log(subheader_ypos);
         doc.setFontSize(options.subheader_pt);
-        doc.text(subheader_xpos,subheader_ypos,subheader_text,{align: xalign, baseline: baseline});
-        doc.setFont(options.header_font,'normal');
+        doc.text(subheader_xpos,subheader_ypos,subheader_text,{align: subheader_align, baseline: baseline});
     }
 
     /* Render copyright */
-    var copyright_xpos = grid_xpos + grid_width;   
-    var copyright_ypos = (margin + header_height + grid_height + options.border_width + options.copyright_pt + 3);  //DOC_HEIGHT - margin;
-    doc.setFont(options.grid_font,'bold');
-    doc.setFontSize(options.copyright_pt);
-    doc.setTextColor(80);
-    doc.text(copyright_xpos,copyright_ypos,puzdata.copyright,null,null,'right');
-    doc.setTextColor(0);
+
+    if (options.copyright){
+        var copyright_text;
+
+        if (options.copyright_text) {
+            copyright_text = options.copyright_text;
+        } else {
+            copyright_text = puzdata.copyright;
+        }
+
+        var copyright_xpos = grid_xpos + grid_width;   
+        var copyright_ypos = (margin + header_height + grid_height + options.border_width + options.copyright_pt + 3);  //DOC_HEIGHT - margin;
+        doc.setFont(options.grid_font,'bold');
+        doc.setFontSize(options.copyright_pt);
+        doc.setTextColor(80);
+        doc.text(copyright_xpos,copyright_ypos,copyright_text,null,null,'right');
+        doc.setTextColor(0);
+
+    }
     
     /* Draw grid */
     
@@ -917,8 +968,12 @@ function puzdata_to_pdf(puzdata,options) {
     ,   y0: (margin + header_height + 3)//grid_ypos
     ,   cell_size: grid_width / puzdata.width
     ,   gray : options.gray
+    ,   number_pct : options.number_pct
+    ,   shade : options.shade
     };
+
     doc.setFont(options.grid_font,'bold');
+    doc.setLineWidth(options.line_width);
     draw_crossword_grid(doc,puzdata,grid_options);
 
     // Draw border
