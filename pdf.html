@@ -277,6 +277,10 @@
 
                                     <textarea class="form-control mt-2 pv-2 pl-3 pr-2 col-10 collapse show" id="copyright" rows="2" aria-labelledby="useCopyright" placeholder='Empty field will default to copyright from puz file'></textarea>
 
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="grid_br">
+                                        <label class="custom-control-label" for="grid_br">Align Grid to Bottom-Right</label>
+                                    </div>   
 
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="gray">
@@ -342,7 +346,7 @@
                                                 <input type="number" class="form-control-sm col-4" id="hbPadding" value="12" step="1">
                                             </div>
                                             <div class="form-group">
-                                                <label for="gridPadding">Grid Bottom Padding (pt)</label><br>
+                                                <label for="gridPadding">Grid Vertical Padding (pt)</label><br>
                                                 <input type="number" class="form-control-sm col-4" id="gridPadding" value="20" step="1">
                                             </div>
                                             <div class="form-group">
@@ -594,6 +598,11 @@
             var copyright = true;
             var copyright_text = document.getElementById('copyright').value;
             var columns = document.getElementById('columns').value;
+            var grid_placement = 'top';
+
+            if (document.getElementById('grid_br').checked) {
+                grid_placement = 'bottom';
+            }
             
             if (document.getElementById('header-center').checked) {
                 header_align = 'center';
@@ -675,7 +684,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns};
+                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns, grid_placement: grid_placement};
                             puzdata_to_pdf(puzdata,options);
                         };
                     })(f);

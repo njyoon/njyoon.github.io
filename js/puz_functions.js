@@ -420,6 +420,7 @@ function puzdata_to_pdf(puzdata,options) {
     ,   copyright_text: null
     ,   header_width: 67
     ,   clue_spacing: 0.3
+    ,   grid_placement: 'top'
     };
     
     for (var key in DEFAULT_OPTIONS) {
@@ -899,7 +900,7 @@ function puzdata_to_pdf(puzdata,options) {
                     clues_in_column--;
                 }
 
-                if (my_column >= options.num_full_columns) {
+                if (my_column >= options.num_full_columns && options.grid_placement == 'top') {
                     line_ypos += (grid_height + options.grid_padding);
                 }
 
@@ -912,7 +913,7 @@ function puzdata_to_pdf(puzdata,options) {
                         line_xpos = num_xpos + line_margin;
                         line_ypos = margin + header_height + clue_pt;
 
-                        if (my_column >= options.num_full_columns) {
+                        if (my_column >= options.num_full_columns && options.grid_placement == 'top') {
                             line_ypos += (grid_height + options.grid_padding);
                         }
                     }
@@ -938,7 +939,7 @@ function puzdata_to_pdf(puzdata,options) {
                     line_ypos += clue_pt + line_padding;
                 }
 
-                if (my_column >= options.num_full_columns) {
+                if (my_column >= options.num_full_columns && options.grid_placement == 'top') {
                     line_ypos -= (grid_height + options.grid_padding);
                 }
 
@@ -985,7 +986,12 @@ function puzdata_to_pdf(puzdata,options) {
         }
 
         var copyright_xpos = grid_xpos + grid_width;   
-        var copyright_ypos = (margin + header_height + grid_height + options.border_width + options.copyright_pt + 3);  //DOC_HEIGHT - margin;
+        var copyright_ypos;
+        if (options.grid_placement=='top') {
+            copyright_ypos = (margin + header_height + grid_height + options.border_width + options.copyright_pt + 3);  
+        } else {
+            copyright_ypos = DOC_HEIGHT - margin;
+        }
         doc.setFont(options.grid_font,'bold');
         doc.setFontSize(options.copyright_pt);
         doc.setTextColor(80);
@@ -995,12 +1001,16 @@ function puzdata_to_pdf(puzdata,options) {
     }
     
     /* Draw grid */
+
+    if (options.grid_placement=='top') {
+        grid_ypos = (margin + header_height + 3);
+    } 
     
     var grid_options = {
         grid_letters : false
     ,   grid_numbers : true
     ,   x0: grid_xpos
-    ,   y0: (margin + header_height + 3)//grid_ypos
+    ,   y0: grid_ypos
     ,   cell_size: grid_width / puzdata.width
     ,   gray : options.gray
     ,   number_pct : options.number_pct
