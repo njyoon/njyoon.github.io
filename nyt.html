@@ -414,6 +414,7 @@
         var boldFont = '';
         var boldFont2 = '';
 
+        // hide unnecessary features unless user selects
         $('.c').hide();
         $('.c2').hide();
         $('#add-bold-font').hide();
@@ -455,6 +456,8 @@
             }
 
         }
+
+        // add listeners for fonts
 
         document.getElementById('customFont2').addEventListener('change', handleCustomFont);
         document.getElementById('customFont').addEventListener('change', handleCustomFont);
