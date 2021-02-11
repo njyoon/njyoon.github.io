@@ -296,11 +296,16 @@
                                         <label class="custom-control-label" for="gray">Inksaver Mode</label>
                                     </div>
 
-
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="shade">
                                         <label class="custom-control-label" for="shade">Replace Circles With Shade</label>
-                                    </div>                                   
+                                    </div>      
+                                    
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="solution">
+                                        <label class="custom-control-label" for="solution">Print Solution in Grid</label>
+                                    </div>
+                                    
                                 </div>  
                             </div>
                         </div>
@@ -601,6 +606,7 @@
             var heading_style = 'bold';
             var number_style = 'bold';
             var shade = false;
+            var solution = false;
             var header_font = document.getElementById('headerFont').value;
             var grid_font = document.getElementById('gridFont').value;
             var clue_font = document.getElementById('clueFont').value;
@@ -671,6 +677,10 @@
                 shade = true;
             }
 
+            if (document.getElementById('solution').checked) {
+                solution = true;
+            }
+
             var files = document.getElementById('files').files; // FileList object
             
             if (!files[0]) {
@@ -695,7 +705,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns, grid_placement: grid_placement};
+                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns, grid_placement: grid_placement, solution: solution};
                             puzdata_to_pdf(puzdata,options);
                         };
                     })(f);

@@ -421,6 +421,7 @@ function puzdata_to_pdf(puzdata,options) {
     ,   header_width: 67
     ,   clue_spacing: 0.3
     ,   grid_placement: 'top'
+    ,   solution: false
     };
     
     for (var key in DEFAULT_OPTIONS) {
@@ -1007,7 +1008,7 @@ function puzdata_to_pdf(puzdata,options) {
     } 
     
     var grid_options = {
-        grid_letters : false
+        grid_letters : options.solution
     ,   grid_numbers : true
     ,   x0: grid_xpos
     ,   y0: grid_ypos
