@@ -188,7 +188,7 @@
                                         <input type="checkbox" data-toggle="collapse" href="#additional-header" class="custom-control-input" id="useHeader2" aria-expanded="true" aria-controls="additional-header" checked>
                                         <label class="custom-control-label" for="useHeader2">Add Right Header Content</label>
                                     </div>
-                                    <div class="form-group pt-2 collapse show" id="additional-header" aria-labelledby="useHeader2">
+                                    <div class="form-group pt-2 pb-2 mb-0 collapse show" id="additional-header" aria-labelledby="useHeader2">
                                         <div class="btn-group btn-group-toggle pb-2" data-toggle="buttons">
 
                                             <label class="btn btn-outline-primary p-0">
@@ -212,10 +212,10 @@
                                             </label>    
 
                                         </div>
-                                        <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="headerText2" rows="2" placeholder='Empty field will default to author from puz file'></textarea>
+                                        <textarea class="form-control pv-2 pl-3 pr-2 mb-0 col-10" id="headerText2" rows="2" placeholder='Empty field will default to author from puz file'></textarea>
                                     </div>
 
-                                    <div class="custom-control custom-switch">
+                                    <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" data-toggle="collapse" href="#subheader" class="custom-control-input" id="useSubheader" aria-expanded="false" aria-controls="subheader">
                                         <label class="custom-control-label" for="useSubheader">Add Subheader Content</label>
                                     </div>
@@ -233,11 +233,28 @@
                                             </label>    
 
                                         </div>
-                                        <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="subheaderText" rows="2" placeholder='Add any subheader text here'></textarea>
+                                        <textarea class="form-control pv-2 pl-3 pr-2 mb-0 col-10" id="subheaderText" rows="2" placeholder='Add any subheader text here'></textarea>
                                     </div>
 
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" data-toggle="collapse" href="#add-logo" class="custom-control-input" id="useLogo">
+                                        <label class="custom-control-label" for="useLogo">Add Image <span style="color:red">(IN BETA)</span></label>
+                                    </div>
+                                    <div class="form-group collapse pt-2 pl-4" id="add-logo">   
+                                        <label for="logo">Select an image to import:</label><br>
+                                        <input type="file" accept='image/*' class="form-control-file pb-2" id="logo" name="logo"> 
 
+                                        <label for="logoX">image-x (pt)</label><br>
+                                        <input type="number" class="form-control-sm mb-2 col-4" id="logoX" value="36" step="1"><br>
 
+                                        <label for="logoY">image-y (pt)</label><br>
+                                        <input type="number" class="form-control-sm mb-2 col-4" id="logoY" value="36" step="1"><br>
+
+                                        <label for="logoS">image size (%)</label><br>
+                                        <input type="number" class="form-control-sm mb-2 col-4" id="logoS" value="100" step="1"><br>
+
+                                    </div>  
+  
 
                                 </div>
                             </div>
@@ -491,6 +508,7 @@
         <script>
         var myFont = '';
         var boldFont = '';
+        var logo;
 
         // hide unnecessary features unless user turns them on
 
@@ -506,7 +524,7 @@
             // fonts is a FileList of File objects.
             for (var i = 0, f; f = fonts[i]; i++) {
 
-                // Only process files under 500kb.
+                // Only process files under 2mb.
                 if (f.size >= 2000000) {
                     alert('This file is too big.');
                     continue;
@@ -515,26 +533,57 @@
                     var reader = new FileReader();
                   
                     reader.onload = function (readerEvt) {
+
                         var binaryString = readerEvt.target.result;
-                        // console.log(evt.target.id);
+
                         if (evt.target.id == 'customFont') {
                             myFont = btoa(binaryString);
                         } else if (evt.target.id == 'boldFont') {
                             boldFont = btoa(binaryString);
-                        }
+                        } 
                     }
                 } else { 
                     alert("Failed to load file");
                 }
 
                 reader.readAsBinaryString(f);
+
             }
 
+        }
+
+        function handleCustomImage(evt) {
+            var images = evt.target.files; // FileList object
+            
+            // images is a FileList of File objects.
+            for (var i = 0, f; f = images[i]; i++) {
+
+                // Only process files under 2mb.
+                if (f.size >= 2000000) {
+                    alert('This file is too big.');
+                    continue;
+                }
+                
+                if (f) {
+                    var reader = new FileReader();
+                  
+                    reader.onload = function (readerEvt) {
+
+                        logo = readerEvt.target.result;
+                    }
+                } else { 
+                    alert("Failed to load file");
+                }
+
+                reader.readAsDataURL(f);
+
+            }
         }
 
 
         document.getElementById('customFont').addEventListener('change', handleCustomFont);
         document.getElementById('boldFont').addEventListener('change', handleCustomFont);
+        document.getElementById('logo').addEventListener('change', handleCustomImage);
 
         $('#useCustom').change( function() {
             if ($('#useCustom').is(':checked')) {
@@ -616,6 +665,9 @@
             var copyright_text = document.getElementById('copyright').value;
             var columns = document.getElementById('columns').value;
             var grid_placement = 'top';
+            var logoX = document.getElementById('logoX').value*1;
+            var logoY = document.getElementById('logoY').value*1;
+            var logoS = document.getElementById('logoS').value/100;
 
             if (document.getElementById('grid_br').checked) {
                 grid_placement = 'bottom';
@@ -669,6 +721,10 @@
                 document.getElementById('customFont').value = "";
             } 
 
+            if (!document.getElementById('useLogo').checked) {
+                logo = null;
+            } 
+
             if (document.getElementById('gray').checked) {
                 gray = 0.6;
             }
@@ -705,7 +761,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns, grid_placement: grid_placement, solution: solution};
+                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns, grid_placement: grid_placement, solution: solution, logo: logo, logoX: logoX, logoY: logoY, logoS:logoS};
                             puzdata_to_pdf(puzdata,options);
                         };
                     })(f);

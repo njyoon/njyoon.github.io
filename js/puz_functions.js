@@ -422,6 +422,10 @@ function puzdata_to_pdf(puzdata,options) {
     ,   clue_spacing: 0.3
     ,   grid_placement: 'top'
     ,   solution: false
+    ,   logo: null
+    ,   logoX: 36
+    ,   logoY: 36
+    ,   logoS: 1.0
     };
     
     for (var key in DEFAULT_OPTIONS) {
@@ -836,6 +840,12 @@ function puzdata_to_pdf(puzdata,options) {
     doc.setFont(options.clue_font,"normal");
     doc.setFontSize(clue_pt);
 
+    /* Render logo if there is one*/
+    if (options.logo) {
+        const imgProps = doc.getImageProperties(options.logo);
+        doc.addImage(options.logo, options.logoX, options.logoY,options.logoS*imgProps.width,options.logoS*imgProps.height);
+    }
+
     var num_margin = doc.getTextWidth('99');
     var num_xpos = side_margin + num_margin;
     var line_margin = 1.5*doc.getTextWidth(' ');
@@ -974,6 +984,8 @@ function puzdata_to_pdf(puzdata,options) {
         doc.setFontSize(options.subheader_pt);
         doc.text(subheader_xpos,subheader_ypos,subheader_text,{align: subheader_align, baseline: baseline});
     }
+  
+    
 
     /* Render copyright */
 
