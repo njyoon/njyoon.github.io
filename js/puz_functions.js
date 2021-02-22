@@ -426,6 +426,8 @@ function puzdata_to_pdf(puzdata,options) {
     ,   logoX: 36
     ,   logoY: 36
     ,   logoS: 1.0
+    ,   header_indent: 0
+    ,   subheader_indent: 0
     };
     
     for (var key in DEFAULT_OPTIONS) {
@@ -491,7 +493,7 @@ function puzdata_to_pdf(puzdata,options) {
     
     /* Calculate header */
     
-    var title_xpos = side_margin;
+    var title_xpos = side_margin + options.header_indent;
     var title_ypos = margin;
     var xalign = options.header_align;
     var baseline = options.y_align;
@@ -578,7 +580,7 @@ function puzdata_to_pdf(puzdata,options) {
 
     //subheader
 
-    var subheader_xpos = side_margin;
+    var subheader_xpos = side_margin + options.subheader_indent;
     var subheader_ypos = title_ypos + 1.15*options.header_pt*(title.length-1) + options.subheader_pt + options.subheader_mt;
     var subheader_text = options.subheader_text;
     var subheader_align = options.subheader_align;

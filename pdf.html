@@ -377,6 +377,14 @@
                                                 <input type="number" class="form-control-sm col-4" id="hbPadding" value="12" step="1">
                                             </div>
                                             <div class="form-group">
+                                                <label for="hlPadding">Header Left Padding (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-4" id="hlPadding" value="0" step="1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="slPadding">Subheader Left Padding (pt)</label><br>
+                                                <input type="number" class="form-control-sm col-4" id="slPadding" value="0" step="1">
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="gridPadding">Grid Vertical Padding (pt)</label><br>
                                                 <input type="number" class="form-control-sm col-4" id="gridPadding" value="20" step="1">
                                             </div>
@@ -646,6 +654,8 @@
             var bottom_margin = document.getElementById('bottommarginSize').value*72;
             var header_width = document.getElementById('headerWidth').value*.01;
             var grid_padding = document.getElementById('gridPadding').value*1;
+            var header_indent = document.getElementById('hlPadding').value*1;
+            var subheader_indent = document.getElementById('slPadding').value*1;
             var subheader_mt = document.getElementById('hsPadding').value*1;
             var under_title_padding = document.getElementById('hbPadding').value*1;
             var line_width = document.getElementById('lineWidth').value*1;
@@ -761,7 +771,7 @@
                         return function(e) { 
                             var contents = e.target.result;     
                             var puzdata = PUZAPP.parsepuz(contents);
-                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns, grid_placement: grid_placement, solution: solution, logo: logo, logoX: logoX, logoY: logoY, logoS:logoS};
+                            var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns, grid_placement: grid_placement, solution: solution, logo: logo, logoX: logoX, logoY: logoY, logoS:logoS, header_indent: header_indent, subheader_indent: subheader_indent};
                             puzdata_to_pdf(puzdata,options);
                         };
                     })(f);
