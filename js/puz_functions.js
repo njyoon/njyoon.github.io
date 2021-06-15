@@ -1005,7 +1005,7 @@ function puzdata_to_pdf(puzdata,options) {
         if (options.grid_placement=='top') {
             copyright_ypos = (margin + header_height + grid_height + options.border_width + options.copyright_pt + 3);  
         } else {
-            copyright_ypos = DOC_HEIGHT - margin;
+            copyright_ypos = DOC_HEIGHT + options.border_width - margin;
         }
         doc.setFont(options.grid_font,'bold');
         doc.setFontSize(options.copyright_pt);
