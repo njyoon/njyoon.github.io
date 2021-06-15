@@ -1039,7 +1039,7 @@ function puzdata_to_pdf(puzdata,options) {
     // Draw border
     if (options.border_width > options.line_width) {
         doc.setLineWidth(options.border_width);
-        doc.rect(grid_xpos-options.border_width/2,(margin + header_height + 3)-options.border_width/2,grid_width+options.border_width,(grid_width*puzdata.height/puzdata.width)+options.border_width);
+        doc.rect(grid_xpos-options.border_width/2,grid_ypos-options.border_width/2,grid_width+options.border_width,(grid_width*puzdata.height/puzdata.width)+options.border_width);
     }
     
     if (options.output=='preview') {
