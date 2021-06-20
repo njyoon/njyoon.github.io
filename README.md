@@ -2,7 +2,7 @@
 
 These tools add some additional editing options to Crossword Nexus's [PUZ to PDF Converter](https://crosswordnexus.com/apps/puz-to-pdf/) and [PUZ to NYT Converter](https://crosswordnexus.com/apps/puz-to-nyt/).  
 
-Background image on the [home page](https://njyoon.github.io) from [U.S. Patent No. 1,575,181 (issued March 2, 1926)](https://patents.google.com/patent/US1575181).
+Background image on the [home page](https://njyoon.github.io) from [U.S. Patent No. 1,575,181 (issued March 2, 1926)](https://patentimages.storage.googleapis.com/39/a8/fa/9dc9826eaba905/US1575181.pdf).
 
 [![GitHub license](https://img.shields.io/github/license/njyoon/njyoon.github.io.svg?style=flat-square)](https://github.com/njyoon/njyoon.github.io/blob/master/LICENSE)
 [![](https://img.shields.io/badge/updates-sporadic%20at%20best-yellow)](https://github.com/njyoon/njyoon.github.io)
