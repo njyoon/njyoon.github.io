@@ -13,4 +13,8 @@ Currently testing out two new features:
 - Add Image (under Header Content)
 - Remember Options (under Basic Options)
 
-All options are stored locally (i.e., nothing is ever uploaded to the servers), and can be cleared by clicking the Clear Cache button underneath Remember Options.
+All saved options are stored locally (i.e., nothing is ever uploaded to the servers), and can be cleared by clicking the Clear Cache button underneath Remember Options.
+
+## NYT Submission Editor
+
+This tool adds some additional editing options to Crossword Nexus's [PUZ to NYT Converter](https://crosswordnexus.com/apps/puz-to-pdf/). The submission format is based on the [New York Times's construction guidelines](https://www.nytimes.com/puzzles/submissions/crossword). To get started, select a .puz file, add your header content, and click "Preview PDF".
