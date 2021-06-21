@@ -13,7 +13,7 @@ Currently testing out two new features:
 - Add Image (under Header Content)
 - Remember Options (under Basic Options)
 
-All saved options are stored locally (i.e., nothing is ever uploaded to the servers), and can be cleared by clicking the Clear Cache button underneath Remember Options.
+All saved options are stored locally in your browser's storage (i.e., nothing is ever uploaded to the servers), and can be cleared by clicking the Clear Cache button underneath Remember Options.  
 
 If special characters are not loading, try switching fonts to Helvetica.  If the line spacing appears off or the webapp is stalling, try adjusting the Number of Columns (under Basic Options), Margins / Padding (under Advanced Options), or Min. Line Spacing Between Clues (Advanced Options > Clues).
 
