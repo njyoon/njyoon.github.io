@@ -130,16 +130,13 @@
             <div class="col-12 col-lg-9"><h1>Crossword PDF Editor</h1></div>
             <div class="d-none d-lg-block col-lg-3"><a type="button" href="nyt" class="btn btn-outline-danger rounded-pill shadow-none nyt float-right"><b>NYT Submission Editor</b></a></div>
         </div>
-        <h4 class="pt-1 pb-1">This tool adds some additional editing options to Crossword Nexus's <a href="https://crosswordnexus.com/apps/puz-to-pdf/">PUZ to PDF Converter</a>.  To get started, just select a .puz file and click "Preview PDF".</h4>
+        <h4 class="pt-1 pb-1">This tool adds some additional editing options to Crossword Nexus's <a href="https://crosswordnexus.com/apps/puz-to-pdf/">PUZ to PDF Converter</a>.  To get started, just select a .puz file and click "Preview PDF".  Limited documentation available <a href="https://github.com/njyoon/njyoon.github.io#readme">here.</a></h4>
       <hr>
       <div class="row pt-1 pb-5">
 
           <div class="col-12 col-lg-4">
 
-              <div class="accordion shadow" id="accordionMain" >
-
-
-
+              <div class="accordion shadow" id="accordionMain">
                     <form>
                         <div class="card">
                             <div class="card-header bg-white shadow-sm border-0" id="headingOne">
@@ -173,11 +170,11 @@
                                         <label for="headerText">Main Header Content </label>
                                         <div class="btn-group btn-group-toggle pl-2 pb-2" data-toggle="buttons">
 
-                                            <label class="btn btn-outline-primary active p-0">
-                                                <input type="radio" id="header-left" name="header-align" checked><span class="material-icons" aria-hidden="true">format_align_left</span>
+                                            <label class="btn btn-outline-primary active p-0" id="header-left-button">
+                                                <input type="radio" id="header-left" name="header-align" checked><span class="material-icons">format_align_left</span>
                                             </label>
                                             <label class="btn btn-outline-primary p-0" id="header-center-button">
-                                                <input type="radio" id="header-center" name="header-align"><span class="material-icons" aria-hidden="true">format_align_center</span>
+                                                <input type="radio" id="header-center" name="header-align"><span class="material-icons">format_align_center</span>
                                             </label>    
 
                                         </div>
@@ -185,29 +182,31 @@
                                     </div>
 
                                     <div class="custom-control custom-switch">
-                                        <input type="checkbox" data-toggle="collapse" href="#additional-header" class="custom-control-input" id="useHeader2" aria-expanded="true" aria-controls="additional-header" checked>
+                                        <input type="checkbox" class="custom-control-input" id="useHeader2" checked>
                                         <label class="custom-control-label" for="useHeader2">Add Right Header Content</label>
                                     </div>
-                                    <div class="form-group pt-2 pb-2 mb-0 collapse show" id="additional-header" aria-labelledby="useHeader2">
+
+                                    
+                                    <div class="form-group pt-2 pb-2 mb-0 collapse show" id="additional-header">
                                         <div class="btn-group btn-group-toggle pb-2" data-toggle="buttons">
 
-                                            <label class="btn btn-outline-primary p-0">
+                                            <label class="btn btn-outline-primary p-0" id="header2-left-button">
                                                 <input type="radio" id="header2-left" name="header2-align"><span class="material-icons" aria-hidden="true">format_align_left</span>
                                             </label>    
-                                            <label class="btn btn-outline-primary active p-0">
+                                            <label class="btn btn-outline-primary active p-0" id="header2-right-button">
                                                 <input type="radio" id="header2-right" name="header2-align" checked><span class="material-icons" aria-hidden="true">format_align_right</span>
                                             </label>    
 
                                         </div>
                                         <div class="btn-group btn-group-toggle pl-2 pb-2" data-toggle="buttons">
 
-                                            <label class="btn btn-outline-primary p-0">
+                                            <label class="btn btn-outline-primary p-0" id="header2-top-button">
                                                 <input type="radio" id="header2-top" name="header2-vAlign"><span class="material-icons" aria-hidden="true">vertical_align_top</span>
                                             </label>
-                                            <label class="btn btn-outline-primary p-0">
+                                            <label class="btn btn-outline-primary p-0" id="header2-middle-button">
                                                 <input type="radio" id="header2-middle" name="header2-vAlign"><span class="material-icons" aria-hidden="true">vertical_align_center</span>
                                             </label>   
-                                            <label class="btn btn-outline-primary active p-0">
+                                            <label class="btn btn-outline-primary active p-0" id="header2-bottom-button">
                                                 <input type="radio" id="header2-bottom" name="header2-vAlign" checked><span class="material-icons" aria-hidden="true">vertical_align_bottom</span>
                                             </label>    
 
@@ -216,19 +215,19 @@
                                     </div>
 
                                     <div class="custom-control custom-switch pt-2">
-                                        <input type="checkbox" data-toggle="collapse" href="#subheader" class="custom-control-input" id="useSubheader" aria-expanded="false" aria-controls="subheader">
+                                        <input type="checkbox" class="custom-control-input" id="useSubheader">
                                         <label class="custom-control-label" for="useSubheader">Add Subheader Content</label>
                                     </div>
-                                    <div class="form-group pt-2 collapse" id="subheader" aria-labelledby="useSubheader">
+                                    <div class="form-group pt-2 collapse" id="subheader">
                                         <div class="btn-group btn-group-toggle pb-2" data-toggle="buttons">
 
-                                            <label class="btn btn-outline-primary active p-0">
+                                            <label class="btn btn-outline-primary active p-0" id="subheader-left-button">
                                                 <input type="radio" id="subheader-left" name="subheader-align" checked><span class="material-icons" aria-hidden="true">format_align_left</span>
                                             </label>
                                             <label class="btn btn-outline-primary p-0" id="subheader-center-button">
                                                 <input type="radio" id="subheader-center" name="subheader-align"><span class="material-icons" aria-hidden="true">format_align_center</span>
                                             </label>        
-                                            <label class="btn btn-outline-primary p-0">
+                                            <label class="btn btn-outline-primary p-0" id="subheader-right-button">
                                                 <input type="radio" id="subheader-right" name="subheader-align"><span class="material-icons" aria-hidden="true" aria-checked="">format_align_right</span>
                                             </label>    
 
@@ -237,7 +236,7 @@
                                     </div>
 
                                     <div class="custom-control custom-switch pt-2">
-                                        <input type="checkbox" data-toggle="collapse" href="#add-logo" class="custom-control-input" id="useLogo">
+                                        <input type="checkbox" class="custom-control-input" id="useLogo">
                                         <label class="custom-control-label" for="useLogo">Add Image <span style="color:red">(IN BETA)</span></label>
                                     </div>
                                     <div class="form-group collapse pt-2 pl-4" id="add-logo">   
@@ -297,11 +296,11 @@
                                         </select>
                                     </div>
                                     <div class="custom-control custom-switch">
-                                        <input type="checkbox" data-toggle="collapse" href="#copyright" class="custom-control-input" id="useCopyright" aria-expanded="true" aria-controls="subheader" checked>
+                                        <input type="checkbox" class="custom-control-input" id="useCopyright" checked>
                                         <label class="custom-control-label" for="useCopyright">Include Copyright</label>
                                     </div>
 
-                                    <textarea class="form-control mt-2 pv-2 pl-3 pr-2 col-10 collapse show" id="copyright" rows="2" aria-labelledby="useCopyright" placeholder='Empty field will default to copyright from puz file'></textarea>
+                                    <textarea class="form-control mt-2 pv-2 pl-3 pr-2 col-10 collapse show" id="copyright" rows="2" placeholder='Empty field will default to copyright from puz file'></textarea>
 
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="grid_br">
@@ -322,6 +321,20 @@
                                         <input type="checkbox" class="custom-control-input" id="solution">
                                         <label class="custom-control-label" for="solution">Print Solution in Grid</label>
                                     </div>
+
+                                    <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="remember">
+                                        <label class="custom-control-label" for="remember">Remember Options <span style="color:red">(IN BETA)</span></label>
+                                    </div>
+                                    
+                                    <div class="ml-1 pl-2 pt-1" id="remember-buttons">
+
+                                        <button type="button" class="btn btn-outline-primary btn-sm mt-1 ml-4" id="save">Save Options</button>
+
+                                        <button type="button" class="btn btn-outline-primary btn-sm mt-1 ml-1" id="clear">Clear Cache</button>
+
+                                    </div>
+
                                     
                                 </div>  
                             </div>
@@ -399,10 +412,10 @@
                                         </div>
                                         <div id="collapseFonts" aria-labelledby="headingFonts" data-parent="#accordionAdvanced" class="collapse ml-3 px-3 border-left">
                                             <div class="custom-control custom-switch pb-2">
-                                                <input type="checkbox" data-toggle="collapse" href="#add-custom-font" class="custom-control-input" id="useCustom">
+                                                <input type="checkbox" class="custom-control-input" id="useCustom">
                                                 <label class="custom-control-label" for="useCustom">Add Custom Header Font</label>
                                             </div>
-                                            <div class="form-group collapse" id="add-custom-font">   
+                                            <div class="form-group collapse c" id="add-custom-font">   
                                                 <label for="customFont">Select a .ttf file to import:</label><br>
                                                 <input type="file" accept='.ttf' class="form-control-file" id="customFont" name="customFont"> 
                                             </div>  
@@ -588,10 +601,42 @@
             }
         }
 
-
         document.getElementById('customFont').addEventListener('change', handleCustomFont);
         document.getElementById('boldFont').addEventListener('change', handleCustomFont);
         document.getElementById('logo').addEventListener('change', handleCustomImage);
+
+        if (window.localStorage.getItem('remember') == 'true') {
+            loadOptions();
+            $('#remember').prop("checked",true);
+            $('#remember-buttons').show();       
+        } else {
+            $('#remember-buttons').hide();
+        }
+
+        $('#remember').change( function() {
+
+            if ($('#remember').is(':checked')) {
+
+                window.localStorage.setItem('remember','true');
+                $('#remember-buttons').show();
+
+            } else {
+
+                window.localStorage.setItem('remember','false');
+                $('#remember-buttons').hide();
+
+            }
+        });
+
+        $('#clear').click(function() {
+            window.localStorage.clear();
+            $('#remember-buttons').hide();
+            $('#remember').prop("checked",false);
+        });
+
+        $('#save').click(function() {
+            saveOptions();
+        });
 
         $('#useCustom').change( function() {
             if ($('#useCustom').is(':checked')) {
@@ -602,6 +647,7 @@
                 $('#headerFont option[value="RobotoCondensed"]').prop('selected',true);
             }
         });
+
 
         $('#clueFont').change( function() {
             if (this.value=="myFont" && (document.getElementById('boldHeadings').checked || document.getElementById('boldNumbers').checked)) {
@@ -616,9 +662,11 @@
                 $("#header-left").prop("checked",true).trigger("click");
                 $("#header-center-button").hide();
                 $("#useHeaderWidth").show();
+                $('#additional-header').show();
             } else {
                 $("#header-center-button").show();
                 $("#useHeaderWidth").hide();
+                $('#additional-header').hide();
 
             }
         });
@@ -626,11 +674,424 @@
         $('#useSubheader').change( function() {
             if ($('#useSubheader').is(':checked')) {
                 $("#subheader-font-size").show();
+                $("#subheader").show();
             } else {
                 $("#subheader-font-size").hide();
+                $("#subheader").hide();
 
             }
         });
+
+        $('#useLogo').change( function() {
+            if ($('#useLogo').is(':checked')) {
+                $("#add-logo").show();
+            } else {
+                $("#add-logo").hide();
+
+            }
+        });
+
+        $('#useCopyright').change( function() {
+            if ($('#useCopyright').is(':checked')) {
+                $("#copyright").show();
+            } else {
+                $("#copyright").hide();
+
+            }
+        });
+
+
+        function saveOptions() {
+
+            // write to localStorage
+
+            // header content
+            if ($('#header-center').is(':checked')) {
+                window.localStorage.setItem('header-center','true');
+            } else {
+                window.localStorage.setItem('header-center','false');
+            }
+
+            window.localStorage.setItem('headerText',$('#headerText').val());
+
+
+            if (!$('#useHeader2').is(':checked')) {
+                window.localStorage.setItem('useHeader2','false');
+            } else {
+                window.localStorage.setItem('useHeader2','true');
+            }
+
+            if ($('#header2-left').is(':checked')) {
+                window.localStorage.setItem('header2-left','true');
+            } else {
+                window.localStorage.setItem('header2-left','false');
+            }
+
+            if ($('#header2-top').is(':checked')) {
+                window.localStorage.setItem('header2-top','true');
+            } else {
+                window.localStorage.setItem('header2-top','false');
+            }
+
+            if ($('#header2-middle').is(':checked')) {
+                window.localStorage.setItem('header2-middle','true');
+            } else {
+                window.localStorage.setItem('header2-middle','false');
+            }
+
+            window.localStorage.setItem('headerText2',$('#headerText2').val());
+
+
+            if ($('#useSubheader').is(':checked')) {
+                window.localStorage.setItem('useSubheader','true');
+            } else {
+                window.localStorage.setItem('useSubheader','false');
+            }
+
+            if ($('#subheader-center').is(':checked')) {
+                window.localStorage.setItem('subheader-center','true');
+            } else {
+                window.localStorage.setItem('subheader-center','false');
+            }
+            
+            if ($('#subheader-right').is(':checked')) {
+                window.localStorage.setItem('subheader-right','true');
+            } else {
+                window.localStorage.setItem('subheader-right','false');
+            }
+
+            window.localStorage.setItem('subheaderText',$('#subheaderText').val());
+
+
+            // add image
+            if ($('#useLogo').is(':checked')) {
+                window.localStorage.setItem('useLogo','true');
+
+                if (logo) {
+                    window.localStorage.setItem('logo', logo);
+                }
+
+            } else {
+                window.localStorage.setItem('useLogo','false');
+            }
+
+            window.localStorage.setItem('logoX',$('#logoX').val());
+            window.localStorage.setItem('logoY',$('#logoY').val());
+            window.localStorage.setItem('logoS',$('#logoS').val());
+            
+            // basic options
+            window.localStorage.setItem('hFontSize',$('#hFontSize').val());
+            window.localStorage.setItem('h2FontSize',$('#h2FontSize').val());
+            window.localStorage.setItem('sFontSize',$('#sFontSize').val());
+            window.localStorage.setItem('cFontSize',$('#cFontSize').val());
+            window.localStorage.setItem('columns',$('#columns').val());
+
+
+            if (!$('#useCopyright').is(':checked')) {
+                window.localStorage.setItem('useCopyright','false');
+            }
+
+            if ($('#grid_br').is(':checked')) {
+                window.localStorage.setItem('grid_br','true');
+            }
+
+            if ($('#gray').is(':checked')) {
+                window.localStorage.setItem('gray','true');
+            }
+            
+            if ($('#shade').is(':checked')) {
+                window.localStorage.setItem('shade','true');
+            }
+
+            if ($('#solution').is(':checked')) {
+                window.localStorage.setItem('solution','true');
+            }
+
+            // advanced settings -- margins
+
+            window.localStorage.setItem('marginSize',$('#marginSize').val());
+            window.localStorage.setItem('bottommarginSize',$('#bottommarginSize').val());
+            window.localStorage.setItem('sidemarginSize',$('#sidemarginSize').val());
+            window.localStorage.setItem('headerWidth',$('#headerWidth').val());
+
+
+            // advanced settings -- padding
+
+            window.localStorage.setItem('hsPadding',$('#hsPadding').val());
+            window.localStorage.setItem('hbPadding',$('#hbPadding').val());
+            window.localStorage.setItem('hlPadding',$('#hlPadding').val());
+            window.localStorage.setItem('slPadding',$('#slPadding').val());
+            window.localStorage.setItem('gridPadding',$('#gridPadding').val());
+            window.localStorage.setItem('columnPadding',$('#columnPadding').val());
+
+            // advanced settings -- fonts
+
+            if ($('#useCustom').is(':checked')) {
+                window.localStorage.setItem('useCustom','true');
+
+                if (myFont.length > 0) {
+                    window.localStorage.setItem('myFont', myFont);
+                }
+            }
+
+            window.localStorage.setItem('headerFont',$('#headerFont').val());
+            window.localStorage.setItem('gridFont',$('#gridFont').val());
+            window.localStorage.setItem('clueFont',$('#clueFont').val());
+
+
+            // advanced settings -- grid
+
+            window.localStorage.setItem('numberSize',$('#numberSize').val());
+            window.localStorage.setItem('lineWidth',$('#lineWidth').val());
+            window.localStorage.setItem('borderWidth',$('#borderWidth').val());
+            
+            // advanced settings -- clues
+
+            window.localStorage.setItem('interSpacing',$('#interSpacing').val());
+
+            if (!$('#boldHeadings').is(':checked')) {
+                window.localStorage.setItem('boldHeadings','false');
+            }
+
+            if (!$('#boldNumbers').is(':checked')) {
+                window.localStorage.setItem('boldNumbers','false');
+            }
+
+
+        } 
+
+        function loadOptions() {
+                
+            // -- retrieve from storage --
+
+            // header content
+
+            if (window.localStorage.getItem('headerText')) {
+                $('#headerText').val(window.localStorage.getItem('headerText'));
+            }
+
+            if (window.localStorage.getItem('useHeader2')=='false') {
+                $('#useHeader2').prop("checked",false);
+                $("#header-center-button").show();
+                $("#useHeaderWidth").hide();
+                $("#additional-header").hide();
+
+                if (window.localStorage.getItem('header-center')=='true') {
+                    $('#header-center').prop("checked",true);
+                    $('#header-left-button').removeClass('active');
+                    $('#header-center-button').addClass('active');
+                } 
+            }
+
+            if (window.localStorage.getItem('header2-left')=='true') {
+                    $('#header2-left').prop("checked",true);
+                    $('#header2-right-button').removeClass('active');
+                    $('#header2-left-button').addClass('active');
+            } 
+
+            if (window.localStorage.getItem('header2-top')=='true') {
+                    $('#header2-top').prop("checked",true);
+                    $('#header2-bottom-button').removeClass('active');
+                    $('#header2-top-button').addClass('active');
+            } 
+
+            if (window.localStorage.getItem('header2-middle')=='true') {
+                    $('#header2-middle').prop("checked",true);
+                    $('#header2-bottom-button').removeClass('active');
+                    $('#header2-middle-button').addClass('active');
+            } 
+            
+            if (window.localStorage.getItem('headerText2')) {
+                $('#headerText2').val(window.localStorage.getItem('headerText2'));
+            }
+
+            if (window.localStorage.getItem('useSubheader')=='true') {
+                $('#useSubheader').prop("checked",true);
+                $('#subheader').show();
+            }
+
+            if (window.localStorage.getItem('subheader-center')=='true') {
+                $('#subheader-center').prop("checked",true);
+                $('#subheader-left-button').removeClass('active');
+                $('#subheader-center-button').addClass('active');
+            }
+
+            if (window.localStorage.getItem('subheader-right')=='true') {
+                $('#subheader-right').prop("checked",true);
+                $('#subheader-left-button').removeClass('active');
+                $('#subheader-right-button').addClass('active');
+            }
+
+            if (window.localStorage.getItem('subheaderText')) {
+                $('#subheaderText').val(window.localStorage.getItem('subheaderText'));
+            }
+
+            // add image
+
+            if (window.localStorage.getItem('useLogo')=='true') {
+                $('#useLogo').prop("checked",true);
+                $('#add-logo').show();
+
+                if (window.localStorage.getItem('logo')) {
+                    logo = window.localStorage.getItem('logo');
+                }
+
+            }
+
+            if ((window.localStorage.getItem('logoX') != '36') && (window.localStorage.getItem('logoX') != null)) {
+                $('#logoX').val(window.localStorage.getItem('logoX'));
+            }       
+            
+            if ((window.localStorage.getItem('logoY') != '36') && (window.localStorage.getItem('logoY') != null)) {
+                $('#logoY').val(window.localStorage.getItem('logoY'));
+            }     
+
+            if ((window.localStorage.getItem('logoS') != '100') && (window.localStorage.getItem('logoS') != null)) {
+                $('#logoS').val(window.localStorage.getItem('logoS'));
+            }     
+
+
+
+            // basic options
+            if (window.localStorage.getItem('hFontSize')) {
+                $('#hFontSize').val(window.localStorage.getItem('hFontSize'));
+            }
+                
+            if (window.localStorage.getItem('h2FontSize')) {
+                $('#h2FontSize').val(window.localStorage.getItem('h2FontSize'));
+            }
+
+            if (window.localStorage.getItem('sFontSize')) {
+                $('#sFontSize').val(window.localStorage.getItem('sFontSize'));
+            }
+            
+            if (window.localStorage.getItem('cFontSize')) {
+                $('#cFontSize').val(window.localStorage.getItem('cFontSize'));
+            }
+
+            if (window.localStorage.getItem('columns')) {
+                $('#columns').val(window.localStorage.getItem('columns'));
+            }
+
+            if (window.localStorage.getItem('useCopyright') == 'false') {
+                $('#useCopyright').prop("checked",false);
+            }
+
+            if (window.localStorage.getItem('grid_br') == 'true') {
+                $('#grid_br').prop("checked",true);
+            }
+
+            if (window.localStorage.getItem('gray') == 'true') {
+                $('#gray').prop("checked",true);
+            }
+
+            if (window.localStorage.getItem('shade') == 'true') {
+                $('#shade').prop("checked",true);
+            }
+
+            if (window.localStorage.getItem('solution') == 'true') {
+                $('#solution').prop("checked",true);
+            }
+
+            
+            // advanced settings -- margins
+
+            if (window.localStorage.getItem('marginSize')) {
+                $('#marginSize').val(window.localStorage.getItem('marginSize'));
+            }
+
+            if (window.localStorage.getItem('bottommarginSize')) {
+                $('#bottommarginSize').val(window.localStorage.getItem('bottommarginSize'));
+            }
+
+            if (window.localStorage.getItem('sidemarginSize')) {
+                $('#sidemarginSize').val(window.localStorage.getItem('sidemarginSize'));
+            }
+
+            if (window.localStorage.getItem('headerWidth')) {
+                $('#headerWidth').val(window.localStorage.getItem('headerWidth'));
+            }
+
+            // advanced settings -- padding
+
+            if (window.localStorage.getItem('hsPadding')) {
+                $('#hsPadding').val(window.localStorage.getItem('hsPadding'));
+            }
+
+            if (window.localStorage.getItem('hbPadding')) {
+                $('#hbPadding').val(window.localStorage.getItem('hbPadding'));
+            }
+
+            if (window.localStorage.getItem('hlPadding')) {
+                $('#hlPadding').val(window.localStorage.getItem('hlPadding'));
+            }
+
+            if (window.localStorage.getItem('slPadding')) {
+                $('#slPadding').val(window.localStorage.getItem('slPadding'));
+            }
+
+            if (window.localStorage.getItem('gridPadding')) {
+                $('#gridPadding').val(window.localStorage.getItem('gridPadding'));
+            }
+
+            if (window.localStorage.getItem('columnPadding')) {
+                $('#columnPadding').val(window.localStorage.getItem('columnPadding'));
+            }
+
+            // advanced settings -- fonts
+
+            if (window.localStorage.getItem('useCustom') == 'true') {
+                $('#useCustom').prop("checked",true);
+                $('.c').show();
+                $('#headerFont option[value="myFont"]').prop('selected',true);
+
+                if (window.localStorage.getItem('myFont')) {
+                    myFont = window.localStorage.getItem('myFont');
+                }
+
+            }       
+
+            if (window.localStorage.getItem('headerFont')) {
+                $('#headerFont').val(window.localStorage.getItem('headerFont'));
+            }
+
+            if (window.localStorage.getItem('gridFont')) {
+                $('#gridFont').val(window.localStorage.getItem('gridFont'));
+            }
+
+            if (window.localStorage.getItem('clueFont')) {
+                $('#clueFont').val(window.localStorage.getItem('clueFont'));
+            }
+
+            // advanced settings -- grid
+
+            if (window.localStorage.getItem('numberSize')) {
+                $('#numberSize').val(window.localStorage.getItem('numberSize'));
+            }
+
+            if (window.localStorage.getItem('lineWidth')) {
+                $('#lineWidth').val(window.localStorage.getItem('lineWidth'));
+            }
+
+            if (window.localStorage.getItem('borderWidth')) {
+                $('#borderWidth').val(window.localStorage.getItem('borderWidth'));
+            }
+
+            // advanced settings -- clues
+
+            if (window.localStorage.getItem('interSpacing')) {
+                $('#interSpacing').val(window.localStorage.getItem('interSpacing'));
+            }
+
+            if (window.localStorage.getItem('boldHeadings') == 'false') {
+                $('#boldHeadings').prop("checked",false);
+            }
+
+            if (window.localStorage.getItem('boldNumbers') == 'false') {
+                $('#boldNumbers').prop("checked",false);
+            }
+
+        }
 
 
         function handleFileSelect(evt) {
