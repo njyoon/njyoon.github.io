@@ -470,6 +470,9 @@ function puzdata_to_pdf(puzdata,options) {
         } else if (options.columns == "6") {
             options.num_columns = 6;
             options.num_full_columns = 2; 
+        } else if (options.columns == "new") {
+            options.num_columns = 6;
+            options.num_full_columns = 6;
         } else {
             options.num_columns = 5;
             options.num_full_columns = 2; 
@@ -666,6 +669,8 @@ function puzdata_to_pdf(puzdata,options) {
     // If only two columns, grid size is limited
     if (options.num_columns == 2) {
         grid_width = 30*puzdata.width;
+    } else if (options.columns == "new") {
+        grid_width = DOC_WIDTH - 2 * side_margin;
     }
 
     var grid_height = (grid_width / puzdata.width) * puzdata.height;
@@ -987,6 +992,34 @@ function puzdata_to_pdf(puzdata,options) {
         doc.text(subheader_xpos,subheader_ypos,subheader_text,{align: subheader_align, baseline: baseline});
     }
   
+    if (options.columns == "new") {
+        doc.addPage();
+        
+        /* Render header */
+        if (options.my_font.length > 0) {
+            doc.addFileToVFS("MyFont.ttf", options.my_font);
+            doc.addFont("MyFont.ttf", "myFont","bold");
+            //console.log("Font Added");
+        }
+        doc.setFontSize(options.header_pt);
+        doc.setFont(options.header_font,'bold');
+        doc.text(title_xpos,title_ypos,title,{align: xalign, baseline: baseline});
+
+        /* Render right-header */
+
+        if (options.right_header) {
+            doc.setFontSize(options.header2_pt);
+            doc.text(author_xpos,author_ypos,author,{align: author_align, baseline: baseline});
+        }
+
+        /* Render subheader */
+
+        if (options.subheader && subheader_text) {
+            doc.setFontSize(options.subheader_pt);
+            doc.text(subheader_xpos,subheader_ypos,subheader_text,{align: subheader_align, baseline: baseline});
+        }
+
+    }
     
 
     /* Render copyright */
