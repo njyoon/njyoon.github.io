@@ -991,9 +991,17 @@ function puzdata_to_pdf(puzdata,options) {
         doc.setFontSize(options.subheader_pt);
         doc.text(subheader_xpos,subheader_ypos,subheader_text,{align: subheader_align, baseline: baseline});
     }
+
+    /* Add headers to new page */
   
     if (options.columns == "new") {
         doc.addPage();
+
+        /* Render logo if there is one*/
+        if (options.logo) {
+            const imgProps = doc.getImageProperties(options.logo);
+            doc.addImage(options.logo, options.logoX, options.logoY,options.logoS*imgProps.width,options.logoS*imgProps.height);
+        }
         
         /* Render header */
         if (options.my_font.length > 0) {
@@ -1018,6 +1026,8 @@ function puzdata_to_pdf(puzdata,options) {
             doc.setFontSize(options.subheader_pt);
             doc.text(subheader_xpos,subheader_ypos,subheader_text,{align: subheader_align, baseline: baseline});
         }
+
+
 
     }
     
@@ -1086,7 +1096,7 @@ function puzdata_to_pdf(puzdata,options) {
     }
 
     if (options.columns == "new") {
-    doc.movePage(2,1);
+        doc.movePage(2,1);
     }
     
     if (options.output=='preview') {
