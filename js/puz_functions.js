@@ -1085,7 +1085,9 @@ function puzdata_to_pdf(puzdata,options) {
         doc.rect(grid_xpos-options.border_width/2,grid_ypos-options.border_width/2,grid_width+options.border_width,(grid_width*puzdata.height/puzdata.width)+options.border_width);
     }
 
+    if (options.columns == "new") {
     doc.movePage(2,1);
+    }
     
     if (options.output=='preview') {
         PDFObject.embed(doc.output("bloburl"), "#example1");
