@@ -309,6 +309,11 @@
                                     </div>   
 
                                     <div class="custom-control custom-switch pt-2">
+                                        <input type="checkbox" class="custom-control-input" id="grid_bl">
+                                        <label class="custom-control-label" for="grid_bl">Align Grid to Bottom-Left</label>
+                                    </div>   
+
+                                    <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="gray">
                                         <label class="custom-control-label" for="gray">Inksaver Mode</label>
                                     </div>
@@ -798,6 +803,10 @@
                 window.localStorage.setItem('grid_br','true');
             }
 
+            if ($('#grid_bl').is(':checked')) {
+                window.localStorage.setItem('grid_bl','true');
+            }
+
             if ($('#gray').is(':checked')) {
                 window.localStorage.setItem('gray','true');
             }
@@ -986,6 +995,10 @@
                 $('#grid_br').prop("checked",true);
             }
 
+            if (window.localStorage.getItem('grid_bl') == 'true') {
+                $('#grid_bl').prop("checked",true);
+            }
+
             if (window.localStorage.getItem('gray') == 'true') {
                 $('#gray').prop("checked",true);
             }
@@ -1147,6 +1160,10 @@
 
             if (document.getElementById('grid_br').checked) {
                 grid_placement = 'bottom';
+            }
+
+            if (document.getElementById('grid_bl').checked) {
+                grid_placement = 'left';
             }
             
             if (document.getElementById('header-center').checked) {

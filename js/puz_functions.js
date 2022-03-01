@@ -677,6 +677,10 @@ function puzdata_to_pdf(puzdata,options) {
     // x and y position of grid
     var grid_xpos = DOC_WIDTH - side_margin - grid_width;
 
+    if (options.grid_placement == "left") {
+        grid_xpos = side_margin;
+    }
+
     // If only two columns, grid size is limited
     if (options.num_columns == 2) {
         grid_xpos = (DOC_WIDTH-grid_width)/2;
@@ -730,6 +734,14 @@ function puzdata_to_pdf(puzdata,options) {
                     max_line_ypos = DOC_HEIGHT - bottom_margin - options.copyright_pt;
                 } else {
                     max_line_ypos = grid_ypos - options.grid_padding;
+                } 
+    
+                if (options.grid_placement == "left") {
+                    if (my_column < (options.num_columns - options.num_full_columns)) {
+                        max_line_ypos = grid_ypos - options.grid_padding;
+                    } else {
+                        max_line_ypos = DOC_HEIGHT - bottom_margin - options.copyright_pt;
+                    }                
                 } 
                 
                 // Split our clue
@@ -884,6 +896,14 @@ function puzdata_to_pdf(puzdata,options) {
                 max_line_ypos = DOC_HEIGHT - bottom_margin - options.copyright_pt;
             } else {
                 max_line_ypos = grid_ypos - options.grid_padding;
+            } 
+
+            if (options.grid_placement == "left") {
+                if (my_column < (options.num_columns - options.num_full_columns)) {
+                    max_line_ypos = grid_ypos - options.grid_padding;
+                } else {
+                    max_line_ypos = DOC_HEIGHT - bottom_margin - options.copyright_pt;
+                }                
             } 
             
             // Split our clue
@@ -1049,8 +1069,14 @@ function puzdata_to_pdf(puzdata,options) {
 
         copyright_text = doc.splitTextToSize(copyright_text, grid_width);
 
+        var copyright_xpos;
 
-        var copyright_xpos = grid_xpos + grid_width;   
+        if (options.grid_placement=='left'){
+        copyright_xpos = (side_margin + grid_width);
+        } else {
+        copyright_xpos = grid_xpos + grid_width;   
+        }
+
         var copyright_ypos;
         if (options.grid_placement=='top') {
             copyright_ypos = (margin + header_height + grid_height + options.border_width + options.copyright_pt + 3);  
