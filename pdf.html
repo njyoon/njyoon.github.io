@@ -1253,7 +1253,9 @@
                     r.onload = (function(theFile) {
                         return function(e) { 
                             var contents = e.target.result;     
-                            var puzdata = PUZAPP.parsepuz(contents);
+                            //var puzdata = PUZAPP.parsepuz(contents);
+                            var xw_constructor = new JSCrossword();
+                            var puzdata = xw_constructor.fromData(contents);
                             var options = {outfile: outname, header_text: header_text, header2_text: header2_text, header_align: header_align, header2_align: header2_align, y_align: y_align, gray: gray, output: evt, number_pct: number, margin: margin, side_margin: side_margin, bottom_margin: bottom_margin, max_clue_pt: clue_entry_pt, header_pt: header_pt, header2_pt: header2_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, column_padding: column_padding, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, bold_font: boldFont, header_font: header_font, grid_font: grid_font, clue_font: clue_font, right_header: right_header, subheader: subheader, subheader_text: subheader_text, subheader_pt: subheader_pt, subheader_align: subheader_align, copyright: copyright, copyright_text: copyright_text, subheader_mt: subheader_mt, under_title_spacing: under_title_padding, header_width: header_width, columns:columns, grid_placement: grid_placement, solution: solution, logo: logo, logoX: logoX, logoY: logoY, logoS:logoS, header_indent: header_indent, subheader_indent: subheader_indent};
                             puzdata_to_pdf(puzdata,options);
                         };

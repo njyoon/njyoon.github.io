@@ -590,7 +590,9 @@
                     r.onload = (function(theFile) {
                         return function(e) { 
                             var contents = e.target.result;     
-                            var puzdata = PUZAPP.parsepuz(contents);
+                            //var puzdata = PUZAPP.parsepuz(contents);
+                            var xw_constructor = new JSCrossword();
+                            var puzdata = xw_constructor.fromData(contents);
                             var options = {outfile: outname, address: address, gray: gray, wc: wc, pages: pages, coconstructor: coconstructor, output: evt, grid_size: grid, letter_pct: letter, number_pct: number, margin: margin, clue_entry_pt: clue_entry_pt, header_pt: header_pt, grid_padding: grid_padding, line_width: line_width, border_width: border_width, entry_left_padding: entry_left_padding, clue_width: clue_width, clue_spacing:clue_spacing, heading_style: heading_style, number_style: number_style, shade: shade, my_font: myFont, my_font2: myFont2, bold_font: boldFont, bold_font2: boldFont2, header_font: header_font, grid_font: grid_font, clue_font: clue_font};
                             puzdata_to_nyt(puzdata,options);
                         };
