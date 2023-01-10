@@ -130,7 +130,7 @@
             <div class="col-12 col-lg-9"><h1>Crossword PDF Editor</h1></div>
             <div class="d-none d-lg-block col-lg-3"><a type="button" href="nyt" class="btn btn-outline-danger rounded-pill shadow-none nyt float-right"><b>NYT Submission Editor</b></a></div>
         </div>
-        <h4 class="pt-1 pb-1">This tool adds some additional editing options to Crossword Nexus's <a href="https://crosswordnexus.com/apps/puz-to-pdf/">PUZ to PDF Converter</a>.  To get started, just select a .puz file and click "Preview PDF".  Limited documentation available <a href="https://github.com/njyoon/njyoon.github.io#readme">here.</a></h4>
+        <h4 class="pt-1 pb-1">This tool adds some additional editing options to Crossword Nexus's <a href="https://crosswordnexus.com/apps/puz-to-pdf/">PUZ to PDF Converter</a>.  To get started, just select a puzzle file and click "Preview PDF".  Limited documentation available <a href="https://github.com/njyoon/njyoon.github.io#readme">here.</a></h4>
       <hr>
       <div class="row pt-1 pb-5">
 
@@ -149,8 +149,8 @@
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionMain">
                                 <div class="card-body mx-2 px-4 pt-3 pb-2">
                                     <div class="form-group">   
-                                        <label for="files">Select your .puz file to export as a PDF:</label>
-                                        <input type="file" accept='.puz' class="form-control-file" id="files" name="files">
+                                        <label for="files">Select your puzzle file to export as a PDF:</label>
+                                        <input type="file" accept=".puz,.xml,.jpz,.xpz,.ipuz" class="form-control-file" id="files" name="files">
                                     </div>  
                                 </div>
                             </div>
@@ -1233,7 +1233,7 @@
             var files = document.getElementById('files').files; // FileList object
             
             if (!files[0]) {
-                alert('Please choose a .puz file.');
+                alert('Please choose a puzzle file.');
                 return;    
             }
 

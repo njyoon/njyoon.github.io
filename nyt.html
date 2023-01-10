@@ -132,7 +132,7 @@
             <div class="col-12 col-lg-9"><h1>NYT Submission Editor</h1></div>
             <div class="d-none d-lg-block col-lg-3"><a type="button" href="pdf" class="btn btn-info-danger rounded-pill shadow-none pdf float-right"><b>Crossword PDF Editor</b></a></div>
         </div>
-      <h4 class="pt-1 pb-1">This tool adds some additional editing options to Crossword Nexus's <a href="https://crosswordnexus.com/apps/puz-to-nyt/">PUZ to NYT Converter</a>. The submission format is based on the <a href="https://www.nytimes.com/puzzles/submissions/crossword">New York Times's construction guidelines</a>. To get started, select a .puz file, add your header content, and click "Preview PDF".</h4>
+      <h4 class="pt-1 pb-1">This tool adds some additional editing options to Crossword Nexus's <a href="https://crosswordnexus.com/apps/puz-to-nyt/">PUZ to NYT Converter</a>. The submission format is based on the <a href="https://www.nytimes.com/puzzles/submissions/crossword">New York Times's construction guidelines</a>. To get started, select a puzzle file, add your header content, and click "Preview PDF".</h4>
       <hr>
       <div class="row pt-1 pb-5">
 
@@ -154,8 +154,8 @@
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionMain">
                                 <div class="card-body mx-2 px-4 pt-3 pb-2">
                                     <div class="form-group">   
-                                        <label for="files">Select your .puz file to export as a PDF:</label>
-                                        <input type="file" accept='.puz' class="form-control-file" id="files" name="files">
+                                        <label for="files">Select your puzzle file to export as a PDF:</label>
+                                        <input type="file" accept=".puz,.xml,.jpz,.xpz,.ipuz" class="form-control-file" id="files" name="files">
                                     </div>  
                                 </div>
                             </div>
@@ -570,7 +570,7 @@
             var files = document.getElementById('files').files; // FileList object
             
             if (!files[0]) {
-                alert('Please choose a .puz file.');
+                alert('Please choose a puzzle file.');
                 return;    
             }
 
