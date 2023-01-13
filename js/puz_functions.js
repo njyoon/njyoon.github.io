@@ -44,7 +44,8 @@ const printCharacters = (doc, textObject, startY, startX, fontSize, font) => {
     }
 
     if (typeof(textObject) == 'string') {
-        var myText = ASCIIFolder.foldReplacing(textObject, '*')
+        //var myText = ASCIIFolder.foldReplacing(textObject, '*')
+        var myText = textObject;
         doc.text(startX, startY, myText);
     }
     else {
@@ -714,7 +715,8 @@ function puzdata_to_pdf(xw, options) {
     if (options.my_font.length > 0) {
         doc.addFileToVFS("MyFont.ttf", options.my_font);
         doc.addFont("MyFont.ttf", "myFont","bold");
-        //console.log("Font Added");
+        doc.addFont("MyFont.ttf", "myFont","italic");
+        console.log(`Font {options.my_font} Added`);
     }
 
     doc.setFontSize(options.header_pt);
@@ -842,9 +844,7 @@ function puzdata_to_pdf(xw, options) {
             var num = e.number;
             var clue = e.text;
             
-            // TODO: for now we are just stripping HTML tags
-            // In the future we may want to allow for bold and italics
-            var this_clue_string = strip_html(clue);
+            var this_clue_string = clue;
             if (i==0) {
                 these_clues.push(xw.clues[j].title + '\n' + this_clue_string);
             }
@@ -949,8 +949,7 @@ function puzdata_to_pdf(xw, options) {
                 } 
                 
                 // Split our clue
-                var lines = doc.splitTextToSize(clue,col_width-(num_margin+line_margin));
-
+                var lines = split_text_to_size_bi(clue, col_width - (num_margin + line_margin), doc, options.clue_font, i==0);
                                 
                 if ((line_ypos + ((lines.length - 1) * (clue_pt + line_padding)))> max_line_ypos) {
                     // move to new column
@@ -1110,11 +1109,10 @@ function puzdata_to_pdf(xw, options) {
             } 
             
             // Split our clue
-            var lines = doc.splitTextToSize(clue,col_width-(num_margin + line_margin));
+            var lines = split_text_to_size_bi(clue, col_width - (num_margin + line_margin), doc, options.clue_font, i==0);
             
             if (!manual_spacing && (((line_ypos + ((lines.length - 1) * (clue_pt + line_padding)))> max_line_ypos+.001) || (!lines[0] && skip_column))) {
                 // move to new column
-                //console.log(line_ypos);
                 //console.log(max_line_ypos);
                 my_column += 1;
                 num_xpos = side_margin + num_margin + my_column * (col_width + options.column_padding);
@@ -1170,13 +1168,17 @@ function puzdata_to_pdf(xw, options) {
                     doc.text(num_xpos,line_ypos,num, null, null, "right");
                 } else {
                     
-                    if (j==0) {                             
+                    if (j==0) {  
+                        // when j == 0 we print the number
                         doc.setFont(options.clue_font,options.number_style);
+                        console.log(num_xpos,line_ypos,num);
+                        console.log(line);
                         doc.text(num_xpos,line_ypos,num, null, null, "right");
                     }
-
+                    // Print the clue
                     doc.setFont(options.clue_font,'normal'); 
-                    doc.text(line_xpos,line_ypos,line);
+                    //doc.text(line_xpos,line_ypos,line);
+                    printCharacters(doc, line, line_ypos, line_xpos, clue_pt, options.clue_font);
                     line_ypos += clue_pt + line_padding;
                 }
 
