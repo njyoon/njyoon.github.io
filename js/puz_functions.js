@@ -18,6 +18,119 @@ function strip_html(s) {
     return text;
 }
 
+/** Helper functions for splitting text with tags **/
+function traverseTree(htmlDoc, agg=[]) {
+    if (htmlDoc.nodeName == '#text') {
+        // if we have a text element we can add it
+        var thisTag = htmlDoc.parentNode.tagName;
+        var is_bold = (thisTag == 'B');
+        var is_italic = (thisTag == 'I');
+        var textContent = htmlDoc.textContent;
+        textContent.replace(/\s+/g, ' ');
+        htmlDoc.textContent.split('').forEach(char => {
+            agg.push({'char': char, 'is_bold': is_bold, 'is_italic': is_italic});
+        });
+    }
+    for (var i=0; i<htmlDoc.childNodes.length; i++) {
+        agg = traverseTree(htmlDoc.childNodes[i], agg=agg);
+    }
+    return agg;
+}
+
+/* Print a line of text that may be bolded or italicized */
+const printCharacters = (doc, textObject, startY, startX, fontSize, font) => {
+    if (!textObject.length) {
+        return;
+    }
+
+    if (typeof(textObject) == 'string') {
+        var myText = ASCIIFolder.foldReplacing(textObject, '*')
+        doc.text(startX, startY, myText);
+    }
+    else {
+        textObject.map(row => {
+            if (row.is_bold) {
+                doc.setFont(font, 'bold');
+            }
+            else if (row.is_italic) {
+                doc.setFont(font, 'italic');
+            }
+            else {
+                doc.setFont(font, 'normal');
+            }
+
+            // Some characters don't render properly in PDFs
+            // TODO: replace them using the mapping above
+            var mychar = row.char;
+            //mychar = ASCIIFolder.foldReplacing(mychar, '*');
+            doc.text(mychar, startX, startY);
+            startX = startX + doc.getStringUnitWidth(row.char) * fontSize;
+            doc.setFont(font, 'normal');
+        });
+    }
+};
+
+/* helper function for bold and italic clues */
+function split_text_to_size_bi(clue, col_width, doc, font, has_header=false) {
+    // get the clue with HTML stripped out
+    var el = document.createElement( 'html' );
+    el.innerHTML = clue;
+    var clean_clue = el.innerText;
+
+    // split the clue
+    var lines1 = doc.splitTextToSize(clean_clue, col_width);
+
+    // if there's no <B> or <I> in the clue just return lines1
+    if (clue.toUpperCase().indexOf('<B') == -1 && clue.toUpperCase().indexOf('<I') == -1) {
+        return lines1;
+    }
+    
+    // Check if there's a "header"
+    // if so, track the header, and separate out the clue
+    var header_line = null;
+    if (has_header) {
+        var clue_split = clue.split('\n');
+        header_line = clue_split[0];
+        clue = clue_split.slice(1).join('\n');
+        el.innerHTML = clue;
+        clean_clue = el.innerText;
+    }
+
+    // parse the clue into a tree
+    var myClueArr = [];
+    var parser = new DOMParser();
+    var htmlDoc = parser.parseFromString(clue, 'text/html');
+    var split_clue = traverseTree(htmlDoc);
+
+    // Make a new "lines1" with all bold splits
+    doc.setFont(font, 'bold');
+    lines1 = doc.splitTextToSize(clean_clue, col_width);
+    doc.setFont(font, 'normal');
+
+    // split this like we did the "lines1"
+    var lines = [];
+    var ctr = 0;
+    // Characters to skip
+    const SPLIT_CHARS = new Set([' ', '\t', '\n']);
+    lines1.forEach(line => {
+        var thisLine = [];
+        var myLen = line.length;
+        for (var i=0; i < myLen; i++) {
+            thisLine.push(split_clue[ctr++]);
+        }
+        if (split_clue[ctr]) {
+            if (SPLIT_CHARS.has(split_clue[ctr].char)) {
+                ctr = ctr + 1;
+            }
+        }
+        lines.push(thisLine);
+    });
+    if (has_header) {
+        lines = [header_line].concat(lines);
+    }
+    return lines;
+}
+
 /** Draw a crossword grid (requires jsPDF) **/
 function draw_crossword_grid(doc, xw, options)
 {
