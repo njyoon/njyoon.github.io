@@ -522,18 +522,33 @@ function puzdata_to_pdf(xw, options) {
     // If columns are not manually selected, choose number
     if (options.columns=="auto")
     {
-        if (xw.metadata.height >= 17) {
+        var xw_height = xw.metadata.height;
+        var xw_width = xw.metadata.width;
+        var clue_length = xw.clues.map(x=>x.clue).flat().map(x=>x.text).join('').length;
+        if (xw_height > 2 * xw_width) {
+            options.num_columns = 5;
+            options.num_full_columns = 3;
+        }
+        // handle puzzles with very few words
+        else if (clue_length <= 1000) {
+            options.num_columns = Math.ceil(clue_length/400);
+            options.num_full_columns = 0;
+        }
+        else if (xw_height >= 17) {
             options.num_columns = 6;
             options.num_full_columns = 2;
-        } else if (xw.metadata.height < 14 && xw.metadata.height >= 9) {
-            options.num_columns = 3;
+        }
+        else if (xw_width > 17) {
+            options.num_columns = 4;
             options.num_full_columns = 1;
-        } else if (xw.metadata.height < 10) {
-            options.num_columns = 2;
-            options.num_full_columns = 0;
-        } else {
+        }
+        else if (clue_length >= 1600) {
             options.num_columns = 5;
             options.num_full_columns = 2;
+        }
+        else {
+            options.num_columns = 3;
+            options.num_full_columns = 1;
         }
     } else {
         if (options.columns == "2") {
