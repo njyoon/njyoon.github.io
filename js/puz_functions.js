@@ -633,12 +633,14 @@ function puzdata_to_pdf(xw, options) {
     // If there's no filename, just call it puz.pdf
     if (!options.outfile) options.outfile = 'puz.pdf';
     
+    // length of clues
+    var clue_length = xw.clues.map(x=>x.clue).flat().map(x=>x.text).join('').length;
+    
     // If columns are not manually selected, choose number
     if (options.columns=="auto")
     {
         var xw_height = xw.metadata.height;
         var xw_width = xw.metadata.width;
-        var clue_length = xw.clues.map(x=>x.clue).flat().map(x=>x.text).join('').length;
         if (xw_height > 2 * xw_width) {
             options.num_columns = 5;
             options.num_full_columns = 3;
@@ -678,8 +680,9 @@ function puzdata_to_pdf(xw, options) {
             options.num_columns = 6;
             options.num_full_columns = 2; 
         } else if (options.columns == "new") {
-            options.num_columns = 6;
-            options.num_full_columns = 6;
+            var numCols = Math.min(Math.ceil(clue_length/800), 5);
+            options.num_columns = numCols;
+            options.num_full_columns = numCols;
         } else {
             options.num_columns = 5;
             options.num_full_columns = 2; 
@@ -869,9 +872,7 @@ function puzdata_to_pdf(xw, options) {
     var grid_width = DOC_WIDTH - 2 * side_margin - options.num_full_columns * (col_width + options.column_padding);
 
     // If only two columns, grid size is limited
-    if (options.num_columns == 2) {
-        grid_width = 30*xw.metadata.width;
-    } else if (options.columns == "new") {
+    if (options.columns == "new" || options.num_columns == 2) {
         grid_width = DOC_WIDTH - 2 * side_margin;
     }
 
@@ -884,7 +885,7 @@ function puzdata_to_pdf(xw, options) {
     }
 
     // If only two columns, grid size is limited
-    if (options.num_columns == 2) {
+    if (options.num_columns == 2 || options.columns == "new") {
         grid_xpos = (DOC_WIDTH-grid_width)/2;
     }
     var grid_ypos = DOC_HEIGHT - bottom_margin - grid_height - options.copyright_pt;
@@ -1171,8 +1172,6 @@ function puzdata_to_pdf(xw, options) {
                     if (j==0) {  
                         // when j == 0 we print the number
                         doc.setFont(options.clue_font,options.number_style);
-                        console.log(num_xpos,line_ypos,num);
-                        console.log(line);
                         doc.text(num_xpos,line_ypos,num, null, null, "right");
                     }
                     // Print the clue
