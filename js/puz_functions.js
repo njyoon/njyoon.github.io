@@ -493,7 +493,7 @@ function puzdata_to_nyt(xw, options)
     headers = [];
     
     xw.clues.forEach(function(clue_list) {
-        clues.push(`<b>${clue_list.title}</b>`); entries.push('');
+        clues.push(`${clue_list.title.toUpperCase()}`); entries.push(''); clueNums.push('');
         clue_list.clue.forEach(function(my_clue) {
             var num = my_clue['number'];
             var clue = my_clue['text'];
