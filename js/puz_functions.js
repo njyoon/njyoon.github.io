@@ -647,7 +647,7 @@ function puzdata_to_pdf(xw, options) {
         }
         // handle puzzles with very few words
         else if (clue_length <= 1000) {
-            options.num_columns = Math.ceil(clue_length/400);
+            options.num_columns = Math.max(Math.ceil(clue_length/400), 2);
             options.num_full_columns = 0;
         }
         else if (xw_height >= 17) {
@@ -666,6 +666,7 @@ function puzdata_to_pdf(xw, options) {
             options.num_columns = 3;
             options.num_full_columns = 1;
         }
+        //console.log(options.num_columns, options.num_full_columns);
     } else {
         if (options.columns == "2") {
             options.num_columns = 2;
@@ -831,8 +832,6 @@ function puzdata_to_pdf(xw, options) {
                 header_height += (subheader_text.length)*(options.subheader_pt);
             }
         }
-
-
     }
 
 
