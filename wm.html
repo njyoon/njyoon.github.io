@@ -368,6 +368,8 @@
         const diffSet = [];
         const allSet = []; // ha
 
+        var diff = new Boolean(false);
+
         // update table
 
         const loadTable = () => {
@@ -407,6 +409,8 @@
 
             var view = $("#view").val();
             var viewSet = [];
+
+            diff = true;
 
             if (view == "new") {
                 viewSet = newWordSet;
@@ -472,11 +476,14 @@
 
                 myWordlist.clear();
                 tableSet.length = 0;
-
                       
                 $.each(splitter,function(i, w) {
                     myWordlist.set(w.substring(0,w.indexOf(';')).replace(/\W/g, '').toUpperCase(),w.substring(w.indexOf(';')).replace(/\W/g, '').toUpperCase());
                 });
+
+                if (myWordlist.has("")) {
+                    myWordlist.delete("");
+                }
 
                 myWordlist.forEach((score,word) => {
                     if (word) {
@@ -503,7 +510,7 @@
                     loadTable();
 
                     $('#wordTable').off('click').on('click', 'td > :button', function () { 
-                        const changedWord = this.parentNode.previousSibling.previousSibling.textContent;
+                        const changedWord = this.parentNode.parentNode.firstChild.textContent;
                         const currentScore = this.parentNode.previousSibling;
                         var newScore = 0;
 
@@ -557,8 +564,11 @@
                     });
 
                     $('input.form-control-sm').on("change", function () {
-
-                        loadTable();
+                        if (diff) {
+                            loadTable();
+                        } else {
+                            loadDiffTable();
+                        }
                     });
 
                     $('#view').on("change", function () {
@@ -725,43 +735,43 @@
                                 yourWordlist.set(w.substring(0,w.indexOf(';')).replace(/\W/g, '').toUpperCase(),w.substring(w.indexOf(';')).replace(/\W/g, '').toUpperCase());
                             });
 
+                            if (yourWordlist.has("")) {
+                                yourWordlist.delete("");
+                            }
+
                             myWordlist.forEach((score,word) => {
-                                if (word.length > 0){
-                                    if (yourWordlist.has(word)) {
-                                        allSet.push([word,yourWordlist.get(word),score]);
-                                    } else {
-                                        allSet.push([word,"",score]);
-                                    }
+                                if (yourWordlist.has(word)) {
+                                    allSet.push([word,yourWordlist.get(word),score]);
+                                } else {
+                                    allSet.push([word,"",score]);
                                 }
                             });
 
 
                             yourWordlist.forEach((score,word) => {
 
-                                if (word.length > 0) {
+                                if (myWordlist.has(word)) {                         // if the word is in my wordlist
 
-                                    if (myWordlist.has(word)) {                         // if the word is in my wordlist
+                                    newWordSet.push([word,score,myWordlist.get(word)]);     // add word to newWordSet array
+                                    
 
-                                        newWordSet.push([word,score,myWordlist.get(word)]);     // add word to newWordSet array
-                                        
+                                    if (myWordlist.get(word) != score) {                // if the word has a different score
 
-                                        if (myWordlist.get(word) != score) {                // if the word has a different score
-
-                                            diffScoreSet.push([word,score,myWordlist.get(word)]);   // add word to diffScoreSet array
-                                            diffSet.push([word,score,myWordlist.get(word)]);
-
-                                        } else {
-
-                                        }
+                                        diffScoreSet.push([word,score,myWordlist.get(word)]);   // add word to diffScoreSet array
+                                        diffSet.push([word,score,myWordlist.get(word)]);
 
                                     } else {
-                                        newWordSet.push([word,score,""]);       // add word to newWordSet array
-                                        diffWordSet.push([word,score,""]);      // add word to diffWordSet array
-                                        diffSet.push([word,score,""]);
-                                        allSet.push([word,score,""]);
+
                                     }
 
+                                } else {
+                                    newWordSet.push([word,score,""]);       // add word to newWordSet array
+                                    diffWordSet.push([word,score,""]);      // add word to diffWordSet array
+                                    diffSet.push([word,score,""]);
+                                    allSet.push([word,score,""]);
                                 }
+
+                                
                             });
 
                             loadDiffTable();
@@ -777,8 +787,6 @@
                                 var entries = Object.values(puzdata.get_entry_mapping());
 
                                 entries.forEach((e) => {
-
-                                    yourWordlist.set(e,"");
 
                                     if(myWordlist.has(e)) {    
                                         newWordSet.push([e,"",myWordlist.get(e)]);
