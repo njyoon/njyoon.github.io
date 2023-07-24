@@ -208,7 +208,7 @@
   <body>
     <div class="container pt-3">
         <div class="row">
-            <div class="col-12 col-lg-6"><h1>Wordlist Manager 🚧</h1></div>
+            <div class="col-12 col-lg-6"><h1>Wordlist Manager (🚧)</h1></div>
             <div class="d-none d-lg-block col-lg-6">
                 <a type="button" href="pdf.html" class="btn btn-info-danger rounded-pill shadow-none pdf float-right"><b>Crossword PDF Editor</b></a>
                 <a type="button" href="nyt.html" class="btn btn-outline-danger rounded-pill shadow-none nyt float-right"><b>NYT Submission Editor</b></a>
@@ -296,20 +296,38 @@
                             <div id="collapseThree" aria-labelledby="headingThree" data-parent="#accordionMain" class="collapse">
                                 
                                 <div class="card-body mx-2 px-4 pt-2 pb-2">
-                                    <div class="form-group">   
+                                    <div class="form-group pt-3">   
                                         <label for="files">Add words from a puzzle or wordlist:</label>
                                         <input type="file" accept=".puz,.xml,.jpz,.xpz,.ipuz,.cfp,.txt,.dict" class="form-control-file" id="addWords" name="addWords" onchange="handleFileSelect(event)">
-                                    </div>  
-                                    <div class="form-group">
+                                        <button class = "btn btn-outline-primary col-12 my-3" id="useSTWL" type="button" onclick="handleFileSelect('stwl')">use latest spreadthewordlist</button>
+                                    </div>
+                                    <hr>  
+                                    <div class="form-group pt-2 pb-3">
                                         <label for="view">View:</label>
                                         <br>
                                         <select class="form-control col-12" id="view">
-                                            <option value="new" selected>List of Words to Add</option>
-                                            <option value="diffwords">Words Not in Wordlist</option>
+                                            <option value="new" selected>All Words in Added Wordlist / Puzzle</option>
+                                            <option value="diffwords">Words Not in Your Wordlist</option>
                                             <option value="diffscores">Words Scored Differently</option>
                                             <option value="diffall">Words Either Not in Wordlist or Scored Differently</option>
+                                            <option value="og">All Words in Your Wordlist</option>
                                             <option value="all">All Words</option>
                                         </select>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group pt-2 pb-3">
+                                        <label for="merge">Batch Add:</label>
+                                        <br>
+                                        <select class="form-control col-12" id="merge">
+                                            <option value="merge2list" selected>Add All Words Without Overriding Your Wordlist Scores</option>
+                                            <option value="mergenew">Add All Words Overriding Your Wordlist Scores</option>
+                                        </select>
+                                        <label for="custom" class="pt-3">Default Score:</label><br>
+                                        <input type="number" class="form-control-sm col-4" id="custom" value="50">
+                                        <button class = "btn btn-outline-primary col-12 mt-4" id="batch" type="button" onclick="batchAdd($(merge).val())">Run</button>
+                                        
+
+                                        
                                     </div>
                                 </div>
 
@@ -362,10 +380,12 @@
         const changedWords = new Map();
 
         const tableSet = [];
+
         const newWordSet = [];
         const diffWordSet = [];
         const diffScoreSet = [];
         const diffSet = [];
+        const originalSet = [];
         const allSet = []; // ha
 
         var diff = new Boolean(false);
@@ -381,7 +401,7 @@
                 data: tableSet,
                 columns: [
                     { title: 'Word' },
-                    { title: 'Score' },
+                    { title: 'Wordlist Score' },
                     { title: 'Change Score'}
                 ],
                 deferRender: true,
@@ -420,9 +440,10 @@
                 viewSet = diffScoreSet;
             } else if (view == "diffall") {
                 viewSet = diffSet;
+            } else if (view == "og") {
+                viewSet = originalSet;
             } else if (view == "all") {
                 viewSet = allSet;
-                console.log(viewSet);
             }
 
             var table = $('#wordTable').DataTable({                        
@@ -430,9 +451,9 @@
                 data: viewSet,
                 columns: [
                     { title: 'Word' },
-                    { title: 'Added Score' },
-                    { title: 'Score' },
-                    { title: 'Change Score'}
+                    { title: 'Other Score' },
+                    { title: 'Wordlist Score' },
+                    { title: 'Add or Change Score'}
                 ],
                 deferRender: true,
                 lengthMenu: [ 10, 15, 20, 50, 100 ],
@@ -577,8 +598,6 @@
                         loadDiffTable();
                     });
 
-
-
                     $('#remember').change( function() {
 
                         if ($('#remember').is(':checked')) {
@@ -692,23 +711,154 @@
             }
 
         }
+
+
+
+        function batchAdd(e) {  
+
+            diffWordSet.length = 0;
+            newWordSet.length = 0;
+            diffScoreSet.length = 0;
+            diffSet.length = 0;
+            originalSet.length = 0;
+            allSet.length = 0;
+
+            var defaultScore = $("custom").val();
+
+            myWordlist.forEach((score,word) => {
+                if (yourWordlist.has(word)) {
+                    
+                    if (e=="mergenew"){
+                        score = yourWordlist.get(word);
+                        myWordlist.set(word,score);
+                    }
+
+                    allSet.push([word,yourWordlist.get(word),score]);
+                    originalSet.push([word,yourWordlist.get(word),score]);
+
+                } else {
+                    allSet.push([word,"",score]);
+                    originalSet.push([word,"",score]);
+                }
+            });
+
+
+            yourWordlist.forEach((score,word) => {
+
+                if (myWordlist.has(word)) {                         // if the word is in my wordlist
+
+                    newWordSet.push([word,score,myWordlist.get(word)]);     // add word to newWordSet array
+
+                    if (myWordlist.get(word) != score) {                // if the word has a different score
+                    
+                        diffScoreSet.push([word,score,myWordlist.get(word)]);   // add word to diffScoreSet array
+                        diffSet.push([word,score,myWordlist.get(word)]);
+
+                    } else {
+
+                    }
+
+                } else {
+
+                    if (score.length > 0) {
+                        defaultScore = score;
+                    }
+
+                    myWordlist.set(word,defaultScore);
+
+                    originalSet.push([word,score,defaultScore]);                    
+                    newWordSet.push([word,score,defaultScore]);      
+                    
+                    if (score != defaultScore) {
+                        diffSet.push([word,score,defaultScore]);
+                    }
+                    allSet.push([word,score,defaultScore]);
+
+
+                }
+
+                
+            });
+
+            
+            
+            loadDiffTable();
+            
+    
+
+        }
           
         function handleFileSelect(evt) {
 
+            $("#tab").hide();
+            $(".spinner").show();
 
             yourWordlist.clear();
             newWordSet.length = 0;
             diffScoreSet.length = 0;
             diffWordSet.length = 0;
             allSet.length = 0;
-
+            originalSet.length = 0;
+            diffSet.length = 0;
 
             var files = document.getElementById('addWords').files; // FileList object
-            
+
             if (!files[0]) {
-                alert('Please choose a puzzle file.');
-                return;    
+                fetch('spreadthewordlist.txt')
+                .then(response => response.text())
+                .then((t)=> {splitter = t.split(/\r?\n/);
+                                
+                                $.each(splitter,function(i, w) {
+                                    yourWordlist.set(w.substring(0,w.indexOf(';')).replace(/\W/g, '').toUpperCase(),w.substring(w.indexOf(';')).replace(/\W/g, '').toUpperCase());
+                                });
+    
+                                if (yourWordlist.has("")) {
+                                    yourWordlist.delete("");
+                                }
+    
+                                myWordlist.forEach((score,word) => {
+                                    if (yourWordlist.has(word)) {
+                                        allSet.push([word,yourWordlist.get(word),score]);
+                                        originalSet.push([word,yourWordlist.get(word),score]);
+                                    } else {
+                                        allSet.push([word,"",score]);
+                                        originalSet.push([word,"",score]);
+                                    }
+                                });
+    
+    
+                                yourWordlist.forEach((score,word) => {
+    
+                                    if (myWordlist.has(word)) {                         // if the word is in my wordlist
+    
+                                        newWordSet.push([word,score,myWordlist.get(word)]);     // add word to newWordSet array
+                                        
+    
+                                        if (myWordlist.get(word) != score) {                // if the word has a different score
+    
+                                            diffScoreSet.push([word,score,myWordlist.get(word)]);   // add word to diffScoreSet array
+                                            diffSet.push([word,score,myWordlist.get(word)]);
+    
+                                        } else {
+    
+                                        }
+    
+                                    } else {
+                                        newWordSet.push([word,score,""]);       // add word to newWordSet array
+                                        diffWordSet.push([word,score,""]);      // add word to diffWordSet array
+                                        diffSet.push([word,score,""]);
+                                        allSet.push([word,score,""]);
+                                    }
+    
+                                    
+                                });
+    
+                                loadDiffTable();
+                        
+
+                })
             }
+
 
             // files is a FileList of File objects.
             for (var i = 0, f; f = files[i]; i++) {
@@ -719,12 +869,6 @@
                     var ext = filename.split('.').pop();
                     filename = filename.split(/[/s.]+/)[0];
                     
-
-                    $("#tab").hide();
-                    $(".spinner").show();
-
-
-
                     if (ext == "txt" || ext == "dict") {
 
                         f.text().then((t) => {           
@@ -742,8 +886,10 @@
                             myWordlist.forEach((score,word) => {
                                 if (yourWordlist.has(word)) {
                                     allSet.push([word,yourWordlist.get(word),score]);
+                                    originalSet.push([word,yourWordlist.get(word),score]);
                                 } else {
                                     allSet.push([word,"",score]);
+                                    originalSet.push([word,"",score]);
                                 }
                             });
 
