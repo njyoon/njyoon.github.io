@@ -9,12 +9,12 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    
+
     <link
       rel="stylesheet"
       href="css/bootstrap.min.css"
     />
-    
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 
@@ -44,8 +44,8 @@
         color:#686868;
     }
 
-    .material-icons { 
-        font-size: 24px; 
+    .material-icons {
+        font-size: 24px;
         vertical-align: bottom;
     }
 
@@ -92,8 +92,8 @@
         color:lightgrey;
     }
 
-    .pdfobject-container { 
-        height: 40rem; 
+    .pdfobject-container {
+        height: 40rem;
     }
 
     .btn.focus,.btn:active.focus,.btn.active {
@@ -111,14 +111,14 @@
         border-color:#f55d4b;
     }
 
-    
+
     input[type=file] {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 250px;
     }
-    
+
     </style>
 
 
@@ -140,18 +140,18 @@
                     <form>
                         <div class="card">
                             <div class="card-header bg-white shadow-sm border-0" id="headingOne">
-                                
+
                                     <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="btn btn-link text-dark font-weight-bold text-uppercase collapsible-link">
-                                        Choose File 
-                                    </a> 
-                             
+                                        Choose File
+                                    </a>
+
                             </div>
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionMain">
                                 <div class="card-body mx-2 px-4 pt-3 pb-2">
-                                    <div class="form-group">   
+                                    <div class="form-group">
                                         <label for="files">Select your puzzle file to export as a PDF:</label>
                                         <input type="file" accept=".puz,.xml,.jpz,.xpz,.ipuz,.cfp" class="form-control-file" id="files" name="files">
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -159,9 +159,9 @@
 
                         <div class="card">
                             <div id="headingTwo" class="card-header bg-white shadow-sm border-0">
-                         
+
                                     <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Header Content</a>
-                             
+
                             </div>
                             <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordionMain" class="collapse">
                                 <div class="card-body mx-2 px-4 py-3">
@@ -175,7 +175,7 @@
                                             </label>
                                             <label class="btn btn-outline-primary p-0" id="header-center-button">
                                                 <input type="radio" id="header-center" name="header-align"><span class="material-icons">format_align_center</span>
-                                            </label>    
+                                            </label>
 
                                         </div>
                                         <textarea class="form-control pv-2 pl-3 pr-2 col-10" id="headerText" rows="2" placeholder='Empty field will default to title from puz file'></textarea>
@@ -186,16 +186,16 @@
                                         <label class="custom-control-label" for="useHeader2">Add Right Header Content</label>
                                     </div>
 
-                                    
+
                                     <div class="form-group pt-2 pb-2 mb-0 collapse show" id="additional-header">
                                         <div class="btn-group btn-group-toggle pb-2" data-toggle="buttons">
 
                                             <label class="btn btn-outline-primary p-0" id="header2-left-button">
                                                 <input type="radio" id="header2-left" name="header2-align"><span class="material-icons" aria-hidden="true">format_align_left</span>
-                                            </label>    
+                                            </label>
                                             <label class="btn btn-outline-primary active p-0" id="header2-right-button">
                                                 <input type="radio" id="header2-right" name="header2-align" checked><span class="material-icons" aria-hidden="true">format_align_right</span>
-                                            </label>    
+                                            </label>
 
                                         </div>
                                         <div class="btn-group btn-group-toggle pl-2 pb-2" data-toggle="buttons">
@@ -205,10 +205,10 @@
                                             </label>
                                             <label class="btn btn-outline-primary p-0" id="header2-middle-button">
                                                 <input type="radio" id="header2-middle" name="header2-vAlign"><span class="material-icons" aria-hidden="true">vertical_align_center</span>
-                                            </label>   
+                                            </label>
                                             <label class="btn btn-outline-primary active p-0" id="header2-bottom-button">
                                                 <input type="radio" id="header2-bottom" name="header2-vAlign" checked><span class="material-icons" aria-hidden="true">vertical_align_bottom</span>
-                                            </label>    
+                                            </label>
 
                                         </div>
                                         <textarea class="form-control pv-2 pl-3 pr-2 mb-0 col-10" id="headerText2" rows="2" placeholder='Empty field will default to author from puz file'></textarea>
@@ -226,10 +226,10 @@
                                             </label>
                                             <label class="btn btn-outline-primary p-0" id="subheader-center-button">
                                                 <input type="radio" id="subheader-center" name="subheader-align"><span class="material-icons" aria-hidden="true">format_align_center</span>
-                                            </label>        
+                                            </label>
                                             <label class="btn btn-outline-primary p-0" id="subheader-right-button">
                                                 <input type="radio" id="subheader-right" name="subheader-align"><span class="material-icons" aria-hidden="true" aria-checked="">format_align_right</span>
-                                            </label>    
+                                            </label>
 
                                         </div>
                                         <textarea class="form-control pv-2 pl-3 pr-2 mb-0 col-10" id="subheaderText" rows="2" placeholder='Add any subheader text here'></textarea>
@@ -239,9 +239,9 @@
                                         <input type="checkbox" class="custom-control-input" id="useLogo">
                                         <label class="custom-control-label" for="useLogo">Add Image <span style="color:red">(IN BETA)</span></label>
                                     </div>
-                                    <div class="form-group collapse pt-2 pl-4" id="add-logo">   
+                                    <div class="form-group collapse pt-2 pl-4" id="add-logo">
                                         <label for="logo">Select an image to import:</label><br>
-                                        <input type="file" accept='image/*' class="form-control-file pb-2" id="logo" name="logo"> 
+                                        <input type="file" accept='image/*' class="form-control-file pb-2" id="logo" name="logo">
 
                                         <label for="logoX">image-x (pt)</label><br>
                                         <input type="number" class="form-control-sm mb-2 col-4" id="logoX" value="36" step="1"><br>
@@ -252,8 +252,8 @@
                                         <label for="logoS">image size (%)</label><br>
                                         <input type="number" class="form-control-sm mb-2 col-4" id="logoS" value="100" step="1"><br>
 
-                                    </div>  
-  
+                                    </div>
+
 
                                 </div>
                             </div>
@@ -261,9 +261,9 @@
 
                         <div class="card">
                             <div id="headingThree" class="card-header bg-white shadow-sm border-0">
-               
+
                                     <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Basic Options</a>
-                     
+
                             </div>
                             <div id="collapseThree" aria-labelledby="headingThree" data-parent="#accordionMain" class="collapse">
                                 <div class="card-body mx-2 px-4 py-3">
@@ -306,12 +306,12 @@
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="grid_br">
                                         <label class="custom-control-label" for="grid_br">Align Grid to Bottom-Right</label>
-                                    </div>   
+                                    </div>
 
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="grid_bl">
                                         <label class="custom-control-label" for="grid_bl">Align Grid to Bottom-Left</label>
-                                    </div>   
+                                    </div>
 
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="gray">
@@ -321,8 +321,8 @@
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="shade">
                                         <label class="custom-control-label" for="shade">Replace Circles With Shade</label>
-                                    </div>      
-                                    
+                                    </div>
+
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="solution">
                                         <label class="custom-control-label" for="solution">Print Solution in Grid</label>
@@ -332,7 +332,7 @@
                                         <input type="checkbox" class="custom-control-input" id="remember">
                                         <label class="custom-control-label" for="remember">Remember Options <span style="color:red">(IN BETA)</span></label>
                                     </div>
-                                    
+
                                     <div class="ml-1 pl-2 pt-1" id="remember-buttons">
 
                                         <button type="button" class="btn btn-outline-primary btn-sm mt-1 ml-4" id="save">Save Options</button>
@@ -341,22 +341,22 @@
 
                                     </div>
 
-                                    
-                                </div>  
+
+                                </div>
                             </div>
                         </div>
 
 
                         <div class="card">
                             <div id="headingFour" class="card-header bg-white shadow-sm border-0">
-                 
+
                                     <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Advanced Options</a>
-                            
+
                             </div>
                             <div id="collapseFour" aria-labelledby="headingFour" data-parent="#accordionMain" class="collapse">
 
                                 <div class="card-body mx-2 px-4 pt-3 pb-1">
-                                    
+
 
                                     <div class="accordion" id="accordionAdvanced">
 
@@ -379,7 +379,7 @@
                                            <div class="form-group" id="useHeaderWidth">
                                                 <label for="headerWidth">Main Header Text Width (%) </label><br>
                                                 <input type="number" class="form-control-sm col-4" id="headerWidth" value="67" step="1">
-                                            </div>   
+                                            </div>
 
                                         </div>
 
@@ -421,10 +421,10 @@
                                                 <input type="checkbox" class="custom-control-input" id="useCustom">
                                                 <label class="custom-control-label" for="useCustom">Add Custom Header Font</label>
                                             </div>
-                                            <div class="form-group collapse c" id="add-custom-font">   
+                                            <div class="form-group collapse c" id="add-custom-font">
                                                 <label for="customFont">Select a .ttf file to import:</label><br>
-                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont" name="customFont"> 
-                                            </div>  
+                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont" name="customFont">
+                                            </div>
                                             <div class="form-group">
                                                 <label for="headerFont">Header Font</label>
                                                 <br>
@@ -454,17 +454,18 @@
                                                 <select class="form-control" id="clueFont">
                                                 <option value="RobotoCondensed" selected>Roboto Condensed</option>
                                                 <option value="NunitoSans-Regular">Nunito Sans</option>
+                                                <option value="MH">MH</option>
                                                 <option value="helvetica">Helvetica</option>
                                                 <option value="courier">Courier</option>
                                                 <option value="times">Times New Roman</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group" id="add-bold-font">   
+                                            <div class="form-group" id="add-bold-font">
                                                 <label for="boldFont">These settings require a <b>bold</b> style of your custom font.  Select the .ttf file to import:</label><br>
-                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont" name="boldFont"> 
-                                            </div> 
+                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont" name="boldFont">
+                                            </div>
                                         </div>
- 
+
                                         <div id="headingGrid" class="card-header bg-white m-0 p-0 border-0">
                                            <a data-toggle="collapse" data-target="#collapseGrid" aria-expanded="false" aria-controls="collapseGrid" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Grid</h6></a>
                                         </div>
@@ -506,7 +507,7 @@
 
 
 
-                                </div>  
+                                </div>
                             </div>
                         </div>
 
@@ -517,12 +518,12 @@
                                 <button class="btn btn-outline-primary col-6" id="downloadButton" type="button" onclick="handleFileSelect('download');return false;">Download PDF</button>
                             </div>
                         </div>
-                        
+
 
                         </div>
 
                     </form>
-                
+
             </div>
 
         <div class = "col-12 col-lg-8" id="example1">
@@ -543,11 +544,11 @@
         $('#add-bold-font').hide();
         $("#header-center-button").hide();
         $("#subheader-font-size").hide();
-                
+
         function handleCustomFont(evt) {
 
             var fonts = evt.target.files; // FileList object
-            
+
             // fonts is a FileList of File objects.
             for (var i = 0, f; f = fonts[i]; i++) {
 
@@ -558,7 +559,7 @@
                 }
                 if (f) {
                     var reader = new FileReader();
-                  
+
                     reader.onload = function (readerEvt) {
 
                         var binaryString = readerEvt.target.result;
@@ -567,9 +568,9 @@
                             myFont = btoa(binaryString);
                         } else if (evt.target.id == 'boldFont') {
                             boldFont = btoa(binaryString);
-                        } 
+                        }
                     }
-                } else { 
+                } else {
                     alert("Failed to load file");
                 }
 
@@ -581,7 +582,7 @@
 
         function handleCustomImage(evt) {
             var images = evt.target.files; // FileList object
-            
+
             // images is a FileList of File objects.
             for (var i = 0, f; f = images[i]; i++) {
 
@@ -590,15 +591,15 @@
                     alert('This file is too big.');
                     continue;
                 }
-                
+
                 if (f) {
                     var reader = new FileReader();
-                  
+
                     reader.onload = function (readerEvt) {
 
                         logo = readerEvt.target.result;
                     }
-                } else { 
+                } else {
                     alert("Failed to load file");
                 }
 
@@ -614,7 +615,7 @@
         if (window.localStorage.getItem('remember') == 'true') {
             loadOptions();
             $('#remember').prop("checked",true);
-            $('#remember-buttons').show();       
+            $('#remember-buttons').show();
         } else {
             $('#remember-buttons').hide();
         }
@@ -759,7 +760,7 @@
             } else {
                 window.localStorage.setItem('subheader-center','false');
             }
-            
+
             if ($('#subheader-right').is(':checked')) {
                 window.localStorage.setItem('subheader-right','true');
             } else {
@@ -784,7 +785,7 @@
             window.localStorage.setItem('logoX',$('#logoX').val());
             window.localStorage.setItem('logoY',$('#logoY').val());
             window.localStorage.setItem('logoS',$('#logoS').val());
-            
+
             // basic options
             window.localStorage.setItem('hFontSize',$('#hFontSize').val());
             window.localStorage.setItem('h2FontSize',$('#h2FontSize').val());
@@ -810,7 +811,7 @@
             if ($('#gray').is(':checked')) {
                 window.localStorage.setItem('gray','true');
             }
-            
+
             if ($('#shade').is(':checked')) {
                 window.localStorage.setItem('shade','true');
             }
@@ -856,7 +857,7 @@
             window.localStorage.setItem('numberSize',$('#numberSize').val());
             window.localStorage.setItem('lineWidth',$('#lineWidth').val());
             window.localStorage.setItem('borderWidth',$('#borderWidth').val());
-            
+
             // advanced settings -- clues
 
             window.localStorage.setItem('interSpacing',$('#interSpacing').val());
@@ -870,10 +871,10 @@
             }
 
 
-        } 
+        }
 
         function loadOptions() {
-                
+
             // -- retrieve from storage --
 
             // header content
@@ -892,27 +893,27 @@
                     $('#header-center').prop("checked",true);
                     $('#header-left-button').removeClass('active');
                     $('#header-center-button').addClass('active');
-                } 
+                }
             }
 
             if (window.localStorage.getItem('header2-left')=='true') {
                     $('#header2-left').prop("checked",true);
                     $('#header2-right-button').removeClass('active');
                     $('#header2-left-button').addClass('active');
-            } 
+            }
 
             if (window.localStorage.getItem('header2-top')=='true') {
                     $('#header2-top').prop("checked",true);
                     $('#header2-bottom-button').removeClass('active');
                     $('#header2-top-button').addClass('active');
-            } 
+            }
 
             if (window.localStorage.getItem('header2-middle')=='true') {
                     $('#header2-middle').prop("checked",true);
                     $('#header2-bottom-button').removeClass('active');
                     $('#header2-middle-button').addClass('active');
-            } 
-            
+            }
+
             if (window.localStorage.getItem('headerText2')) {
                 $('#headerText2').val(window.localStorage.getItem('headerText2'));
             }
@@ -952,15 +953,15 @@
 
             if ((window.localStorage.getItem('logoX') != '36') && (window.localStorage.getItem('logoX') != null)) {
                 $('#logoX').val(window.localStorage.getItem('logoX'));
-            }       
-            
+            }
+
             if ((window.localStorage.getItem('logoY') != '36') && (window.localStorage.getItem('logoY') != null)) {
                 $('#logoY').val(window.localStorage.getItem('logoY'));
-            }     
+            }
 
             if ((window.localStorage.getItem('logoS') != '100') && (window.localStorage.getItem('logoS') != null)) {
                 $('#logoS').val(window.localStorage.getItem('logoS'));
-            }     
+            }
 
 
 
@@ -968,7 +969,7 @@
             if (window.localStorage.getItem('hFontSize')) {
                 $('#hFontSize').val(window.localStorage.getItem('hFontSize'));
             }
-                
+
             if (window.localStorage.getItem('h2FontSize')) {
                 $('#h2FontSize').val(window.localStorage.getItem('h2FontSize'));
             }
@@ -976,7 +977,7 @@
             if (window.localStorage.getItem('sFontSize')) {
                 $('#sFontSize').val(window.localStorage.getItem('sFontSize'));
             }
-            
+
             if (window.localStorage.getItem('cFontSize')) {
                 $('#cFontSize').val(window.localStorage.getItem('cFontSize'));
             }
@@ -1011,7 +1012,7 @@
                 $('#solution').prop("checked",true);
             }
 
-            
+
             // advanced settings -- margins
 
             if (window.localStorage.getItem('marginSize')) {
@@ -1067,7 +1068,7 @@
                     myFont = window.localStorage.getItem('myFont');
                 }
 
-            }       
+            }
 
             if (window.localStorage.getItem('headerFont')) {
                 $('#headerFont').val(window.localStorage.getItem('headerFont'));
@@ -1165,7 +1166,7 @@
             if (document.getElementById('grid_bl').checked) {
                 grid_placement = 'left';
             }
-            
+
             if (document.getElementById('header-center').checked) {
                 header_align = 'center';
             }
@@ -1212,16 +1213,16 @@
 
             if (!document.getElementById('useCustom').checked) {
                 document.getElementById('customFont').value = "";
-            } 
+            }
 
             if (!document.getElementById('useLogo').checked) {
                 logo = null;
-            } 
+            }
 
             if (document.getElementById('gray').checked) {
                 gray = 0.6;
             }
-            
+
             if (document.getElementById('shade').checked) {
                 shade = true;
             }
@@ -1231,10 +1232,10 @@
             }
 
             var files = document.getElementById('files').files; // FileList object
-            
+
             if (!files[0]) {
                 alert('Please choose a puzzle file.');
-                return;    
+                return;
             }
 
             // files is a FileList of File objects.
@@ -1251,8 +1252,8 @@
                     filename = filename.substring(0,filename.length - 4);
                     var outname = filename + '.pdf';
                     r.onload = (function(theFile) {
-                        return function(e) { 
-                            var contents = e.target.result;     
+                        return function(e) {
+                            var contents = e.target.result;
                             //var puzdata = PUZAPP.parsepuz(contents);
                             var xw_constructor = new JSCrossword();
                             var puzdata = xw_constructor.fromData(contents);
@@ -1262,7 +1263,7 @@
                     })(f);
                     r.readAsBinaryString(f);
                     document.querySelector('#previewButton').textContent = 'Update Preview';
-                } else { 
+                } else {
                     alert("Failed to load file");
                 }
             }
@@ -1279,7 +1280,7 @@
           href="https://crosswordnexus.com/apps/puz-to-nyt/"
           >Crossword Nexus</a>, licensed under MIT License.
         <br>
-        
+
       </p>
     </div>
 
@@ -1290,6 +1291,8 @@
     <script src="js/RobotoCondensed-bolditalic.js"></script>
     <script src="js/NunitoSans-Regular-normal.js"></script>
     <script src="js/NunitoSans-Regular-bold.js"></script>
+    <script src="js/MH-normal.js"></script>
+    <script src="js/MH-bold.js"></script>
     <script src="js/jscrossword_combined.js" type="text/javascript"></script>
     <script src="js/puz_functions.js" type="text/javascript"></script>
     <script src="js/pdfobject.min.js"></script>
