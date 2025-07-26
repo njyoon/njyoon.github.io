@@ -9,6 +9,50 @@
 
 window.jsPDF = window.jspdf.jsPDF;
 
+// Emoji helpers
+const emojiImageCache = new Map();
+const emojiRx = /\p{Extended_Pictographic}(?:\p{Emoji_Modifier})?/u;
+const splitter = new GraphemeSplitter();
+
+/** Helper function to have safe characters **/
+function foldReplacing(str, fallback = '*') {
+    return Array.from(str).map(c =>
+        emojiRx.test(c) || c.charCodeAt(0) <= 256 ? c : fallback
+    ).join('');
+}
+
+async function preloadEmojiImages(charList) {
+    const twemojiBase = 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/';
+    const uniqueEmoji = [...new Set(charList.filter(c => emojiRx.test(c)))];
+
+    for (const emoji of uniqueEmoji) {
+        if (emojiImageCache.has(emoji)) continue;
+        const codepoint = twemoji.convert.toCodePoint(emoji);
+        const url = `${twemojiBase}${codepoint}.png`;
+        try {
+            const resp = await fetch(url);
+            const blob = await resp.blob();
+            const dataUrl = await new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(blob);
+            });
+            emojiImageCache.set(emoji, dataUrl);
+        } catch (err) {
+            console.warn(`Could not load emoji ${emoji}:`, err);
+        }
+    }
+}
+
+/** Wrapper for the above function **/
+async function preloadFromClueArrays(clueArrays) {
+    const flatText = clueArrays.flat().join('\n');
+    const splitter = new GraphemeSplitter();
+    const graphemes = splitter.splitGraphemes(flatText);
+    const emojiChars = [...new Set(graphemes.filter(g => emojiRx.test(g)))];
+    await preloadEmojiImages(emojiChars);
+}
+
 /* function to strip HTML tags */
 /* via https://stackoverflow.com/a/5002618 */
 function strip_html(s) {
@@ -38,70 +82,95 @@ function traverseTree(htmlDoc, agg=[]) {
 }
 
 /* Print a line of text that may be bolded or italicized */
-const printCharacters = (doc, textObject, startY, startX, fontSize, font) => {
-    if (!textObject.length) {
-        return;
-    }
+const printCharacters = (doc, textObject, startY, startX, fontSize, font, emojiSize = fontSize) => {
+  if (!textObject.length) return;
 
-    if (typeof(textObject) == 'string') {
-        //var myText = ASCIIFolder.foldReplacing(textObject, '*')
-        var myText = textObject;
-        doc.text(startX, startY, myText);
-    }
-    else {
-        textObject.map(row => {
-            if (row.is_bold) {
-                doc.setFont(font, 'bold');
-            }
-            else if (row.is_italic) {
-                doc.setFont(font, 'italic');
-            }
-            else {
-                doc.setFont(font, 'normal');
-            }
+  if (typeof textObject === 'string') {
+  const myText = foldReplacing(textObject);
+      doc.text(startX, startY, myText);
+      return;
+  }
 
-            // Some characters don't render properly in PDFs
-            // TODO: replace them using the mapping above
-            var mychar = row.char;
-            //mychar = ASCIIFolder.foldReplacing(mychar, '*');
-            doc.text(mychar, startX, startY);
-            startX = startX + doc.getStringUnitWidth(row.char) * fontSize;
-            doc.setFont(font, 'normal');
-        });
-    }
+  textObject.forEach(row => {
+      const char = foldReplacing(row.char);
+      const is_bold = row.is_bold;
+      const is_italic = row.is_italic;
+      const is_emoji = row.is_emoji;
+
+      if (is_emoji) {
+          const emojiData = emojiImageCache.get(char);
+          if (emojiData) {
+              doc.addImage(emojiData, 'PNG', startX, startY - emojiSize + 2, emojiSize, emojiSize);
+              startX += emojiSize;
+          } else {
+              doc.text('**', startX, startY);
+              startX += doc.getTextWidth('**');
+          }
+      } else {
+          doc.setFont(font,
+              is_bold ? 'bold' :
+              is_italic ? 'italic' : 'normal');
+
+          doc.text(char, startX, startY);
+          startX = startX + doc.getStringUnitWidth(row.char) * fontSize;
+          doc.setFont(font, 'normal');
+      }
+
+      doc.setFont(font, 'normal');
+  });
 };
 
 /* helper function for bold and italic clues */
-function split_text_to_size_bi(clue, col_width, doc, font, has_header=false) {
-    // get the clue with HTML stripped out
-    var el = document.createElement( 'html' );
+function split_text_to_size_bi(clue, col_width, doc, font, has_header = false) {
+
+  // get the clue with the HTML stripped out
+  const el = document.createElement('html');
+  el.innerHTML = clue;
+  let clean_clue = el.innerText;
+
+  // split the clue
+  var lines1 = doc.splitTextToSize(clean_clue, col_width);
+
+  // helpers
+  const containsBold = clue.toUpperCase().includes('<B');
+  const containsItalic = clue.toUpperCase().includes('<I');
+  const containsEmoji = emojiRx.test(clean_clue);
+
+  // Check if there's a "header"
+  // if so, track the header, and separate out the clue
+  let header_line = null;
+  if (has_header) {
+    const clue_split = clue.split('\n');
+    header_line = clue_split[0];
+    clue = clue_split.slice(1).join('\n');
     el.innerHTML = clue;
-    var clean_clue = el.innerText;
+    clean_clue = el.innerText;
+  }
 
-    // split the clue
-    var lines1 = doc.splitTextToSize(clean_clue, col_width);
+  // ✅ Fast path: no emoji, no formatting
+  if (!containsBold && !containsItalic && !containsEmoji) {
+    return lines1;
+  }
 
-    // if there's no <B> or <I> in the clue just return lines1
-    if (clue.toUpperCase().indexOf('<B') == -1 && clue.toUpperCase().indexOf('<I') == -1) {
-        return lines1;
-    }
+  // ✅ Emoji-only (no formatting)
+  if (!containsBold && !containsItalic && containsEmoji) {
+    var lines = doc.splitTextToSize(clean_clue, col_width).map(line =>
+      splitter.splitGraphemes(line).map(char => ({
+        char,
+        is_bold: false,
+        is_italic: false,
+        is_emoji: emojiRx.test(char)
+      }))
+    );
+    if (has_header) lines = [header_line].concat(lines);
+    return lines;
+  }
 
-    // Check if there's a "header"
-    // if so, track the header, and separate out the clue
-    var header_line = null;
-    if (has_header) {
-        var clue_split = clue.split('\n');
-        header_line = clue_split[0];
-        clue = clue_split.slice(1).join('\n');
-        el.innerHTML = clue;
-        clean_clue = el.innerText;
-    }
-
-    // parse the clue into a tree
-    var myClueArr = [];
-    var parser = new DOMParser();
-    var htmlDoc = parser.parseFromString(clue, 'text/html');
-    var split_clue = traverseTree(htmlDoc);
+  // ✅ Formatting only (no emoji)
+  if ((containsBold || containsItalic) && !containsEmoji) {
+    const parser = new DOMParser();
+    const htmlDoc = parser.parseFromString(clue, 'text/html');
+    const split_clue = traverseTree(htmlDoc);
 
     // Make a new "lines1" with all bold splits
     doc.setFont(font, 'bold');
@@ -114,22 +183,81 @@ function split_text_to_size_bi(clue, col_width, doc, font, has_header=false) {
     // Characters to skip
     const SPLIT_CHARS = new Set([' ', '\t', '\n']);
     lines1.forEach(line => {
-        var thisLine = [];
-        var myLen = line.length;
-        for (var i=0; i < myLen; i++) {
-            thisLine.push(split_clue[ctr++]);
+      var thisLine = [];
+      var myLen = line.length;
+      for (var i = 0; i < myLen; i++) {
+        thisLine.push(split_clue[ctr++]);
+      }
+      if (split_clue[ctr]) {
+        if (SPLIT_CHARS.has(split_clue[ctr].char)) {
+          ctr = ctr + 1;
         }
-        if (split_clue[ctr]) {
-            if (SPLIT_CHARS.has(split_clue[ctr].char)) {
-                ctr = ctr + 1;
-            }
-        }
-        lines.push(thisLine);
+      }
+      lines.push(thisLine);
     });
-    if (has_header) {
-        lines = [header_line].concat(lines);
-    }
+    if (has_header) lines = [header_line].concat(lines);
     return lines;
+  }
+
+  // ✅ Mixed emoji and formatting case
+  const parser = new DOMParser();
+  const htmlDoc = parser.parseFromString(clue, 'text/html');
+  const split_clue = traverseTree(htmlDoc);
+
+  const measured_chunks = [];
+  const chunk_map = [];
+  for (let i = 0; i < split_clue.length;) {
+    const c = split_clue[i];
+    if (c.is_emoji) {
+      measured_chunks.push(c.char);
+      chunk_map.push([i]);
+      i++;
+    } else {
+      let acc = '';
+      const indices = [];
+      while (i < split_clue.length && !split_clue[i].is_emoji) {
+        acc += split_clue[i].char;
+        indices.push(i);
+        i++;
+      }
+      acc.split(/(\s+)/).forEach(word => {
+        if (word) {
+          measured_chunks.push(word);
+          chunk_map.push(indices.splice(0, word.length));
+        }
+      });
+    }
+  }
+
+  doc.setFont(font, 'bold');
+  const wrapped_lines = [];
+  const wrapped_maps = [];
+  let currentLine = '';
+  let currentMap = [];
+
+  for (let j = 0; j < measured_chunks.length; j++) {
+    const chunk = measured_chunks[j];
+    const testLine = currentLine + chunk;
+    if (doc.getTextWidth(testLine) > col_width && currentLine !== '') {
+      wrapped_lines.push(currentLine);
+      wrapped_maps.push(currentMap);
+      currentLine = chunk;
+      currentMap = chunk_map[j];
+    } else {
+      currentLine += chunk;
+      currentMap = currentMap.concat(chunk_map[j]);
+    }
+  }
+  if (currentLine) {
+    wrapped_lines.push(currentLine);
+    wrapped_maps.push(currentMap);
+  }
+  doc.setFont(font, 'normal');
+
+  const SPLIT_CHARS = new Set([' ', '	', '']);
+  var lines2 = wrapped_maps.map(map => map.map(i => split_clue[i]).filter(Boolean));
+  if (has_header) lines2 = [header_line].concat(lines);
+  return lines2;
 }
 
 /** Draw a crossword grid (requires jsPDF) **/
@@ -317,7 +445,7 @@ function draw_crossword_grid(doc, xw, options)
 }
 
 /** Create a NYT submission (requires jsPDF) **/
-function puzdata_to_nyt(xw, options)
+async function puzdata_to_nyt(xw, options)
 {
     var DEFAULT_OPTIONS = {
         margin: 72
@@ -492,6 +620,12 @@ function puzdata_to_nyt(xw, options)
     var entries = [];
     headers = [];
 
+    // Update the emoji mapper
+	  await preloadFromClueArrays(xw.clues.map(x => x.clue).flat().map(x => x.text));
+
+    // TODO: emoji doesn't do anything here because we're not using printCharacters
+    // I don't know if NYT would take an emoji crossword anyway
+
     xw.clues.forEach(function(clue_list) {
         clues.push(`${clue_list.title.toUpperCase()}`); entries.push(''); clueNums.push('');
         clue_list.clue.forEach(function(my_clue) {
@@ -571,7 +705,7 @@ function puzdata_to_nyt(xw, options)
 
 /** Create a PDF (requires jsPDF) **/
 
-function puzdata_to_pdf(xw, options) {
+async function puzdata_to_pdf(xw, options) {
     var DEFAULT_OPTIONS = {
         margin: 20
     ,   side_margin: 20
@@ -863,6 +997,9 @@ function puzdata_to_pdf(xw, options) {
         clue_arrays.push(these_clues);
         num_arrays.push(these_nums);
     }
+
+    // Update the emoji mapper
+	  await preloadFromClueArrays(clue_arrays);
 
     // size of columns
     var col_width = (DOC_WIDTH - 2 * side_margin - (options.num_columns -1 ) * options.column_padding) / options.num_columns;
