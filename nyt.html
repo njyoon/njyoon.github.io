@@ -18,6 +18,8 @@
       rel="stylesheet">
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L1FXWP7B18"></script>
+    <script src="js/grapheme-splitter.min.js"></script>
+    <script src="js/twemoji.min.js"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -44,8 +46,8 @@
         color:#686868;
     }
 
-    .material-icons.md-24 { 
-        font-size: 24px; 
+    .material-icons.md-24 {
+        font-size: 24px;
         vertical-align: bottom;
     }
 
@@ -92,8 +94,8 @@
         color:lightgrey;
     }
 
-    .pdfobject-container { 
-        height: 40rem; 
+    .pdfobject-container {
+        height: 40rem;
     }
 
 
@@ -113,14 +115,14 @@
         color:white;
     }
 
-    
+
     input[type=file] {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 250px;
     }
-    
+
     </style>
 
 
@@ -145,18 +147,18 @@
                     <form>
                         <div class="card">
                             <div class="card-header bg-white shadow-sm border-0" id="headingOne">
-                                
+
                                     <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="btn btn-link text-dark font-weight-bold text-uppercase collapsible-link">
-                                        Choose File 
-                                    </a> 
-                             
+                                        Choose File
+                                    </a>
+
                             </div>
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionMain">
                                 <div class="card-body mx-2 px-4 pt-3 pb-2">
-                                    <div class="form-group">   
+                                    <div class="form-group">
                                         <label for="files">Select your puzzle file to export as a PDF:</label>
                                         <input type="file" accept=".puz,.xml,.jpz,.xpz,.ipuz,.cfp" class="form-control-file" id="files" name="files">
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -164,9 +166,9 @@
 
                         <div class="card">
                             <div id="headingTwo" class="card-header bg-white shadow-sm border-0">
-                         
+
                                     <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Header Content</a>
-                             
+
                             </div>
                             <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordionMain" class="collapse">
                                 <div class="card-body mx-2 px-4 py-3">
@@ -187,9 +189,9 @@
 
                         <div class="card">
                             <div id="headingThree" class="card-header bg-white shadow-sm border-0">
-               
+
                                     <a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Basic Options</a>
-                     
+
                             </div>
                             <div id="collapseThree" aria-labelledby="headingThree" data-parent="#accordionMain" class="collapse">
                                 <div class="card-body mx-2 px-4 py-3">
@@ -226,23 +228,23 @@
                                     <div class="custom-control custom-switch pt-2">
                                         <input type="checkbox" class="custom-control-input" id="shade">
                                         <label class="custom-control-label" for="shade">Replace Circles With Shade</label>
-                                    </div>  
-                                 
-                                </div>  
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
 
 
                         <div class="card">
                             <div id="headingFour" class="card-header bg-white shadow-sm border-0">
-                 
+
                                     <a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link">Advanced Options</a>
-                            
+
                             </div>
                             <div id="collapseFour" aria-labelledby="headingFour" data-parent="#accordionMain" class="collapse">
 
                                 <div class="card-body mx-2 px-4 pt-3 pb-1">
-                                    
+
 
                                     <div class="accordion" id="accordionAdvanced">
 
@@ -268,18 +270,18 @@
                                                 <input type="checkbox" data-toggle="collapse" href="#add-custom-font" class="custom-control-input" id="useCustom">
                                                 <label class="custom-control-label" for="useCustom">Add Custom Font</label>
                                             </div>
-                                            <div class="form-group collapse" id="add-custom-font">   
+                                            <div class="form-group collapse" id="add-custom-font">
                                                 <label for="customFont">Select a .ttf file to import:</label><br>
-                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont" name="customFont"> 
-                                            </div>  
+                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont" name="customFont">
+                                            </div>
                                             <div class="custom-control custom-switch pb-2">
                                                 <input type="checkbox" data-toggle="collapse" href="#add-custom-font2" class="custom-control-input" id="useCustom2">
                                                 <label class="custom-control-label" for="useCustom2">Add Another Custom Font</label>
                                             </div>
-                                            <div class="form-group collapse" id="add-custom-font2">   
+                                            <div class="form-group collapse" id="add-custom-font2">
                                                 <label for="customFont2">Select another .ttf file to import:</label><br>
-                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont2" name="customFont2"> 
-                                            </div>  
+                                                <input type="file" accept='.ttf' class="form-control-file" id="customFont2" name="customFont2">
+                                            </div>
                                             <div class="form-group">
                                                 <label for="headerFont">Header Font</label>
                                                 <br>
@@ -316,16 +318,16 @@
                                                 <option value="myFont2" class="c2">Custom Font 2</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group" id="add-bold-font">   
+                                            <div class="form-group" id="add-bold-font">
                                                 <label for="boldFont">These settings require a <b>bold</b> style of your custom font.  Select the .ttf file to import:</label><br>
-                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont" name="boldFont"> 
-                                            </div> 
-                                            <div class="form-group" id="add-bold-font2">   
+                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont" name="boldFont">
+                                            </div>
+                                            <div class="form-group" id="add-bold-font2">
                                                 <label for="boldFont2">These settings require a <b>bold</b> style of your custom font.  Select the .ttf file to import:</label><br>
-                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont2" name="boldFont2"> 
+                                                <input type="file" accept='.ttf' class="form-control-file" id="boldFont2" name="boldFont2">
                                             </div>
                                         </div>
- 
+
                                         <div id="headingGrid" class="card-header bg-white m-0 p-0 border-0">
                                            <a data-toggle="collapse" data-target="#collapseGrid" aria-expanded="false" aria-controls="collapseGrid" class="btn btn-link text-left mx-1 mb-2 px-3 col-12 plus-link"><h6>Grid Page</h6></a>
                                         </div>
@@ -383,7 +385,7 @@
 
 
 
-                                </div>  
+                                </div>
                             </div>
                         </div>
 
@@ -394,12 +396,12 @@
                                 <button class="btn btn-outline-primary col-6" id="downloadButton" type="button" onclick="handleFileSelect('download');return false;">Download PDF</button>
                             </div>
                         </div>
-                        
+
 
                         </div>
 
                     </form>
-                
+
             </div>
 
         <div class = "col-12 col-lg-8" id="example1">
@@ -419,11 +421,11 @@
         $('.c2').hide();
         $('#add-bold-font').hide();
         $('#add-bold-font2').hide();
-        
+
         function handleCustomFont(evt) {
 
             var fonts = evt.target.files; // FileList object
-            
+
             // fonts is a FileList of File objects.
             for (var i = 0, f; f = fonts[i]; i++) {
 
@@ -434,7 +436,7 @@
                 }
                 if (f) {
                     var reader = new FileReader();
-                  
+
                     reader.onload = function (readerEvt) {
                         var binaryString = readerEvt.target.result;
                         //console.log(evt.target.id);
@@ -448,7 +450,7 @@
                             boldFont2 = btoa(binaryString);
                         }
                     }
-                } else { 
+                } else {
                     alert("Failed to load file");
                 }
 
@@ -479,7 +481,7 @@
             }
         });
 
-        
+
         $('#useCustom2').change( function() {
             if ($('#useCustom2').is(':checked')) {
                 $('.c2').show();
@@ -540,11 +542,11 @@
 
             if (!document.getElementById('useCustom').checked) {
                 document.getElementById('customFont').value = "";
-            } 
-            
+            }
+
             if (!document.getElementById('useCustom2').checked) {
                 document.getElementById('customFont2').value = "";
-            } 
+            }
 
             if (document.getElementById('gray').checked) {
                 gray = 0.6;
@@ -566,12 +568,12 @@
                 coconstructor = document.getElementById('headerText2').value;
             }
 
-        
+
             var files = document.getElementById('files').files; // FileList object
-            
+
             if (!files[0]) {
                 alert('Please choose a puzzle file.');
-                return;    
+                return;
             }
 
             // files is a FileList of File objects.
@@ -588,8 +590,8 @@
                     filename = filename.substring(0,filename.length - 4);
                     var outname = filename + '.pdf';
                     r.onload = (function(theFile) {
-                        return function(e) { 
-                            var contents = e.target.result;     
+                        return function(e) {
+                            var contents = e.target.result;
                             //var puzdata = PUZAPP.parsepuz(contents);
                             var xw_constructor = new JSCrossword();
                             var puzdata = xw_constructor.fromData(contents);
@@ -599,7 +601,7 @@
                     })(f);
                     r.readAsBinaryString(f);
                     document.querySelector('#previewButton').textContent = 'Update Preview';
-                } else { 
+                } else {
                     alert("Failed to load file");
                 }
             }
@@ -616,7 +618,7 @@
           href="https://crosswordnexus.com/apps/puz-to-nyt/"
           >Crossword Nexus</a>, licensed under MIT License.
         <br>
-        
+
       </p>
     </div>
 
