@@ -53,6 +53,151 @@ async function preloadFromClueArrays(clueArrays) {
     await preloadEmojiImages(emojiChars);
 }
 
+/** Convert a string into char objects for printCharacters **/
+function toEmojiCharObjects(text, { bold = false } = {}) {
+    return splitter.splitGraphemes(text).map(char => {
+        const is_emoji = emojiRx.test(char);
+        return {
+            char,
+            is_bold: bold && !is_emoji,
+            is_italic: false,
+            is_emoji
+        };
+    });
+}
+
+/** Measure width of a plain string or emoji char-object line **/
+function measureEmojiLineWidth(doc, line, fontSize) {
+    if (typeof line === 'string') {
+        return doc.getTextWidth(foldReplacing(line));
+    }
+    let width = 0;
+    for (const row of line) {
+        if (row.is_emoji) {
+            width += fontSize;
+        } else {
+            width += doc.getStringUnitWidth(row.char) * fontSize;
+        }
+    }
+    return width;
+}
+
+/** Split a title to size; titles with emoji become arrays of char objects **/
+function splitTitleToSize(doc, title, maxWidth, fontSize, { bold = true } = {}) {
+    if (!emojiRx.test(title)) {
+        return doc.splitTextToSize(title, maxWidth);
+    }
+    // Word-wrap using emoji-aware widths
+    const graphemes = splitter.splitGraphemes(title);
+    const lines = [];
+    let current = [];
+    let currentWidth = 0;
+
+    const flush = () => {
+        if (current.length) {
+            lines.push(current);
+            current = [];
+            currentWidth = 0;
+        }
+    };
+
+    let word = [];
+    let wordWidth = 0;
+    const flushWord = () => {
+        if (!word.length) return;
+        if (currentWidth + wordWidth > maxWidth && current.length) {
+            flush();
+        }
+        // If a single word is longer than maxWidth, break by grapheme
+        if (wordWidth > maxWidth && !current.length) {
+            for (const row of word) {
+                const w = row.is_emoji ? fontSize : doc.getStringUnitWidth(row.char) * fontSize;
+                if (currentWidth + w > maxWidth && current.length) flush();
+                current.push(row);
+                currentWidth += w;
+            }
+        } else {
+            current = current.concat(word);
+            currentWidth += wordWidth;
+        }
+        word = [];
+        wordWidth = 0;
+    };
+
+    for (const g of graphemes) {
+        if (g === '\n') {
+            flushWord();
+            flush();
+            continue;
+        }
+        const is_emoji = emojiRx.test(g);
+        const row = {
+            char: g,
+            is_bold: bold && !is_emoji,
+            is_italic: false,
+            is_emoji
+        };
+        const w = is_emoji ? fontSize : doc.getStringUnitWidth(g) * fontSize;
+        if (g === ' ') {
+            flushWord();
+            if (current.length) {
+                if (currentWidth + w > maxWidth) {
+                    flush();
+                } else {
+                    current.push(row);
+                    currentWidth += w;
+                }
+            }
+            continue;
+        }
+        word.push(row);
+        wordWidth += w;
+    }
+    flushWord();
+    flush();
+    return lines.length ? lines : [[]];
+}
+
+/** Print title lines that may contain emoji (falls back to doc.text) **/
+function printTitleLines(doc, titleLines, xpos, ypos, fontSize, font, align, baseline) {
+    const hasEmoji = titleLines.some(line =>
+        Array.isArray(line) && line.some(c => c && c.is_emoji)
+    );
+    if (!hasEmoji) {
+        doc.text(xpos, ypos, titleLines, { align, baseline });
+        return;
+    }
+
+    // printCharacters positions text on an alphabetic baseline
+    let y = ypos;
+    if (baseline === 'top') {
+        y = ypos + fontSize;
+    } else if (baseline === 'middle') {
+        y = ypos + fontSize / 2;
+    }
+    const lineHeightFactor = (typeof doc.getLineHeightFactor === 'function')
+        ? doc.getLineHeightFactor()
+        : 1.15;
+    const lineHeight = fontSize * lineHeightFactor;
+
+    titleLines.forEach((line, i) => {
+        const lineY = y + i * lineHeight;
+        if (typeof line === 'string') {
+            let x = xpos;
+            const width = doc.getTextWidth(line);
+            if (align === 'center') x = xpos - width / 2;
+            else if (align === 'right') x = xpos - width;
+            doc.text(x, lineY, line);
+            return;
+        }
+        const width = measureEmojiLineWidth(doc, line, fontSize);
+        let x = xpos;
+        if (align === 'center') x = xpos - width / 2;
+        else if (align === 'right') x = xpos - width;
+        printCharacters(doc, line, lineY, x, fontSize, font);
+    });
+}
+
 /* function to strip HTML tags */
 /* via https://stackoverflow.com/a/5002618 */
 function strip_html(s) {
@@ -532,7 +677,12 @@ async function puzdata_to_nyt(xw, options)
         var header_padding = pt*0.2;
         doc.setFontSize(pt);
         for (var i=0;i<headers.length;i++) {
-            doc.text(x0,y0,headers[i]);
+            const header = headers[i];
+            if (typeof header === 'string' && emojiRx.test(header)) {
+                printCharacters(doc, toEmojiCharObjects(header), y0, x0, pt, options.header_font);
+            } else {
+                doc.text(x0,y0,header);
+            }
             y0 += pt + header_padding;
         }
 
@@ -548,6 +698,9 @@ async function puzdata_to_nyt(xw, options)
     }
 
     /** First page: filled grid **/
+    // Preload any emoji in the title before headers render
+    await preloadFromClueArrays([[xw.metadata.title || '']]);
+
     // Print the headers
     var headers = [];
     // only include the title if it's a Sunday
@@ -873,12 +1026,15 @@ async function puzdata_to_pdf(xw, options) {
     if (!options.header_text) {
         title = xw.metadata.title;
     }
+    var title_str = title;
 
     if (!options.copyright) {
         options.copyright_pt = 0;
     }
 
-    var title_width = doc.getTextWidth(title);
+    var title_width = emojiRx.test(title_str)
+        ? measureEmojiLineWidth(doc, toEmojiCharObjects(title_str, { bold: true }), options.header_pt)
+        : doc.getTextWidth(title);
     var title_right_margin = doc.getTextWidth('  ');
     var max_width = DOC_WIDTH - 2*side_margin;
 
@@ -886,7 +1042,7 @@ async function puzdata_to_pdf(xw, options) {
         max_width = options.header_width*max_width;
     }
 
-    title = doc.splitTextToSize(title, max_width);
+    title = splitTitleToSize(doc, title_str, max_width, options.header_pt, { bold: true });
     if (title) {
         header_height += 1.15*(title.length)*(options.header_pt);
     }
@@ -900,7 +1056,7 @@ async function puzdata_to_pdf(xw, options) {
 
     if (options.right_header) {
 
-        max_width = DOC_WIDTH - (2*side_margin + doc.getTextWidth(title[0]) + title_right_margin);
+        max_width = DOC_WIDTH - (2*side_margin + measureEmojiLineWidth(doc, title[0], options.header_pt) + title_right_margin);
 
         if (!options.header2_text) {
             author = xw.metadata.author.trim();
@@ -998,8 +1154,8 @@ async function puzdata_to_pdf(xw, options) {
         num_arrays.push(these_nums);
     }
 
-    // Update the emoji mapper
-	  await preloadFromClueArrays(clue_arrays);
+    // Update the emoji mapper (include title so header emoji can render)
+	  await preloadFromClueArrays([...clue_arrays, [title_str]]);
 
     // size of columns
     var col_width = (DOC_WIDTH - 2 * side_margin - (options.num_columns -1 ) * options.column_padding) / options.num_columns;
@@ -1349,7 +1505,7 @@ async function puzdata_to_pdf(xw, options) {
     }
     doc.setFontSize(options.header_pt);
     doc.setFont(options.header_font,'bold');
-    doc.text(title_xpos,title_ypos,title,{align: xalign, baseline: baseline});
+    printTitleLines(doc, title, title_xpos, title_ypos, options.header_pt, options.header_font, xalign, baseline);
 
     /* Render right-header */
 
@@ -1384,7 +1540,7 @@ async function puzdata_to_pdf(xw, options) {
         }
         doc.setFontSize(options.header_pt);
         doc.setFont(options.header_font,'bold');
-        doc.text(title_xpos,title_ypos,title,{align: xalign, baseline: baseline});
+        printTitleLines(doc, title, title_xpos, title_ypos, options.header_pt, options.header_font, xalign, baseline);
 
         /* Render right-header */
 
